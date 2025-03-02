@@ -118,7 +118,7 @@ select, input {
     to { opacity: 1; transform: translateX(0); }
 }
 
-/* Temas */
+/* Temas con fondos temáticos */
 body.tema-2000s {
     background: url('https://www.transparenttextures.com/patterns/90s-wallpaper.png') repeat, #00ffff;
     color: #000;
@@ -134,7 +134,7 @@ body.tema-2000s h1, body.tema-2000s h2, body.tema-2000s h3 { color: #ff00ff; tex
 body.tema-2000s a, body.tema-2000s #lista .item span { color: #ff00ff; }
 
 body.tema-pastel {
-    background: #f5e6ff;
+    background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat, #f5e6ff;
     color: #4a3c5b;
     font-family: 'Arial', sans-serif;
 }
@@ -147,7 +147,7 @@ body.tema-pastel h1, body.tema-pastel h2, body.tema-pastel h3 { color: #8c6fa3; 
 body.tema-pastel a, body.tema-pastel #lista .item span { color: #8c6fa3; }
 
 body.tema-vaporwave {
-    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    background: linear-gradient(45deg, #ff6ec4, #7873f5), url('https://www.transparenttextures.com/patterns/retro-grid.png') repeat;
     color: #fff;
     font-family: 'Arial Black', sans-serif;
 }
@@ -158,7 +158,7 @@ body.tema-vaporwave #capsula, body.tema-vaporwave #lista .item, body.tema-vaporw
 body.tema-vaporwave button { background: #ff00ff; }
 
 body.tema-dark-academia {
-    background: #2f1b12;
+    background: url('https://www.transparenttextures.com/patterns/old-wall.png') repeat, #2f1b12;
     color: #d4a373;
     font-family: 'Georgia', serif;
 }
@@ -169,7 +169,7 @@ body.tema-dark-academia #capsula, body.tema-dark-academia #lista .item, body.tem
 body.tema-dark-academia button { background: #8c5523; }
 
 body.tema-cyberpunk {
-    background: #0d1b2a;
+    background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png') repeat, #0d1b2a;
     color: #00f7ff;
     font-family: 'Orbitron', sans-serif;
 }
@@ -183,7 +183,7 @@ body.tema-cyberpunk h1, body.tema-cyberpunk h2, body.tema-cyberpunk h3 { color: 
 body.tema-cyberpunk a, body.tema-cyberpunk #lista .item span { color: #ff2079; }
 
 body.tema-retro-game {
-    background: #1a1a1a url('https://www.transparenttextures.com/patterns/pixel-pattern.png');
+    background: url('https://www.transparenttextures.com/patterns/pixel-pattern.png') repeat, #1a1a1a;
     color: #00ff00;
     font-family: 'Press Start 2P', cursive;
 }
@@ -209,10 +209,3 @@ body.tema-galaxy #capsula, body.tema-galaxy #lista .item, body.tema-galaxy #agen
 body.tema-galaxy button { background: #b300ff; }
 body.tema-galaxy h1, body.tema-galaxy h2, body.tema-galaxy h3 { color: #b300ff; text-shadow: 0 0 10px #b300ff; }
 body.tema-galaxy a, body.tema-galaxy #lista .item span { color: #b300ff; }
-
-.back-btn {
-    background: #ff6666;
-}
-.back-btn:hover {
-    background: #cc3333;
-}
