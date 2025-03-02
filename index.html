@@ -7,6 +7,25 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="config-btn" onclick="toggleConfig()">⚙️</div>
+    <div id="config" style="display:none;">
+        <h2>Configuración</h2>
+        <label>Tema:</label>
+        <select id="tema">
+            <option value="default">Predeterminado (Sci-Fi)</option>
+            <option value="2000s">Años 2000</option>
+            <option value="pastel">Colores Pastel</option>
+            <option value="vaporwave">Vaporwave</option>
+            <option value="dark academia">Dark Academia</option>
+        </select>
+        <label>Idioma:</label>
+        <select id="idioma">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+        </select>
+        <button onclick="applyConfig()">Aplicar</button>
+    </div>
     <div class="container">
         <h1>Cronosfera</h1>
         <div id="capsula">
@@ -16,26 +35,26 @@
         </div>
         <button onclick="nuevaCapsula()">Cápsula Aleatoria</button>
         <button onclick="enviar()">Enviar a mi futuro yo</button>
-        <a href="#tablero" onclick="showTablero()">Tablero de Estructuras</a>
+        <a href="#organizador" onclick="showTablero()">Organizador Dinámico</a>
     </div>
     <div id="organizador" style="display:none;">
-    <h2>Organizador Dinámico</h2>
-    <select id="categoria">
-        <option value="tareas">Tareas</option>
-        <option value="libros">Libros</option>
-        <option value="peliculas">Películas</option>
-        <option value="series">Series</option>
-        <option value="recetas">Recetas</option>
-    </select>
-    <input id="entrada" placeholder="Añade algo (ej: Ver Matrix)">
-    <input id="fecha" type="date" value="2025-03-02">
-    <button onclick="addItem()">Añadir</button>
-    <div id="lista"></div>
-    <div id="agenda">
-        <h3>Agenda</h3>
-        <div id="recordatorios"></div>
+        <h2>Organizador Dinámico</h2>
+        <select id="categoria">
+            <option value="tareas">Tareas</option>
+            <option value="libros">Libros</option>
+            <option value="peliculas">Películas</option>
+            <option value="series">Series</option>
+            <option value="recetas">Recetas</option>
+        </select>
+        <input id="entrada" placeholder="Añade algo (ej: Ver Matrix)">
+        <input id="fecha" type="date" value="2025-03-02">
+        <button onclick="addItem()">Añadir</button>
+        <div id="lista"></div>
+        <div id="agenda">
+            <h3>Agenda</h3>
+            <div id="recordatorios"></div>
+        </div>
     </div>
-</div>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
