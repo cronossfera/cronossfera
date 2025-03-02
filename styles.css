@@ -209,3 +209,10 @@ body.tema-galaxy #capsula, body.tema-galaxy #lista .item, body.tema-galaxy #agen
 body.tema-galaxy button { background: #b300ff; }
 body.tema-galaxy h1, body.tema-galaxy h2, body.tema-galaxy h3 { color: #b300ff; text-shadow: 0 0 10px #b300ff; }
 body.tema-galaxy a, body.tema-galaxy #lista .item span { color: #b300ff; }
+
+.back-btn {
+    background: #ff6666;
+}
+.back-btn:hover {
+    background: #cc3333;
+}
