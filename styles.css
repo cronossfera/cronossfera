@@ -5,23 +5,45 @@ body {
     margin: 0;
     padding: 20px;
     text-align: center;
+    transition: background-color 0.5s, color 0.5s;
 }
 
-.container, #tablero {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-h1, h2 {
+.config-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
     color: #00ffcc;
     text-shadow: 0 0 5px #00ffcc;
 }
 
-#capsula {
+#config {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    background: #2a2a2a;
+    padding: 20px;
+    border: 1px solid #00ffcc;
+    z-index: 100;
+}
+
+.container, #organizador {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1, h2, h3 {
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc;
+}
+
+#capsula, #lista .item, #agenda {
     background: #2a2a2a;
     padding: 20px;
     border: 1px solid #00ffcc;
     margin: 20px 0;
+    transition: background 0.5s, border-color 0.5s;
 }
 
 button {
@@ -32,6 +54,7 @@ button {
     margin: 5px;
     cursor: pointer;
     font-family: 'Courier New', monospace;
+    transition: background 0.5s;
 }
 
 button:hover {
@@ -43,12 +66,7 @@ a {
     text-decoration: none;
 }
 
-#organizador {
-    max-width: 800px;
-    margin: 20px auto;
-}
-
-select, input, textarea {
+select, input {
     width: 45%;
     padding: 10px;
     margin: 10px 5px;
@@ -67,10 +85,6 @@ select, input, textarea {
 }
 
 #lista .item {
-    background: #2a2a2a;
-    border: 1px solid #00ffcc;
-    padding: 15px;
-    margin: 10px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -82,10 +96,7 @@ select, input, textarea {
 }
 
 #agenda {
-    margin-top: 20px;
-    padding: 15px;
-    background: #2a2a2a;
-    border: 1px dashed #00ffcc;
+    border-style: dashed;
 }
 
 #recordatorios .recordatorio {
@@ -97,4 +108,65 @@ select, input, textarea {
     from { opacity: 0; transform: translateX(-20px); }
     to { opacity: 1; transform: translateX(0); }
 }
+
+/* Temas */
+body.tema-2000s {
+    background: url('https://www.transparenttextures.com/patterns/90s-wallpaper.png');
+    color: #000;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+body.tema-2000s #capsula, body.tema-2000s #lista .item, body.tema-2000s #agenda, body.tema-2000s #config {
+    background: #ff00ff;
+    border-color: #00ffff;
+    color: #000;
+}
+
+body.tema-2000s button {
+    background: #ffff00;
+}
+
+body.tema-pastel {
+    background: #f5e6ff;
+    color: #5a4a78;
+    font-family: 'Arial', sans-serif;
+}
+
+body.tema-pastel #capsula, body.tema-pastel #lista .item, body.tema-pastel #agenda, body.tema-pastel #config {
+    background: #ffd6e8;
+    border-color: #b8a9d1;
+}
+
+body.tema-pastel button {
+    background: #b8e1ff;
+}
+
+body.tema-vaporwave {
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    color: #fff;
+    font-family: 'Arial Black', sans-serif;
+}
+
+body.tema-vaporwave #capsula, body.tema-vaporwave #lista .item, body.tema-vaporwave #agenda, body.tema-vaporwave #config {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: #ff00ff;
+}
+
+body.tema-vaporwave button {
+    background: #ff00ff;
+}
+
+body.tema-dark-academia {
+    background: #2f1b12;
+    color: #d4a373;
+    font-family: 'Georgia', serif;
+}
+
+body.tema-dark-academia #capsula, body.tema-dark-academia #lista .item, body.tema-dark-academia #agenda, body.tema-dark-academia #config {
+    background: #3c2f2f;
+    border-color: #8c5523;
+}
+
+body.tema-dark-academia button {
+    background: #8c5523;
 }
