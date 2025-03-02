@@ -189,7 +189,8 @@ function start2000sGraphics() {
     const cliparts = [
         { x: 50, y: 50, dx: 2, dy: 1, text: "☺", size: 30 },
         { x: 200, y: 100, dx: -1, dy: 2, text: "★", size: 40 },
-        { x: 300, y: 150, dx: 1, dy: -1, text: "♪", size: 25 }
+        { x: 300, y: 150, dx: 1, dy: -1, text: "♪", size: 25 },
+        { x: 100, y: 200, dx: -2, dy: 1, text: "♥", size: 35 }
     ];
 
     function animate() {
@@ -203,7 +204,7 @@ function start2000sGraphics() {
             clip.y += clip.dy;
 
             if (clip.x < 0 || clip.x > canvas.width - clip.size) clip.dx *= -1;
-            if (clip.y < 0 || clip.y > canvas.height - clip.size) clip.dy *= -1;
+            if (clip.y < clip.size || clip.y > canvas.height) clip.dy *= -1; // Ajuste para que no se salga por arriba
         });
 
         animationFrameId = requestAnimationFrame(animate);
@@ -214,11 +215,15 @@ function start2000sGraphics() {
 function stop2000sGraphics() {
     const canvas = document.getElementById("interactive-2000s");
     canvas.style.display = "none";
-    cancelAnimationFrame(animationFrameId);
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
 }
 
 // Cargar al iniciar
 nuevaCapsula();
 updateLista();
 updateText();
-if (temaActual === "2000s") start2000sGraphics();
+if (temaActual === "2000s") {
+    start2000sGraphics();
+}
