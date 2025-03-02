@@ -43,22 +43,58 @@ a {
     text-decoration: none;
 }
 
-#nodos .nodo {
-    background: #2a2a2a;
-    border: 1px solid #00ffcc;
-    padding: 10px;
-    margin: 10px 0;
-    position: relative;
-    display: inline-block;
-    width: 200px;
+#organizador {
+    max-width: 800px;
+    margin: 20px auto;
 }
 
-input, textarea {
-    width: 80%;
+select, input, textarea {
+    width: 45%;
     padding: 10px;
-    margin: 10px 0;
+    margin: 10px 5px;
     background: #2a2a2a;
     color: #e0e0e0;
     border: 1px solid #00ffcc;
     font-family: 'Courier New', monospace;
+}
+
+#entrada {
+    width: 30%;
+}
+
+#fecha {
+    width: 20%;
+}
+
+#lista .item {
+    background: #2a2a2a;
+    border: 1px solid #00ffcc;
+    padding: 15px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+}
+
+#lista .item span {
+    color: #00ffcc;
+}
+
+#agenda {
+    margin-top: 20px;
+    padding: 15px;
+    background: #2a2a2a;
+    border: 1px dashed #00ffcc;
+}
+
+#recordatorios .recordatorio {
+    color: #ff6666;
+    margin: 5px 0;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
 }
