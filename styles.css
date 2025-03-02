@@ -133,15 +133,30 @@ select, input {
 
 #personality-test h2 {
     margin-top: 0;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 5px #00ffcc;
+    color: #00ffcc;
 }
 
-#personality-test div {
+#test-content {
     margin: 10px 0;
 }
 
-#test-questions label {
+#test-content label {
     display: block;
     margin: 5px 0;
+}
+
+#test-buttons button {
+    margin: 0 5px;
+}
+
+#test-buttons #prev-btn {
+    background: #ff6666;
+}
+
+#test-buttons #prev-btn:hover {
+    background: #cc3333;
 }
 
 /* Temas con fondos temáticos corregidos */
