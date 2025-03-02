@@ -146,11 +146,7 @@ function applyConfig() {
     localStorage.setItem("idioma", idioma);
     nuevaCapsula();
     updateText();
-    if (tema === "2000s") {
-        start2000sGraphics();
-    } else {
-        stop2000sGraphics();
-    }
+    startGraphics(tema);
 }
 
 function updateText() {
@@ -177,34 +173,96 @@ function updateText() {
     updateAgenda();
 }
 
-// Gráficos interactivos para 2000s
+// Gráficos interactivos para todos los temas
 let animationFrameId;
-function start2000sGraphics() {
-    const canvas = document.getElementById("interactive-2000s");
+function startGraphics(tema) {
+    const canvas = document.getElementById("interactive-graphics");
     canvas.style.display = "block";
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const cliparts = [
-        { x: 50, y: 50, dx: 2, dy: 1, text: "☺", size: 30 },
-        { x: 200, y: 100, dx: -1, dy: 2, text: "★", size: 40 },
-        { x: 300, y: 150, dx: 1, dy: -1, text: "♪", size: 25 },
-        { x: 100, y: 200, dx: -2, dy: 1, text: "♥", size: 35 }
-    ];
+    let elements = [];
+    switch (tema) {
+        case "default": // Sci-Fi
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "⚙️", size: 30, color: "#00ffcc" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🚀", size: 40, color: "#00ffcc" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🖥️", size: 25, color: "#00ffcc" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "🤖", size: 35, color: "#00ffcc" }
+            ];
+            break;
+        case "2000s": // Años 2000
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "☺", size: 30, color: "#ff00ff" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "★", size: 40, color: "#ff00ff" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "♪", size: 25, color: "#ff00ff" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "♥", size: 35, color: "#ff00ff" },
+                { x: 150, y: 250, dx: 1.5, dy: -1.5, text: "✿", size: 30, color: "#ffff00" }
+            ];
+            break;
+        case "pastel": // Pastel
+            elements = [
+                { x: 50, y: 50, dx: 1, dy: 1, text: "🌸", size: 30, color: "#ff9999" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🦋", size: 35, color: "#b8e1ff" },
+                { x: 300, y: 150, dx: 2, dy: -1, text: "☁️", size: 25, color: "#ffd6e8" },
+                { x: 100, y: 200, dx: -1.5, dy: 1.5, text: "🌈", size: 40, color: "#8c6fa3" }
+            ];
+            break;
+        case "vaporwave": // Vaporwave
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "📼", size: 30, color: "#ff00ff" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🌴", size: 40, color: "#ff6ec4" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🖥️", size: 25, color: "#7873f5" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "☀️", size: 35, color: "#ff00ff" }
+            ];
+            break;
+        case "dark-academia": // Dark Academia
+            elements = [
+                { x: 50, y: 50, dx: 1, dy: 1, text: "📚", size: 30, color: "#d4a373" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🕯️", size: 35, color: "#8c5523" },
+                { x: 300, y: 150, dx: 2, dy: -1, text: "✒️", size: 25, color: "#d4a373" },
+                { x: 100, y: 200, dx: -1.5, dy: 1.5, text: "🦇", size: 30, color: "#8c5523" }
+            ];
+            break;
+        case "cyberpunk": // Cyberpunk
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "💾", size: 30, color: "#ff2079" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🌃", size: 40, color: "#00f7ff" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🤖", size: 25, color: "#ff2079" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "⚡", size: 35, color: "#00f7ff" }
+            ];
+            break;
+        case "retro-game": // Retro Game
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "🎮", size: 30, color: "#00ff00" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "👾", size: 40, color: "#00ff00" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🕹️", size: 25, color: "#00ff00" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "💰", size: 35, color: "#00ff00" }
+            ];
+            break;
+        case "galaxy": // Galaxia
+            elements = [
+                { x: 50, y: 50, dx: 1, dy: 1, text: "⭐", size: 30, color: "#b300ff" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🌌", size: 40, color: "#e6e6ff" },
+                { x: 300, y: 150, dx: 2, dy: -1, text: "🪐", size: 25, color: "#b300ff" },
+                { x: 100, y: 200, dx: -1.5, dy: 1.5, text: "✨", size: 35, color: "#e6e6ff" },
+                { x: 150, y: 250, dx: 1.5, dy: -1.5, text: "☄️", size: 30, color: "#b300ff" }
+            ];
+            break;
+    }
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#ff00ff";
-        ctx.font = "30px 'Comic Sans MS'";
+        elements.forEach(el => {
+            ctx.fillStyle = el.color;
+            ctx.font = `${el.size}px ${tema === "retro-game" ? "'Press Start 2P'" : "'Courier New'"}`;
+            ctx.fillText(el.text, el.x, el.y);
+            el.x += el.dx;
+            el.y += el.dy;
 
-        cliparts.forEach(clip => {
-            ctx.fillText(clip.text, clip.x, clip.y);
-            clip.x += clip.dx;
-            clip.y += clip.dy;
-
-            if (clip.x < 0 || clip.x > canvas.width - clip.size) clip.dx *= -1;
-            if (clip.y < clip.size || clip.y > canvas.height) clip.dy *= -1; // Ajuste para que no se salga por arriba
+            if (el.x < 0 || el.x > canvas.width - el.size) el.dx *= -1;
+            if (el.y < el.size || el.y > canvas.height) el.dy *= -1;
         });
 
         animationFrameId = requestAnimationFrame(animate);
@@ -212,8 +270,8 @@ function start2000sGraphics() {
     animate();
 }
 
-function stop2000sGraphics() {
-    const canvas = document.getElementById("interactive-2000s");
+function stopGraphics() {
+    const canvas = document.getElementById("interactive-graphics");
     canvas.style.display = "none";
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -224,6 +282,4 @@ function stop2000sGraphics() {
 nuevaCapsula();
 updateLista();
 updateText();
-if (temaActual === "2000s") {
-    start2000sGraphics();
-}
+startGraphics(temaActual);
