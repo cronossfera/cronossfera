@@ -72,11 +72,14 @@
         </div>
         <button onclick="backToMain()" class="back-btn">Volver a Principal</button>
     </div>
-    <div id="personality-test" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#2a2a2a; padding:20px; border:1px solid #00ffcc; z-index:1000;">
-        <h2>Test de Personalidad</h2>
-        <div id="test-questions"></div>
-        <button onclick="submitTest()">Enviar</button>
-        <button onclick="closeTest()">Cerrar</button>
+    <div id="personality-test" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#2a2a2a; padding:20px; border:1px solid #00ffcc; z-index:1000; max-width:400px; box-shadow: 0 0 15px #00ffcc;">
+        <h2 style="font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px #00ffcc; color: #00ffcc;">¿Quién eres?</h2>
+        <div id="test-content"></div>
+        <div id="test-buttons" style="margin-top: 15px;">
+            <button id="prev-btn" onclick="prevQuestion()" style="display:none; background:#ff6666;">Anterior</button>
+            <button id="next-btn" onclick="nextQuestion()" style="background:#00ffcc;">Siguiente</button>
+            <button id="submit-btn" onclick="submitTest()" style="display:none; background:#00ffcc;">Enviar</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
