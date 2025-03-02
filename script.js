@@ -110,7 +110,7 @@ function deleteItem(index) {
 function updateAgenda() {
     const recordatoriosDiv = document.getElementById("recordatorios");
     const hoyItems = items.filter(item => item.fecha <= today);
-    const texts = {
+    const noRecTexts = {
         es: "No hay recordatorios para hoy.",
         en: "No reminders for today.",
         fr: "Aucun rappel pour aujourd'hui.",
@@ -119,12 +119,12 @@ function updateAgenda() {
         ru: "Нет напоминаний на сегодня.",
         it: "Nessun promemoria per oggi.",
         zh: "今天没有提醒。",
-        ko: "오늘은 리마인더가 없습니다.",
+        ko: "오늘은 리마인더가 없습니다。",
         tr: "Bugün için hatırlatıcı yok."
     };
     recordatoriosDiv.innerHTML = hoyItems.length > 0 
         ? hoyItems.map(item => `<div class="recordatorio">[${item.categoria}] ${item.texto} - ¡Hoy!</div>`).join("")
-        : `<p>${texts[idiomaActual]}</p>`;
+        : `<p>${noRecTexts[idiomaActual]}</p>`;
 }
 
 function saveItems() {
@@ -146,6 +146,11 @@ function applyConfig() {
     localStorage.setItem("idioma", idioma);
     nuevaCapsula();
     updateText();
+    if (tema === "2000s") {
+        start2000sGraphics();
+    } else {
+        stop2000sGraphics();
+    }
 }
 
 function updateText() {
@@ -172,7 +177,48 @@ function updateText() {
     updateAgenda();
 }
 
+// Gráficos interactivos para 2000s
+let animationFrameId;
+function start2000sGraphics() {
+    const canvas = document.getElementById("interactive-2000s");
+    canvas.style.display = "block";
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const cliparts = [
+        { x: 50, y: 50, dx: 2, dy: 1, text: "☺", size: 30 },
+        { x: 200, y: 100, dx: -1, dy: 2, text: "★", size: 40 },
+        { x: 300, y: 150, dx: 1, dy: -1, text: "♪", size: 25 }
+    ];
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ff00ff";
+        ctx.font = "30px 'Comic Sans MS'";
+
+        cliparts.forEach(clip => {
+            ctx.fillText(clip.text, clip.x, clip.y);
+            clip.x += clip.dx;
+            clip.y += clip.dy;
+
+            if (clip.x < 0 || clip.x > canvas.width - clip.size) clip.dx *= -1;
+            if (clip.y < 0 || clip.y > canvas.height - clip.size) clip.dy *= -1;
+        });
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+function stop2000sGraphics() {
+    const canvas = document.getElementById("interactive-2000s");
+    canvas.style.display = "none";
+    cancelAnimationFrame(animationFrameId);
+}
+
 // Cargar al iniciar
 nuevaCapsula();
 updateLista();
 updateText();
+if (temaActual === "2000s") start2000sGraphics();
