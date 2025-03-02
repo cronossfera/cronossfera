@@ -36,6 +36,7 @@ body {
 h1, h2, h3 {
     color: #00ffcc;
     text-shadow: 0 0 5px #00ffcc;
+    transition: color 0.5s;
 }
 
 #capsula, #lista .item, #agenda {
@@ -59,6 +60,14 @@ button {
 
 button:hover {
     background: #00cc99;
+}
+
+.back-btn {
+    background: #ff6666;
+}
+
+.back-btn:hover {
+    background: #cc3333;
 }
 
 a {
@@ -111,62 +120,92 @@ select, input {
 
 /* Temas */
 body.tema-2000s {
-    background: url('https://www.transparenttextures.com/patterns/90s-wallpaper.png');
+    background: url('https://www.transparenttextures.com/patterns/90s-wallpaper.png') repeat, #00ffff;
     color: #000;
     font-family: 'Comic Sans MS', cursive;
 }
-
 body.tema-2000s #capsula, body.tema-2000s #lista .item, body.tema-2000s #agenda, body.tema-2000s #config {
-    background: #ff00ff;
-    border-color: #00ffff;
-    color: #000;
+    background: rgba(255, 255, 0, 0.8);
+    border-color: #ff00ff;
+    box-shadow: 0 0 10px #ff00ff;
 }
-
-body.tema-2000s button {
-    background: #ffff00;
-}
+body.tema-2000s button { background: #ff00ff; }
+body.tema-2000s h1, body.tema-2000s h2, body.tema-2000s h3 { color: #ff00ff; text-shadow: 0 0 5px #ffff00; }
+body.tema-2000s a, body.tema-2000s #lista .item span { color: #ff00ff; }
 
 body.tema-pastel {
     background: #f5e6ff;
-    color: #5a4a78;
+    color: #4a3c5b;
     font-family: 'Arial', sans-serif;
 }
-
 body.tema-pastel #capsula, body.tema-pastel #lista .item, body.tema-pastel #agenda, body.tema-pastel #config {
-    background: #ffd6e8;
-    border-color: #b8a9d1;
+    background: #ffedf5;
+    border-color: #8c6fa3;
 }
-
-body.tema-pastel button {
-    background: #b8e1ff;
-}
+body.tema-pastel button { background: #b8e1ff; }
+body.tema-pastel h1, body.tema-pastel h2, body.tema-pastel h3 { color: #8c6fa3; text-shadow: none; }
+body.tema-pastel a, body.tema-pastel #lista .item span { color: #8c6fa3; }
 
 body.tema-vaporwave {
     background: linear-gradient(45deg, #ff6ec4, #7873f5);
     color: #fff;
     font-family: 'Arial Black', sans-serif;
 }
-
 body.tema-vaporwave #capsula, body.tema-vaporwave #lista .item, body.tema-vaporwave #agenda, body.tema-vaporwave #config {
     background: rgba(0, 0, 0, 0.5);
     border-color: #ff00ff;
 }
-
-body.tema-vaporwave button {
-    background: #ff00ff;
-}
+body.tema-vaporwave button { background: #ff00ff; }
 
 body.tema-dark-academia {
     background: #2f1b12;
     color: #d4a373;
     font-family: 'Georgia', serif;
 }
-
 body.tema-dark-academia #capsula, body.tema-dark-academia #lista .item, body.tema-dark-academia #agenda, body.tema-dark-academia #config {
     background: #3c2f2f;
     border-color: #8c5523;
 }
+body.tema-dark-academia button { background: #8c5523; }
 
-body.tema-dark-academia button {
-    background: #8c5523;
+body.tema-cyberpunk {
+    background: #0d1b2a;
+    color: #00f7ff;
+    font-family: 'Orbitron', sans-serif;
 }
+body.tema-cyberpunk #capsula, body.tema-cyberpunk #lista .item, body.tema-cyberpunk #agenda, body.tema-cyberpunk #config {
+    background: rgba(13, 27, 42, 0.8);
+    border-color: #ff2079;
+    box-shadow: 0 0 15px #ff2079;
+}
+body.tema-cyberpunk button { background: #ff2079; }
+body.tema-cyberpunk h1, body.tema-cyberpunk h2, body.tema-cyberpunk h3 { color: #ff2079; text-shadow: 0 0 10px #ff2079; }
+body.tema-cyberpunk a, body.tema-cyberpunk #lista .item span { color: #ff2079; }
+
+body.tema-retro-game {
+    background: #1a1a1a url('https://www.transparenttextures.com/patterns/pixel-pattern.png');
+    color: #00ff00;
+    font-family: 'Press Start 2P', cursive;
+}
+body.tema-retro-game #capsula, body.tema-retro-game #lista .item, body.tema-retro-game #agenda, body.tema-retro-game #config {
+    background: #000;
+    border-color: #00ff00;
+    box-shadow: 0 0 5px #00ff00;
+}
+body.tema-retro-game button { background: #00ff00; color: #000; }
+body.tema-retro-game h1, body.tema-retro-game h2, body.tema-retro-game h3 { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+body.tema-retro-game a, body.tema-retro-game #lista .item span { color: #00ff00; }
+
+body.tema-galaxy {
+    background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat, #0a001f;
+    color: #e6e6ff;
+    font-family: 'Space Mono', monospace;
+}
+body.tema-galaxy #capsula, body.tema-galaxy #lista .item, body.tema-galaxy #agenda, body.tema-galaxy #config {
+    background: rgba(10, 0, 31, 0.7);
+    border-color: #b300ff;
+    box-shadow: 0 0 10px #b300ff;
+}
+body.tema-galaxy button { background: #b300ff; }
+body.tema-galaxy h1, body.tema-galaxy h2, body.tema-galaxy h3 { color: #b300ff; text-shadow: 0 0 10px #b300ff; }
+body.tema-galaxy a, body.tema-galaxy #lista .item span { color: #b300ff; }
