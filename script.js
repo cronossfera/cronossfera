@@ -32,37 +32,57 @@ function enviar() {
 }
 
 // Mostrar tablero
-function showTablero() {
+// Mostrar organizador
+function showTablero() { // Cambiamos nombre a showOrganizador si quieres, pero lo dejo así por compatibilidad
     document.querySelector(".container").style.display = "none";
-    document.getElementById("tablero").style.display = "block";
+    document.getElementById("organizador").style.display = "block";
 }
 
-// Tablero de estructuras
-let nodos = JSON.parse(localStorage.getItem("nodos")) || [];
-function addNodo() {
-    const tema = document.getElementById("tema").value;
-    const texto = document.getElementById("nodo").value;
-    if (tema && texto) {
-        nodos.push({ tema, texto });
-        updateNodos();
-        document.getElementById("nodo").value = ""; // Limpiar textarea
+// Organizador dinámico
+let items = JSON.parse(localStorage.getItem("items")) || [];
+const today = new Date().toISOString().split("T")[0]; // Fecha actual
+
+function addItem() {
+    const categoria = document.getElementById("categoria").value;
+    const texto = document.getElementById("entrada").value;
+    const fecha = document.getElementById("fecha").value;
+    if (texto && fecha) {
+        items.push({ categoria, texto, fecha });
+        updateLista();
+        document.getElementById("entrada").value = ""; // Limpiar entrada
+        saveItems();
     }
 }
 
-function updateNodos() {
-    const nodosDiv = document.getElementById("nodos");
-    nodosDiv.innerHTML = nodos.map((n, i) => `
-        <div class="nodo" style="top: ${i * 60}px; left: ${Math.random() * 400}px;">
-            <strong>${n.tema}</strong>: ${n.texto}
+function updateLista() {
+    const listaDiv = document.getElementById("lista");
+    listaDiv.innerHTML = items.map((item, index) => `
+        <div class="item">
+            <span>[${item.categoria}]</span> ${item.texto} - ${item.fecha}
+            <button onclick="deleteItem(${index})" style="background:#ff6666;">X</button>
         </div>
     `).join("");
+    updateAgenda();
 }
 
-function saveTablero() {
-    localStorage.setItem("nodos", JSON.stringify(nodos));
-    alert("Guardado localmente!");
+function deleteItem(index) {
+    items.splice(index, 1);
+    updateLista();
+    saveItems();
 }
 
-// Cargar cápsula al iniciar
+function updateAgenda() {
+    const recordatoriosDiv = document.getElementById("recordatorios");
+    const hoyItems = items.filter(item => item.fecha <= today);
+    recordatoriosDiv.innerHTML = hoyItems.length > 0 
+        ? hoyItems.map(item => `<div class="recordatorio">[${item.categoria}] ${item.texto} - ¡Hoy!</div>`).join("")
+        : "<p>No hay recordatorios para hoy.</p>";
+}
+
+function saveItems() {
+    localStorage.setItem("items", JSON.stringify(items));
+}
+
+// Cargar al iniciar
 nuevaCapsula();
-updateNodos();
+updateLista();
