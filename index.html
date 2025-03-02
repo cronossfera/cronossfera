@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cronosfera</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Press+Start+2P&family=Space+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -28,8 +29,11 @@
             <option value="fr">Français</option>
             <option value="de">Deutsch</option>
             <option value="jp">日本語 (Japanese)</option>
-            <option value="klingon">tlhIngan Hol (Klingon)</option>
-            <option value="elvish">Quenya (Elvish)</option>
+            <option value="ru">Русский (Russian)</option>
+            <option value="it">Italiano</option>
+            <option value="zh">中文 (Chinese)</option>
+            <option value="ko">한국어 (Korean)</option>
+            <option value="tr">Türkçe</option>
         </select>
         <button onclick="applyConfig()">Aplicar</button>
     </div>
@@ -42,7 +46,7 @@
         </div>
         <button onclick="nuevaCapsula()">Cápsula Aleatoria</button>
         <button onclick="enviar()">Enviar a mi futuro yo</button>
-        <a href="#organizador" onclick="showTablero()">Organizador Dinámico</a>
+        <a href="#organizador" onclick="showOrganizador()">Organizador Dinámico</a>
     </div>
     <div id="organizador" style="display:none;">
         <h2>Organizador Dinámico</h2>
