@@ -12,7 +12,7 @@ const capsulas = {
     tr: []
 };
 
-// Generar más de 1000 cápsulas (simulación, puedes expandirla manualmente o usar una API)
+// Generar más de 1000 cápsulas (simulación)
 function generateCapsulas() {
     const fechas = [];
     const datos = ["Evento histórico", "Invento tecnológico", "Descubrimiento científico"];
@@ -22,7 +22,7 @@ function generateCapsulas() {
     for (let year = 1900; year <= 2025; year++) {
         for (let month = 1; month <= 12; month++) {
             for (let day = 1; day <= 31; day++) {
-                if (new Date(year, month - 1, day).getDate() === day) { // Validar días válidos
+                if (new Date(year, month - 1, day).getDate() === day) {
                     const fecha = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const idiomas = ['es', 'en', 'fr', 'de', 'jp', 'ru', 'it', 'zh', 'ko', 'tr'];
                     idiomas.forEach(lang => {
@@ -56,7 +56,7 @@ function showCapsulaByDate() {
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
         document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
     } else {
-        nuevaCapsula(); // Si no hay cápsula para hoy, muestra una aleatoria
+        nuevaCapsula();
     }
     updateUserInfo();
 }
@@ -164,60 +164,96 @@ function applyConfig() {
     start2000sGraphics(tema);
 }
 
-// Test de personalidad con 6 tipos y 7 preguntas
+// Test de personalidad con 6 tipos y 7 preguntas, una por sección
 const personalityQuestions = [
-    { question: "¿Prefieres leer libros de ciencia ficción, fantasía, historia o poesía?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Ninguno"] },
-    { question: "¿Te gusta jugar videojuegos complejos, casuales, de estrategia o no juegas?", options: ["Complejos", "Casuales", "Estrategia", "No juego"] },
-    { question: "¿Pasas tiempo en convenciones de cómics, anime, literatura o no lo haces?", options: ["Cómics", "Anime", "Literatura", "No, nunca"] },
-    { question: "¿Te interesa la tecnología futurista, el arte clásico, la ciencia o ninguna?", options: ["Tecnología futurista", "Arte clásico", "Ciencia", "Ninguna"] },
-    { question: "¿Qué tipo de películas prefieres: sci-fi, drama, terror o comedias?", options: ["Sci-fi", "Drama", "Terror", "Comedias"] },
-    { question: "¿Participas en debates sobre cultura pop, filosofía, tecnología o no lo haces?", options: ["Cultura pop", "Filosofía", "Tecnología", "No lo hago"] },
-    { question: "¿Tienes hobbies como coleccionar figuras, leer clásicos, programar o nada?", options: ["Figuras", "Clásicos", "Programar", "Nada"] }
+    { question: "¿Qué tipo de libros prefieres leer: ciencia ficción, fantasía, historia, poesía o ninguno?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Ninguno"] },
+    { question: "¿Qué tipo de videojuegos te gustan: complejos, casuales, estrategia o no juegas?", options: ["Complejos", "Casuales", "Estrategia", "No juego"] },
+    { question: "¿Asistes a eventos de: cómics, anime, literatura o no asistes?", options: ["Cómics", "Anime", "Literatura", "No, nunca"] },
+    { question: "¿Te interesa: tecnología futurista, arte clásico, ciencia o ninguna?", options: ["Tecnología futurista", "Arte clásico", "Ciencia", "Ninguna"] },
+    { question: "¿Qué películas prefieres: sci-fi, drama, terror o comedias?", options: ["Sci-fi", "Drama", "Terror", "Comedias"] },
+    { question: "¿Participas en debates sobre: cultura pop, filosofía, tecnología o no lo haces?", options: ["Cultura pop", "Filosofía", "Tecnología", "No lo hago"] },
+    { question: "¿Tus hobbies incluyen: coleccionar figuras, leer clásicos, programar o nada?", options: ["Figuras", "Clásicos", "Programar", "Nada"] }
 ];
 
 let personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
+let currentQuestion = 0;
+let answers = {};
 
 function showPersonalityTest() {
-    const test = document.getElementById("personality-test");
-    const questionsDiv = document.getElementById("test-questions");
-    questionsDiv.innerHTML = personalityQuestions.map((q, i) => `
-        <p>${q.question}</p>
-        ${q.options.map(o => `<label><input type="radio" name="q${i}" value="${o}"> ${o}</label>`).join("<br>")}
-    `).join("<br>");
-    test.style.display = "block";
+    currentQuestion = 0;
+    answers = {};
+    showQuestion();
+    document.getElementById("personality-test").style.display = "block";
 }
 
-function closeTest() {
-    document.getElementById("personality-test").style.display = "none";
+function showQuestion() {
+    const testContent = document.getElementById("test-content");
+    const question = personalityQuestions[currentQuestion];
+    testContent.innerHTML = `
+        <p>${question.question}</p>
+        ${question.options.map(o => `<label><input type="radio" name="q${currentQuestion}" value="${o}"> ${o}</label>`).join("<br>")}
+    `;
+    const prevBtn = document.getElementById("prev-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const submitBtn = document.getElementById("submit-btn");
+    prevBtn.style.display = currentQuestion === 0 ? "none" : "inline-block";
+    nextBtn.style.display = currentQuestion < personalityQuestions.length - 1 ? "inline-block" : "none";
+    submitBtn.style.display = currentQuestion === personalityQuestions.length - 1 ? "inline-block" : "none";
+}
+
+function prevQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        showQuestion();
+    }
+}
+
+function nextQuestion() {
+    const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+    if (selected) {
+        answers[currentQuestion] = selected.value;
+        if (currentQuestion < personalityQuestions.length - 1) {
+            currentQuestion++;
+            showQuestion();
+        }
+    } else {
+        alert("Selecciona una opción antes de continuar.");
+    }
 }
 
 function submitTest() {
-    personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
-    personalityQuestions.forEach((q, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if (selected) {
-            const value = selected.value;
+    const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+    if (selected) {
+        answers[currentQuestion] = selected.value;
+        personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
+        Object.values(answers).forEach(value => {
             if (["Ciencia ficción", "Complejos", "Cómics", "Tecnología futurista", "Sci-fi", "Cultura pop", "Figuras"].includes(value)) personalityScore.friki += 2;
             if (["Estrategia", "Ciencia", "Programar"].includes(value)) personalityScore.nerd += 2;
             if (["Fantasía", "Historia", "Literatura", "Filosofía", "Clásicos"].includes(value)) personalityScore.culto += 2;
             if (["Poesía", "Arte clásico", "Drama"].includes(value)) personalityScore.artista += 2;
-            if (["Terror"].includes(value)) personalityScore.cientifico += 2; // Asumiendo que el terror podría atraer a mentes analíticas
+            if (["Terror"].includes(value)) personalityScore.cientifico += 2;
             if (["Casuales", "No juego", "No, nunca", "Ninguno", "Comedias", "Nada"].includes(value)) personalityScore.casual += 2;
-        }
-    });
-    const maxScore = Math.max(personalityScore.friki, personalityScore.nerd, personalityScore.culto, personalityScore.artista, personalityScore.cientifico, personalityScore.casual);
-    let userType = "Casual";
-    let icon = "👤";
-    if (maxScore === personalityScore.friki) { userType = "Frikki"; icon = "🎮"; }
-    else if (maxScore === personalityScore.nerd) { userType = "Nerd"; icon = "💻"; }
-    else if (maxScore === personalityScore.culto) { userType = "Culta"; icon = "📚"; }
-    else if (maxScore === personalityScore.artista) { userType = "Artista"; icon = "🎨"; }
-    else if (maxScore === personalityScore.cientifico) { userType = "Científico"; icon = "🔬"; }
-    localStorage.setItem("userType", userType);
-    localStorage.setItem("userIcon", icon);
-    localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
-    updateUserInfo();
-    closeTest();
+        });
+        const maxScore = Math.max(personalityScore.friki, personalityScore.nerd, personalityScore.culto, personalityScore.artista, personalityScore.cientifico, personalityScore.casual);
+        let userType = "Casual";
+        let icon = "👤";
+        if (maxScore === personalityScore.friki) { userType = "Frikki"; icon = "🎮"; }
+        else if (maxScore === personalityScore.nerd) { userType = "Nerd"; icon = "💻"; }
+        else if (maxScore === personalityScore.culto) { userType = "Culta"; icon = "📚"; }
+        else if (maxScore === personalityScore.artista) { userType = "Artista"; icon = "🎨"; }
+        else if (maxScore === personalityScore.cientifico) { userType = "Científico"; icon = "🔬"; }
+        localStorage.setItem("userType", userType);
+        localStorage.setItem("userIcon", icon);
+        localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
+        updateUserInfo();
+        closeTest();
+    } else {
+        alert("Selecciona una opción antes de enviar.");
+    }
+}
+
+function closeTest() {
+    document.getElementById("personality-test").style.display = "none";
 }
 
 // Mostrar info del usuario
