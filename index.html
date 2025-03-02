@@ -14,15 +14,22 @@
         <select id="tema">
             <option value="default">Predeterminado (Sci-Fi)</option>
             <option value="2000s">Años 2000</option>
-            <option value="pastel">Colores Pastel</option>
+            <option value="pastel">Pastel</option>
             <option value="vaporwave">Vaporwave</option>
-            <option value="dark academia">Dark Academia</option>
+            <option value="dark-academia">Dark Academia</option>
+            <option value="cyberpunk">Cyberpunk</option>
+            <option value="retro-game">Retro Game</option>
+            <option value="galaxy">Galaxia</option>
         </select>
         <label>Idioma:</label>
         <select id="idioma">
             <option value="es">Español</option>
             <option value="en">English</option>
             <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="jp">日本語 (Japanese)</option>
+            <option value="klingon">tlhIngan Hol (Klingon)</option>
+            <option value="elvish">Quenya (Elvish)</option>
         </select>
         <button onclick="applyConfig()">Aplicar</button>
     </div>
@@ -45,8 +52,11 @@
             <option value="peliculas">Películas</option>
             <option value="series">Series</option>
             <option value="recetas">Recetas</option>
+            <option value="mangas">Mangas</option>
+            <option value="manhwas">Manhwas</option>
+            <option value="manhuas">Manhuas</option>
         </select>
-        <input id="entrada" placeholder="Añade algo (ej: Ver Matrix)">
+        <input id="entrada" placeholder="Añade algo (ej: Leer Berserk)">
         <input id="fecha" type="date" value="2025-03-02">
         <button onclick="addItem()">Añadir</button>
         <div id="lista"></div>
@@ -54,6 +64,7 @@
             <h3>Agenda</h3>
             <div id="recordatorios"></div>
         </div>
+        <button onclick="backToMain()" class="back-btn">Volver a Principal</button>
     </div>
     <script src="script.js"></script>
 </body>
