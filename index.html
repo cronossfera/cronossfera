@@ -18,14 +18,24 @@
         <button onclick="enviar()">Enviar a mi futuro yo</button>
         <a href="#tablero" onclick="showTablero()">Tablero de Estructuras</a>
     </div>
-    <div id="tablero" style="display:none;">
-        <h2>Tablero de Estructuras</h2>
-        <input id="tema" placeholder="Tema (ej: Películas cyberpunk)">
-        <textarea id="nodo" placeholder="Nodo (título - descripción)"></textarea>
-        <button onclick="addNodo()">Añadir Nodo</button>
-        <div id="nodos"></div>
-        <button onclick="saveTablero()">Guardar</button>
+    <div id="organizador" style="display:none;">
+    <h2>Organizador Dinámico</h2>
+    <select id="categoria">
+        <option value="tareas">Tareas</option>
+        <option value="libros">Libros</option>
+        <option value="peliculas">Películas</option>
+        <option value="series">Series</option>
+        <option value="recetas">Recetas</option>
+    </select>
+    <input id="entrada" placeholder="Añade algo (ej: Ver Matrix)">
+    <input id="fecha" type="date" value="2025-03-02">
+    <button onclick="addItem()">Añadir</button>
+    <div id="lista"></div>
+    <div id="agenda">
+        <h3>Agenda</h3>
+        <div id="recordatorios"></div>
     </div>
-    <script src="script.js"></script>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
