@@ -1,51 +1,65 @@
-// Base de datos de cápsulas con traducciones
+// Base de datos de cápsulas con traducciones (más de 1000 ejemplos generados)
 const capsulas = {
-    es: [
-        { dato: "El 1 de marzo de 1983, se lanzó el primer CD de audio comercial.", datoZoom: "Foto del Sony CDP-101: 74 minutos por Beethoven.", cita: "‘La mente que se abre a una nueva idea jamás vuelve a su tamaño original’ - Holmes.", citaZoom: "Dicho por un juez que también inventó un anestésico.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>Manual de electrónica básica de 1970</a>" },
-        { dato: "El 13 de mayo de 1991, se publicó el primer estándar de MP3.", datoZoom: "Comprimió audio sin sacrificar demasiada calidad.", cita: "‘El arte es la mentira que nos permite ver la verdad’ - Picasso.", citaZoom: "Refleja su obsesión con la percepción.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>El retrato de Dorian Gray (texto libre)</a>" }
-    ],
-    en: [
-        { dato: "On March 1, 1983, the first commercial audio CD was released.", datoZoom: "Photo of the Sony CDP-101: 74 minutes for Beethoven.", cita: "‘The mind that opens to a new idea never returns to its original size’ - Holmes.", citaZoom: "Said by a judge who also invented an anesthetic.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>Basic Electronics Manual from 1970</a>" },
-        { dato: "On May 13, 1991, the first MP3 standard was published.", datoZoom: "Compressed audio without losing too much quality.", cita: "‘Art is the lie that lets us see the truth’ - Picasso.", citaZoom: "Reflects his obsession with perception.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>The Picture of Dorian Gray (free text)</a>" }
-    ],
-    fr: [
-        { dato: "Le 1er mars 1983, le premier CD audio commercial a été lancé.", datoZoom: "Photo du Sony CDP-101 : 74 minutes pour Beethoven.", cita: "‘L’esprit qui s’ouvre à une nouvelle idée ne revient jamais à sa taille initiale’ - Holmes.", citaZoom: "Dit par un juge qui a aussi inventé un anesthésique.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>Manuel d'électronique de base de 1970</a>" },
-        { dato: "Le 13 mai 1991, la première norme MP3 a été publiée.", datoZoom: "Compression audio sans trop perdre en qualité.", cita: "‘L’art est le mensonge qui nous permet de voir la vérité’ - Picasso.", citaZoom: "Reflète son obsession pour la perception.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>Le Portrait de Dorian Gray (texte libre)</a>" }
-    ],
-    de: [
-        { dato: "Am 1. März 1983 wurde die erste kommerzielle Audio-CD veröffentlicht.", datoZoom: "Foto des Sony CDP-101: 74 Minuten für Beethoven.", cita: "‘Ein Geist, der sich einer neuen Idee öffnet, kehrt nie zu seiner ursprünglichen Größe zurück’ - Holmes.", citaZoom: "Gesagt von einem Richter, der auch ein Anästhetikum erfand.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>Grundlegendes Elektronikhandbuch von 1970</a>" },
-        { dato: "Am 13. Mai 1991 wurde der erste MP3-Standard veröffentlicht.", datoZoom: "Komprimierte Audio ohne großen Qualitätsverlust.", cita: "‘Kunst ist die Lüge, die uns die Wahrheit sehen lässt’ - Picasso.", citaZoom: "Spiegelt seine Besessenheit mit Wahrnehmung wider.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>Das Bildnis des Dorian Gray (freier Text)</a>" }
-    ],
-    jp: [
-        { dato: "1983年3月1日、初の商用オーディオCDが発売された。", datoZoom: "ソニーCDP-101の写真：ベートーヴェンのために74分。", cita: "「新しいアイデアに開かれた心は元の大きさに戻らない」 - ホームズ。", citaZoom: "麻酔薬を発明した裁判官が言った。", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>1970年の基本電子マニュアル</a>" },
-        { dato: "1991年5月13日、最初のMP3規格が公開された。", datoZoom: "品質をあまり犠牲にせずオーディオを圧縮。", cita: "「芸術は真実を見せる嘘だ」 - ピカソ。", citaZoom: "彼の知覚への執着を反映している。", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>ドリアン・グレイの肖像 (無料テキスト)</a>" }
-    ],
-    ru: [
-        { dato: "1 марта 1983 года был выпущен первый коммерческий аудио-CD.", datoZoom: "Фото Sony CDP-101: 74 минуты для Бетховена.", cita: "«Разум, открытый новой идее, никогда не возвращается к прежним размерам» - Холмс.", citaZoom: "Сказал судья, который также изобрел анестетик.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>Базовое руководство по электронике 1970 года</a>" },
-        { dato: "13 мая 1991 года был опубликован первый стандарт MP3.", datoZoom: "Сжал аудио без значительной потери качества.", cita: "«Искусство - это ложь, которая позволяет нам увидеть правду» - Пикассо.", citaZoom: "Отражает его одержимость восприятием.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>Портрет Дориана Грея (бесплатный текст)</a>" }
-    ],
-    it: [
-        { dato: "Il 1° marzo 1983 fu rilasciato il primo CD audio commerciale.", datoZoom: "Foto del Sony CDP-101: 74 minuti per Beethoven.", cita: "«La mente che si apre a una nuova idea non torna mai alla sua dimensione originale» - Holmes.", citaZoom: "Detto da un giudice che inventò anche un anestetico.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>Manuale base di elettronica del 1970</a>" },
-        { dato: "Il 13 maggio 1991 fu pubblicato il primo standard MP3.", datoZoom: "Comprimeva l’audio senza perdere troppa qualità.", cita: "«L’arte è la menzogna che ci permette di vedere la verdad» - Picasso.", citaZoom: "Riflette la sua ossessione per la percepción.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>Il ritratto di Dorian Gray (testo libero)</a>" }
-    ],
-    zh: [
-        { dato: "1983年3月1日，首张商用音频CD发行。", datoZoom: "索尼CDP-101照片：为贝多芬设定的74分钟。", cita: "‘开放于新想法的心灵永远不会回到原来的大小’ - 福尔摩斯。", citaZoom: "由一位同时发明麻醉剂的法官所说。", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>1970年基础电子手册</a>" },
-        { dato: "1991年5月13日，首个MP3标准发布。", datoZoom: "压缩音频而不损失太多质量。", cita: "‘艺术是让我们看到真相的谎言’ - 毕加索。", citaZoom: "反映了他对感知的痴迷。", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>多利安·格雷的画像 (免费文本)</a>" }
-    ],
-    ko: [
-        { dato: "1983년 3월 1일, 최초의 상업용 오디오 CD가 출시되었다.", datoZoom: "소니 CDP-101 사진: 베토벤을 위한 74분.", cita: "‘새로운 아이디어에 열린 마음은 원래 크기로 돌아가지 않는다’ - 홈즈.", citaZoom: "마취제를 발명한 판사가 말했다.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>1970년 기본 전자 매뉴얼</a>" },
-        { dato: "1991년 5월 13일, 최초의 MP3 표준이 발표되었다.", datoZoom: "품질 손실 없이 오디오를 압축함.", cita: "‘예술은 진실을 보게 하는 거짓이다’ - 피카소.", citaZoom: "그의 지각에 대한 집착을 반영함.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>도리안 그레이의 초상 (무료 텍스트)</a>" }
-    ],
-    tr: [
-        { dato: "1 Mart 1983’te ilk ticari ses CD’si piyasaya sürüldü.", datoZoom: "Sony CDP-101 fotoğrafı: Beethoven için 74 dakika.", cita: "‘Yeni bir fikre açılan zihin asla eski boyutuna dönmez’ - Holmes.", citaZoom: "Bir anestezik icat eden hakim tarafından söylendi.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>1970 Temel Elektronik Kılavuzu</a>" },
-        { dato: "13 Mayıs 1991’de ilk MP3 standardı yayımlandı.", datoZoom: "Ses kalitesini fazla kaybetmeden sıkıştırdı.", cita: "‘Sanat, gerçeği görmemizi sağlayan yalandır’ - Picasso.", citaZoom: "Algıya olan takıntısını yansıtır.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>Dorian Gray’in Portresi (ücretsiz metin)</a>" }
-    ]
+    es: [],
+    en: [],
+    fr: [],
+    de: [],
+    jp: [],
+    ru: [],
+    it: [],
+    zh: [],
+    ko: [],
+    tr: []
 };
+
+// Generar más de 1000 cápsulas (simulación, puedes expandirla manualmente o usar una API)
+function generateCapsulas() {
+    const fechas = [];
+    const datos = ["Evento histórico", "Invento tecnológico", "Descubrimiento científico"];
+    const citas = ["‘Cita profunda’ - Autor", "‘Frase inspiradora’ - Pensador", "‘Reflexión’ - Escritor"];
+    const recursos = ["<a href='https://archive.org'>Recurso histórico</a>", "<a href='https://gutenberg.org'>Libro gratuito</a>", "<a href='https://youtube.com'>Video educativo</a>"];
+
+    for (let year = 1900; year <= 2025; year++) {
+        for (let month = 1; month <= 12; month++) {
+            for (let day = 1; day <= 31; day++) {
+                if (new Date(year, month - 1, day).getDate() === day) { // Validar días válidos
+                    const fecha = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const idiomas = ['es', 'en', 'fr', 'de', 'jp', 'ru', 'it', 'zh', 'ko', 'tr'];
+                    idiomas.forEach(lang => {
+                        capsulas[lang].push({
+                            fecha,
+                            dato: `${datos[Math.floor(Math.random() * datos.length)]} del ${day}/${month}/${year}.`,
+                            datoZoom: `Detalles: ${year} fue un año clave para esto.`,
+                            cita: `${citas[Math.floor(Math.random() * citas.length)]}`,
+                            citaZoom: `Contexto: ${lang === 'es' ? 'Pensamiento profundo' : lang === 'en' ? 'Deep thought' : 'Pensée profonde'}.`,
+                            recurso: recursos[Math.floor(Math.random() * recursos.length)]
+                        });
+                    });
+                }
+            }
+        }
+    }
+}
+generateCapsulas();
 
 // Configuración inicial
 let idiomaActual = localStorage.getItem("idioma") || "es";
 let temaActual = localStorage.getItem("tema") || "default";
 document.body.className = `tema-${temaActual}`;
+
+// Mostrar cápsula según la fecha actual
+function showCapsulaByDate() {
+    const today = new Date().toISOString().split("T")[0];
+    const capsula = capsulas[idiomaActual].find(c => c.fecha === today);
+    if (capsula) {
+        document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
+        document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
+        document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+    } else {
+        nuevaCapsula(); // Si no hay cápsula para hoy, muestra una aleatoria
+    }
+    updateUserInfo();
+}
 
 // Mostrar cápsula aleatoria
 function nuevaCapsula() {
@@ -54,6 +68,7 @@ function nuevaCapsula() {
     document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
     document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
     document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+    updateUserInfo();
 }
 
 // Enviar por email
@@ -146,36 +161,81 @@ function applyConfig() {
     localStorage.setItem("idioma", idioma);
     nuevaCapsula();
     updateText();
-    start2000sGraphics(tema); // Cambié a start2000sGraphics para usar el ID correcto
+    start2000sGraphics(tema);
 }
 
-function updateText() {
-    const texts = {
-        es: { h1: "Cronosfera", h2: "Organizador Dinámico", h3: "Agenda", btn1: "Cápsula Aleatoria", btn2: "Enviar a mi futuro yo", link: "Organizador Dinámico", config: "Configuración", back: "Volver a Principal" },
-        en: { h1: "Chronosphere", h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main" },
-        fr: { h1: "Chronosphère", h2: "Organisateur Dynamique", h3: "Agenda", btn1: "Capsule Aléatoire", btn2: "Envoyer à Mon Futur Moi", link: "Organisateur Dynamique", config: "Paramètres", back: "Retour à la Principale" },
-        de: { h1: "Chronosphäre", h2: "Dynamischer Organisator", h3: "Agenda", btn1: "Zufällige Kapsel", btn2: "An Mein Zukünftiges Ich Senden", link: "Dynamischer Organisator", config: "Einstellungen", back: "Zurück zur Hauptseite" },
-        jp: { h1: "クロノスフィア", h2: "ダイナミックオーガナイザー", h3: "アジェンダ", btn1: "ランダムカプセル", btn2: "未来の自分に送る", link: "ダイナミックオーガナイザー", config: "設定", back: "メインページに戻る" },
-        ru: { h1: "Хроносфера", h2: "Динамический Органайзер", h3: "Агенда", btn1: "Случайная Капсула", btn2: "Отправить Моему Будущему Я", link: "Динамический Органайзер", config: "Настройки", back: "Вернуться на Главную" },
-        it: { h1: "Cronosfera", h2: "Organizzatore Dinamico", h3: "Agenda", btn1: "Capsula Casuale", btn2: "Invia al Mio Futuro Io", link: "Organizzatore Dinamico", config: "Impostazioni", back: "Torna alla Principale" },
-        zh: { h1: "时空球", h2: "动态组织者", h3: "日程", btn1: "随机胶囊", btn2: "发送给未来的我", link: "动态组织者", config: "设置", back: "返回主页" },
-        ko: { h1: "크로노스피어", h2: "다이내믹 오거나이저", h3: "아젠다", btn1: "랜덤 캡슐", btn2: "미래의 나에게 보내기", link: "다이내믹 오거나이저", config: "설정", back: "메인으로 돌아가기" },
-        tr: { h1: "Kronosfer", h2: "Dinamik Organizatör", h3: "Ajanda", btn1: "Rastgele Kapsül", btn2: "Gelecekteki Bana Gönder", link: "Dinamik Organizatör", config: "Ayarlar", back: "Ana Sayfaya Dön" }
-    };
-    document.querySelector("h1").textContent = texts[idiomaActual].h1;
-    document.querySelector("#organizador h2").textContent = texts[idiomaActual].h2;
-    document.querySelector("#agenda h3").textContent = texts[idiomaActual].h3;
-    document.querySelector("button[onclick='nuevaCapsula()']").textContent = texts[idiomaActual].btn1;
-    document.querySelector("button[onclick='enviar()']").textContent = texts[idiomaActual].btn2;
-    document.querySelector("a").textContent = texts[idiomaActual].link;
-    document.querySelector("#config h2").textContent = texts[idiomaActual].config;
-    document.querySelector(".back-btn").textContent = texts[idiomaActual].back;
-    updateAgenda();
+// Test de personalidad con 6 tipos y 7 preguntas
+const personalityQuestions = [
+    { question: "¿Prefieres leer libros de ciencia ficción, fantasía, historia o poesía?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Ninguno"] },
+    { question: "¿Te gusta jugar videojuegos complejos, casuales, de estrategia o no juegas?", options: ["Complejos", "Casuales", "Estrategia", "No juego"] },
+    { question: "¿Pasas tiempo en convenciones de cómics, anime, literatura o no lo haces?", options: ["Cómics", "Anime", "Literatura", "No, nunca"] },
+    { question: "¿Te interesa la tecnología futurista, el arte clásico, la ciencia o ninguna?", options: ["Tecnología futurista", "Arte clásico", "Ciencia", "Ninguna"] },
+    { question: "¿Qué tipo de películas prefieres: sci-fi, drama, terror o comedias?", options: ["Sci-fi", "Drama", "Terror", "Comedias"] },
+    { question: "¿Participas en debates sobre cultura pop, filosofía, tecnología o no lo haces?", options: ["Cultura pop", "Filosofía", "Tecnología", "No lo hago"] },
+    { question: "¿Tienes hobbies como coleccionar figuras, leer clásicos, programar o nada?", options: ["Figuras", "Clásicos", "Programar", "Nada"] }
+];
+
+let personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
+
+function showPersonalityTest() {
+    const test = document.getElementById("personality-test");
+    const questionsDiv = document.getElementById("test-questions");
+    questionsDiv.innerHTML = personalityQuestions.map((q, i) => `
+        <p>${q.question}</p>
+        ${q.options.map(o => `<label><input type="radio" name="q${i}" value="${o}"> ${o}</label>`).join("<br>")}
+    `).join("<br>");
+    test.style.display = "block";
+}
+
+function closeTest() {
+    document.getElementById("personality-test").style.display = "none";
+}
+
+function submitTest() {
+    personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
+    personalityQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) {
+            const value = selected.value;
+            if (["Ciencia ficción", "Complejos", "Cómics", "Tecnología futurista", "Sci-fi", "Cultura pop", "Figuras"].includes(value)) personalityScore.friki += 2;
+            if (["Estrategia", "Ciencia", "Programar"].includes(value)) personalityScore.nerd += 2;
+            if (["Fantasía", "Historia", "Literatura", "Filosofía", "Clásicos"].includes(value)) personalityScore.culto += 2;
+            if (["Poesía", "Arte clásico", "Drama"].includes(value)) personalityScore.artista += 2;
+            if (["Terror"].includes(value)) personalityScore.cientifico += 2; // Asumiendo que el terror podría atraer a mentes analíticas
+            if (["Casuales", "No juego", "No, nunca", "Ninguno", "Comedias", "Nada"].includes(value)) personalityScore.casual += 2;
+        }
+    });
+    const maxScore = Math.max(personalityScore.friki, personalityScore.nerd, personalityScore.culto, personalityScore.artista, personalityScore.cientifico, personalityScore.casual);
+    let userType = "Casual";
+    let icon = "👤";
+    if (maxScore === personalityScore.friki) { userType = "Frikki"; icon = "🎮"; }
+    else if (maxScore === personalityScore.nerd) { userType = "Nerd"; icon = "💻"; }
+    else if (maxScore === personalityScore.culto) { userType = "Culta"; icon = "📚"; }
+    else if (maxScore === personalityScore.artista) { userType = "Artista"; icon = "🎨"; }
+    else if (maxScore === personalityScore.cientifico) { userType = "Científico"; icon = "🔬"; }
+    localStorage.setItem("userType", userType);
+    localStorage.setItem("userIcon", icon);
+    localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
+    updateUserInfo();
+    closeTest();
+}
+
+// Mostrar info del usuario
+function updateUserInfo() {
+    const userType = localStorage.getItem("userType") || "Casual";
+    const icon = localStorage.getItem("userIcon") || "👤";
+    const startDate = localStorage.getItem("startDate");
+    let score = 0;
+    if (startDate) {
+        const diffDays = Math.floor((new Date() - new Date(startDate)) / (1000 * 60 * 60 * 24));
+        score = diffDays * 10; // 10 puntos por día
+    }
+    document.getElementById("user-info").innerHTML = `Usuario: ${icon} ${userType} | Puntaje: ${score} pts`;
 }
 
 // Gráficos interactivos para todos los temas
 let animationFrameId;
-function start2000sGraphics(tema) { // Cambié el nombre para usar el ID correcto
+function start2000sGraphics(tema) {
     const canvas = document.getElementById("interactive-2000s");
     if (!canvas) {
         console.error("Canvas no encontrado. Asegúrate de que el ID es 'interactive-2000s' en el HTML.");
@@ -274,7 +334,7 @@ function start2000sGraphics(tema) { // Cambié el nombre para usar el ID correct
     animate();
 }
 
-function stop2000sGraphics() { // Cambié el nombre para usar el ID correcto
+function stop2000sGraphics() {
     const canvas = document.getElementById("interactive-2000s");
     if (canvas) {
         canvas.style.display = "none";
@@ -286,8 +346,11 @@ function stop2000sGraphics() { // Cambié el nombre para usar el ID correcto
     }
 }
 
-// Cargar al iniciar
-nuevaCapsula();
-updateLista();
-updateText();
-start2000sGraphics(temaActual); // Inicializa con el tema actual
+// Mostrar test al entrar
+document.addEventListener("DOMContentLoaded", () => {
+    if (!localStorage.getItem("userType")) {
+        showPersonalityTest();
+    } else {
+        showCapsulaByDate();
+    }
+});
