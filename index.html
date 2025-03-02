@@ -44,6 +44,7 @@
             <p id="dato">Dato: Cargando...</p>
             <p id="cita">Cita: Cargando...</p>
             <p id="recurso">Recurso: Cargando...</p>
+            <div id="user-info" style="margin-top: 20px;"></div>
         </div>
         <button onclick="nuevaCapsula()">Cápsula Aleatoria</button>
         <button onclick="enviar()">Enviar a mi futuro yo</button>
@@ -70,6 +71,12 @@
             <div id="recordatorios"></div>
         </div>
         <button onclick="backToMain()" class="back-btn">Volver a Principal</button>
+    </div>
+    <div id="personality-test" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#2a2a2a; padding:20px; border:1px solid #00ffcc; z-index:1000;">
+        <h2>Test de Personalidad</h2>
+        <div id="test-questions"></div>
+        <button onclick="submitTest()">Enviar</button>
+        <button onclick="closeTest()">Cerrar</button>
     </div>
     <script src="script.js"></script>
 </body>
