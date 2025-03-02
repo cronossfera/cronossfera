@@ -123,7 +123,7 @@ select, input {
 
 /* Temas con fondos temáticos corregidos */
 body.tema-2000s {
-    background: url('https://raw.githubusercontent.com/noise-machines/noisetextures/master/patterns/90s-wallpaper.png') repeat, #00ffff;
+    background: url('images/90s-wallpaper.png') repeat, #00ffff;
     color: #000;
     font-family: 'Comic Sans MS', cursive;
 }
@@ -137,7 +137,7 @@ body.tema-2000s h1, body.tema-2000s h2, body.tema-2000s h3 { color: #ff00ff; tex
 body.tema-2000s a, body.tema-2000s #lista .item span { color: #ff00ff; }
 
 body.tema-pastel {
-    background: url('https://raw.githubusercontent.com/noise-machines/noisetextures/master/patterns/paper-fibers.png') repeat, #f5e6ff;
+    background: url('images/paper-fibers.png') repeat, #f5e6ff;
     color: #4a3c5b;
     font-family: 'Arial', sans-serif;
 }
@@ -150,7 +150,7 @@ body.tema-pastel h1, body.tema-pastel h2, body.tema-pastel h3 { color: #8c6fa3; 
 body.tema-pastel a, body.tema-pastel #lista .item span { color: #8c6fa3; }
 
 body.tema-vaporwave {
-    background: linear-gradient(45deg, #ff6ec4, #7873f5), url('https://raw.githubusercontent.com/noise-machines/noisetextures/master/patterns/retro-grid.png') repeat;
+    background: linear-gradient(45deg, #ff6ec4, #7873f5), url('images/retro-grid.png') repeat;
     color: #fff;
     font-family: 'Arial Black', sans-serif;
 }
@@ -161,7 +161,7 @@ body.tema-vaporwave #capsula, body.tema-vaporwave #lista .item, body.tema-vaporw
 body.tema-vaporwave button { background: #ff00ff; }
 
 body.tema-dark-academia {
-    background: url('https://raw.githubusercontent.com/noise-machines/noisetextures/master/patterns/old-wall.png') repeat, #2f1b12;
+    background: url('images/old-wall.png') repeat, #2f1b12;
     color: #d4a373;
     font-family: 'Georgia', serif;
 }
@@ -172,7 +172,7 @@ body.tema-dark-academia #capsula, body.tema-dark-academia #lista .item, body.tem
 body.tema-dark-academia button { background: #8c5523; }
 
 body.tema-cyberpunk {
-    background: url('https://raw.githubusercontent.com/noise-machines/noisetextures/master/patterns/carbon-fibre.png') repeat, #0d1b2a;
+    background: url('images/carbon-fibre.png') repeat, #0d1b2a;
     color: #00f7ff;
     font-family: 'Orbitron', sans-serif;
 }
@@ -186,7 +186,7 @@ body.tema-cyberpunk h1, body.tema-cyberpunk h2, body.tema-cyberpunk h3 { color: 
 body.tema-cyberpunk a, body.tema-cyberpunk #lista .item span { color: #ff2079; }
 
 body.tema-retro-game {
-    background: url('https://raw.githubusercontent.com/noise-machines/noisetextures/master/patterns/pixel-pattern.png') repeat, #1a1a1a;
+    background: url('images/pixel-pattern.png') repeat, #1a1a1a;
     color: #00ff00;
     font-family: 'Press Start 2P', cursive;
 }
@@ -200,7 +200,7 @@ body.tema-retro-game h1, body.tema-retro-game h2, body.tema-retro-game h3 { colo
 body.tema-retro-game a, body.tema-retro-game #lista .item span { color: #00ff00; }
 
 body.tema-galaxy {
-    background: url('https://raw.githubusercontent.com/noise-machines/noisetextures/master/patterns/stardust.png') repeat, #0a001f;
+    background: url('images/stardust.png') repeat, #0a001f;
     color: #e6e6ff;
     font-family: 'Space Mono', monospace;
 }
