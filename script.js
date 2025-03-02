@@ -26,7 +26,7 @@ const capsulas = {
     ],
     it: [
         { dato: "Il 1° marzo 1983 fu rilasciato il primo CD audio commerciale.", datoZoom: "Foto del Sony CDP-101: 74 minuti per Beethoven.", cita: "«La mente che si apre a una nuova idea non torna mai alla sua dimensione originale» - Holmes.", citaZoom: "Detto da un giudice che inventò anche un anestetico.", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>Manuale base di elettronica del 1970</a>" },
-        { dato: "Il 13 maggio 1991 fu pubblicato il primo standard MP3.", datoZoom: "Comprimeva l’audio senza perdere troppa qualità.", cita: "«L’arte è la menzogna che ci permette di vedere la verdad» - Picasso.", citaZoom: "Riflette la sua ossessione per la percezione.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>Il ritratto di Dorian Gray (testo libero)</a>" }
+        { dato: "Il 13 maggio 1991 fu pubblicato il primo standard MP3.", datoZoom: "Comprimeva l’audio senza perdere troppa qualità.", cita: "«L’arte è la menzogna che ci permette di vedere la verdad» - Picasso.", citaZoom: "Riflette la sua ossessione per la percepción.", recurso: "<a href='https://www.gutenberg.org/ebooks/174'>Il ritratto di Dorian Gray (testo libero)</a>" }
     ],
     zh: [
         { dato: "1983年3月1日，首张商用音频CD发行。", datoZoom: "索尼CDP-101照片：为贝多芬设定的74分钟。", cita: "‘开放于新想法的心灵永远不会回到原来的大小’ - 福尔摩斯。", citaZoom: "由一位同时发明麻醉剂的法官所说。", recurso: "<a href='https://archive.org/details/electronics-basics-1970'>1970年基础电子手册</a>" },
@@ -146,7 +146,7 @@ function applyConfig() {
     localStorage.setItem("idioma", idioma);
     nuevaCapsula();
     updateText();
-    startGraphics(tema);
+    start2000sGraphics(tema); // Cambié a start2000sGraphics para usar el ID correcto
 }
 
 function updateText() {
@@ -175,10 +175,10 @@ function updateText() {
 
 // Gráficos interactivos para todos los temas
 let animationFrameId;
-function startGraphics(tema) {
-    const canvas = document.getElementById("interactive-graphics");
+function start2000sGraphics(tema) { // Cambié el nombre para usar el ID correcto
+    const canvas = document.getElementById("interactive-2000s");
     if (!canvas) {
-        console.error("Canvas no encontrado. Asegúrate de que el ID es correcto en el HTML.");
+        console.error("Canvas no encontrado. Asegúrate de que el ID es 'interactive-2000s' en el HTML.");
         return;
     }
     canvas.style.display = "block";
@@ -274,15 +274,15 @@ function startGraphics(tema) {
     animate();
 }
 
-function stopGraphics() {
-    const canvas = document.getElementById("interactive-graphics");
+function stop2000sGraphics() { // Cambié el nombre para usar el ID correcto
+    const canvas = document.getElementById("interactive-2000s");
     if (canvas) {
         canvas.style.display = "none";
         if (animationFrameId) {
             cancelAnimationFrame(animationFrameId);
         }
     } else {
-        console.error("Canvas no encontrado. Asegúrate de que el ID es correcto en el HTML.");
+        console.error("Canvas no encontrado. Asegúrate de que el ID es 'interactive-2000s' en el HTML.");
     }
 }
 
@@ -290,4 +290,4 @@ function stopGraphics() {
 nuevaCapsula();
 updateLista();
 updateText();
-startGraphics(temaActual);
+start2000sGraphics(temaActual); // Inicializa con el tema actual
