@@ -159,6 +159,12 @@ select, input {
     background: #cc3333;
 }
 
+#test-progress {
+    color: #00ffcc;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 3px #00ffcc;
+}
+
 /* Temas con fondos temáticos corregidos */
 body.tema-2000s {
     background: url('images/90s-wallpaper.png') repeat, #00ffff;
@@ -172,7 +178,7 @@ body.tema-2000s #capsula, body.tema-2000s #lista .item, body.tema-2000s #agenda,
 }
 body.tema-2000s button { background: #ff00ff; }
 body.tema-2000s h1, body.tema-2000s h2, body.tema-2000s h3 { color: #ff00ff; text-shadow: 0 0 5px #ffff00; }
-body.tema-2000s a, body.tema-2000s #lista .item span, body.tema-2000s #user-info { color: #ff00ff; }
+body.tema-2000s a, body.tema-2000s #lista .item span, body.tema-2000s #user-info, body.tema-2000s #test-progress { color: #ff00ff; }
 
 body.tema-pastel {
     background: url('images/paper-fibers.png') repeat, #f5e6ff;
@@ -185,7 +191,7 @@ body.tema-pastel #capsula, body.tema-pastel #lista .item, body.tema-pastel #agen
 }
 body.tema-pastel button { background: #b8e1ff; }
 body.tema-pastel h1, body.tema-pastel h2, body.tema-pastel h3 { color: #8c6fa3; text-shadow: none; }
-body.tema-pastel a, body.tema-pastel #lista .item span, body.tema-pastel #user-info { color: #8c6fa3; }
+body.tema-pastel a, body.tema-pastel #lista .item span, body.tema-pastel #user-info, body.tema-pastel #test-progress { color: #8c6fa3; }
 
 body.tema-vaporwave {
     background: linear-gradient(45deg, #ff6ec4, #7873f5), url('images/retro-grid.png') repeat;
@@ -221,7 +227,7 @@ body.tema-cyberpunk #capsula, body.tema-cyberpunk #lista .item, body.tema-cyberp
 }
 body.tema-cyberpunk button { background: #ff2079; }
 body.tema-cyberpunk h1, body.tema-cyberpunk h2, body.tema-cyberpunk h3 { color: #ff2079; text-shadow: 0 0 10px #ff2079; }
-body.tema-cyberpunk a, body.tema-cyberpunk #lista .item span, body.tema-cyberpunk #user-info { color: #ff2079; }
+body.tema-cyberpunk a, body.tema-cyberpunk #lista .item span, body.tema-cyberpunk #user-info, body.tema-cyberpunk #test-progress { color: #ff2079; }
 
 body.tema-retro-game {
     background: url('images/pixel-pattern.png') repeat, #1a1a1a;
@@ -235,7 +241,7 @@ body.tema-retro-game #capsula, body.tema-retro-game #lista .item, body.tema-retr
 }
 body.tema-retro-game button { background: #00ff00; color: #000; }
 body.tema-retro-game h1, body.tema-retro-game h2, body.tema-retro-game h3 { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
-body.tema-retro-game a, body.tema-retro-game #lista .item span, body.tema-retro-game #user-info { color: #00ff00; }
+body.tema-retro-game a, body.tema-retro-game #lista .item span, body.tema-retro-game #user-info, body.tema-retro-game #test-progress { color: #00ff00; }
 
 body.tema-galaxy {
     background: url('images/stardust.png') repeat, #0a001f;
@@ -249,4 +255,4 @@ body.tema-galaxy #capsula, body.tema-galaxy #lista .item, body.tema-galaxy #agen
 }
 body.tema-galaxy button { background: #b300ff; }
 body.tema-galaxy h1, body.tema-galaxy h2, body.tema-galaxy h3 { color: #b300ff; text-shadow: 0 0 10px #b300ff; }
-body.tema-galaxy a, body.tema-galaxy #lista .item span, body.tema-galaxy #user-info { color: #b300ff; }
+body.tema-galaxy a, body.tema-galaxy #lista .item span, body.tema-galaxy #user-info, body.tema-galaxy #test-progress { color: #b300ff; }
