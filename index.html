@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronosfera</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cronosfera</h1>
+        <div id="capsula">
+            <p id="dato">Dato: Cargando...</p>
+            <p id="cita">Cita: Cargando...</p>
+            <p id="recurso">Recurso: Cargando...</p>
+        </div>
+        <button onclick="nuevaCapsula()">Cápsula Aleatoria</button>
+        <button onclick="enviar()">Enviar a mi futuro yo</button>
+        <a href="#tablero" onclick="showTablero()">Tablero de Estructuras</a>
+    </div>
+    <div id="tablero" style="display:none;">
+        <h2>Tablero de Estructuras</h2>
+        <input id="tema" placeholder="Tema (ej: Películas cyberpunk)">
+        <textarea id="nodo" placeholder="Nodo (título - descripción)"></textarea>
+        <button onclick="addNodo()">Añadir Nodo</button>
+        <div id="nodos"></div>
+        <button onclick="saveTablero()">Guardar</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

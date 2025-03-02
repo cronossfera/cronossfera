@@ -1,0 +1,64 @@
+body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+.container, #tablero {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+h1, h2 {
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc;
+}
+
+#capsula {
+    background: #2a2a2a;
+    padding: 20px;
+    border: 1px solid #00ffcc;
+    margin: 20px 0;
+}
+
+button {
+    background: #00ffcc;
+    color: #1a1a1a;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+}
+
+button:hover {
+    background: #00cc99;
+}
+
+a {
+    color: #00ffcc;
+    text-decoration: none;
+}
+
+#nodos .nodo {
+    background: #2a2a2a;
+    border: 1px solid #00ffcc;
+    padding: 10px;
+    margin: 10px 0;
+    position: relative;
+    display: inline-block;
+    width: 200px;
+}
+
+input, textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    background: #2a2a2a;
+    color: #e0e0e0;
+    border: 1px solid #00ffcc;
+    font-family: 'Courier New', monospace;
+}
