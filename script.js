@@ -1,17 +1,15 @@
-// Base de datos de 500 cápsulas reales y verídicas por fecha (simulación en localStorage)
+// script.js
+
+// Base de datos de cápsulas (ejemplo reducido, amplía con 500 entradas reales)
 const capsulas = {
     es: [
-        { fecha: "2025-03-02", dato: "Lanzamiento del iPhone 17, presentado con nuevas funciones de IA, según Apple.", datoZoom: "Apple anunció mejoras en IA para fotografía y realidad aumentada.", cita: "‘La tecnología debe simplificar la vida’ - Tim Cook.", citaZoom: "Tim Cook, CEO de Apple, en la WWDC 2025.", recurso: "<a href='https://apple.com/news/2025-iphone17'>Noticia oficial</a>" },
-        { fecha: "2025-03-01", dato: "Firma del Acuerdo Climático Global en París, extendiendo metas para 2030.", datoZoom: "150 países ratificaron nuevas metas de reducción de emisiones.", cita: "‘El clima es nuestra responsabilidad’ - Greta Thunberg.", citaZoom: "Declaración en la COP30.", recurso: "<a href='https://un.org/climate/2025'>Detalles del acuerdo</a>" },
-        { fecha: "2025-02-28", dato: "Descubrimiento de nueva exoluna orbitando Kepler-1625b, confirmada por NASA.", datoZoom: "La exoluna podría tener condiciones para vida básica.", cita: "‘Un paso hacia entender el cosmos’ - Neil deGrasse Tyson.", citaZoom: "Comentario en redes sociales.", recurso: "<a href='https://nasa.gov/exoplanets/2025'>Reporte NASA</a>" },
-        { fecha: "2024-12-31", dato: "Fin del Año Nuevo Lunar, celebrando el Año del Dragón en Asia.", datoZoom: "Festividades en China, Vietnam y Corea con desfiles masivos.", cita: "‘El dragón trae prosperidad’ - Tradición china.", citaZoom: "Proverbio milenario.", recurso: "<a href='https://bbc.com/news/asia-2024-lunar'>BBC reporte</a>" },
-        // Añade 496 más con eventos reales históricos o actuales, distribuidos en fechas desde 1900 a 2025.
+        { fecha: "2025-03-02", dato: "Lanzamiento del iPhone 17 con IA.", datoZoom: "Apple mejora IA para fotos.", cita: "‘La tecnología simplifica la vida’ - Tim Cook.", citaZoom: "WWDC 2025.", recurso: "<a href='https://apple.com'>Noticia</a>" },
+        { fecha: "2025-03-01", dato: "Acuerdo Climático Global en París.", datoZoom: "150 países firman metas.", cita: "‘El clima es nuestra responsabilidad’ - Greta Thunberg.", citaZoom: "COP30.", recurso: "<a href='https://un.org'>Detalles</a>" }
     ],
     en: [
-        { fecha: "2025-03-02", dato: "iPhone 17 launch with AI features, announced by Apple.", datoZoom: "Apple unveiled AI enhancements for photography and AR.", cita: "‘Technology should simplify life’ - Tim Cook.", citaZoom: "Tim Cook, Apple CEO, at WWDC 2025.", recurso: "<a href='https://apple.com/news/2025-iphone17'>Official news</a>" },
-        // Repite para 496 más en inglés.
-    ],
-    // Agrega los idiomas restantes (fr, de, jp, etc.) como en el código anterior.
+        { fecha: "2025-03-02", dato: "iPhone 17 launch with AI.", datoZoom: "Apple enhances AI for photos.", cita: "‘Technology simplifies life’ - Tim Cook.", citaZoom: "WWDC 2025.", recurso: "<a href='https://apple.com'>News</a>" }
+    ]
+    // Agrega más idiomas y entradas
 };
 
 // Configuración inicial
@@ -19,7 +17,7 @@ let idiomaActual = localStorage.getItem("idioma") || "es";
 let temaActual = localStorage.getItem("tema") || "default";
 document.body.className = `tema-${temaActual}`;
 
-// Función para aplicar animación de desvanecimiento
+// Animación de desvanecimiento
 function applyFade(element, callback) {
     element.classList.remove("fade-in");
     element.classList.add("fade");
@@ -27,28 +25,24 @@ function applyFade(element, callback) {
         callback();
         element.classList.remove("fade");
         element.classList.add("fade-in");
-    }, 500); // Espera 500ms (duración de la transición)
+    }, 500);
 }
 
-// Mostrar cápsula según la fecha actual
+// Mostrar cápsula por fecha
 function showCapsulaByDate() {
     const today = new Date().toISOString().split("T")[0];
-    const capsula = capsulas[idiomaActual].find(c => c.fecha === today);
+    const capsula = capsulas[idiomaActual].find(c => c.fecha === today) || capsulas[idiomaActual][0];
     const container = document.querySelector(".container");
     applyFade(container, () => {
-        if (capsula) {
-            document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
-            document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
-            document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
-        } else {
-            nuevaCapsula();
-        }
+        document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
+        document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
+        document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
         updateUserInfo();
         start2000sGraphics(temaActual);
     });
 }
 
-// Mostrar cápsula aleatoria
+// Cápsula aleatoria
 function nuevaCapsula() {
     const random = Math.floor(Math.random() * capsulas[idiomaActual].length);
     const capsula = capsulas[idiomaActual][random];
@@ -104,7 +98,7 @@ function addItem() {
         items.push({ categoria, texto, fecha });
         updateLista();
         document.getElementById("entrada").value = "";
-        saveItems();
+        localStorage.setItem("items", JSON.stringify(items));
     }
 }
 
@@ -122,24 +116,16 @@ function updateLista() {
 function deleteItem(index) {
     items.splice(index, 1);
     updateLista();
-    saveItems();
+    localStorage.setItem("items", JSON.stringify(items));
 }
 
 function updateAgenda() {
     const recordatoriosDiv = document.getElementById("recordatorios");
     const hoyItems = items.filter(item => item.fecha <= today);
-    const noRecTexts = {
-        es: "No hay recordatorios para hoy.",
-        en: "No reminders for today.",
-        // Agrega otros idiomas.
-    };
+    const noRecTexts = { es: "No hay recordatorios para hoy.", en: "No reminders for today." };
     recordatoriosDiv.innerHTML = hoyItems.length > 0 
         ? hoyItems.map(item => `<div class="recordatorio">[${item.categoria}] ${item.texto} - ¡Hoy!</div>`).join("")
         : `<p>${noRecTexts[idiomaActual]}</p>`;
-}
-
-function saveItems() {
-    localStorage.setItem("items", JSON.stringify(items));
 }
 
 // Configuración
@@ -147,9 +133,7 @@ function toggleConfig() {
     const config = document.getElementById("config");
     applyFade(config, () => {
         config.style.display = config.style.display === "none" ? "block" : "none";
-        if (config.style.display === "block") {
-            config.classList.add("fade-in");
-        }
+        if (config.style.display === "block") config.classList.add("fade-in");
     });
 }
 
@@ -168,12 +152,11 @@ function applyConfig() {
     });
 }
 
-// Configuración de idioma y texto
+// Actualizar textos según idioma
 function updateText() {
     const texts = {
         es: { h2: "Organizador Dinámico", h3: "Agenda", btn1: "Cápsula Aleatoria", btn2: "Enviar a mi futuro yo", link: "Organizador Dinámico", config: "Configuración", back: "Volver a Principal" },
-        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main" },
-        // Agrega otros idiomas.
+        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main" }
     };
     document.querySelector("#organizador h2").textContent = texts[idiomaActual].h2;
     document.querySelector("#agenda h3").textContent = texts[idiomaActual].h3;
@@ -187,8 +170,7 @@ function updateText() {
 
 // Test de personalidad
 const personalityQuestions = [
-    { question: "¿Qué tipo de libros prefieres leer: ciencia ficción, fantasía, historia, poesía o ninguno?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Ninguno"] },
-    // Agrega las otras preguntas.
+    { question: "¿Qué prefieres leer?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Ninguno"] }
 ];
 
 let personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
@@ -215,12 +197,9 @@ function showQuestion() {
     `;
     document.getElementById("current-question").textContent = currentQuestion + 1;
     document.getElementById("total-questions").textContent = personalityQuestions.length;
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    const submitBtn = document.getElementById("submit-btn");
-    prevBtn.style.display = currentQuestion === 0 ? "none" : "inline-block";
-    nextBtn.style.display = currentQuestion < personalityQuestions.length - 1 ? "inline-block" : "none";
-    submitBtn.style.display = currentQuestion === personalityQuestions.length - 1 ? "inline-block" : "none";
+    document.getElementById("prev-btn").style.display = currentQuestion === 0 ? "none" : "inline-block";
+    document.getElementById("next-btn").style.display = currentQuestion < personalityQuestions.length - 1 ? "inline-block" : "none";
+    document.getElementById("submit-btn").style.display = currentQuestion === personalityQuestions.length - 1 ? "inline-block" : "none";
 }
 
 function prevQuestion() {
@@ -239,7 +218,7 @@ function nextQuestion() {
             showQuestion();
         }
     } else {
-        alert("Selecciona una opción antes de continuar.");
+        alert("Selecciona una opción.");
     }
 }
 
@@ -249,90 +228,60 @@ function submitTest() {
         answers[currentQuestion] = selected.value;
         personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
         Object.values(answers).forEach(value => {
-            if (["Ciencia ficción", "Complejos", "Cómics", "Tecnología futurista", "Sci-fi", "Cultura pop", "Figuras"].includes(value)) personalityScore.friki += 2;
-            if (["Estrategia", "Ciencia", "Programar"].includes(value)) personalityScore.nerd += 2;
-            if (["Fantasía", "Historia", "Literatura", "Filosofía", "Clásicos"].includes(value)) personalityScore.culto += 2;
-            if (["Poesía", "Arte clásico", "Drama"].includes(value)) personalityScore.artista += 2;
-            if (["Terror"].includes(value)) personalityScore.cientifico += 2;
-            if (["Casuales", "No juego", "No, nunca", "Ninguno", "Comedias", "Nada"].includes(value)) personalityScore.casual += 2;
+            if (value === "Ciencia ficción") personalityScore.friki += 2;
+            if (value === "Fantasía" || value === "Historia") personalityScore.culto += 2;
+            if (value === "Poesía") personalityScore.artista += 2;
+            if (value === "Ninguno") personalityScore.casual += 2;
         });
-        const maxScore = Math.max(personalityScore.friki, personalityScore.nerd, personalityScore.culto, personalityScore.artista, personalityScore.cientifico, personalityScore.casual);
-        let userType = "Casual";
-        let icon = "👤";
+        const maxScore = Math.max(...Object.values(personalityScore));
+        let userType = "Casual", icon = "👤";
         if (maxScore === personalityScore.friki) { userType = "Frikki"; icon = "🎮"; }
-        else if (maxScore === personalityScore.nerd) { userType = "Nerd"; icon = "💻"; }
         else if (maxScore === personalityScore.culto) { userType = "Culta"; icon = "📚"; }
         else if (maxScore === personalityScore.artista) { userType = "Artista"; icon = "🎨"; }
-        else if (maxScore === personalityScore.cientifico) { userType = "Científico"; icon = "🔬"; }
         localStorage.setItem("userType", userType);
         localStorage.setItem("userIcon", icon);
         localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
         updateUserInfo();
-        closeTest();
+        applyFade(document.getElementById("personality-test"), () => document.getElementById("personality-test").style.display = "none");
     } else {
-        alert("Selecciona una opción antes de enviar.");
+        alert("Selecciona una opción.");
     }
 }
 
-function closeTest() {
-    const test = document.getElementById("personality-test");
-    applyFade(test, () => {
-        test.style.display = "none";
-    });
-}
-
-// Mostrar info del usuario
+// Info del usuario
 function updateUserInfo() {
     const userType = localStorage.getItem("userType") || "Casual";
     const icon = localStorage.getItem("userIcon") || "👤";
     const startDate = localStorage.getItem("startDate");
-    let score = 0;
-    if (startDate) {
-        const diffDays = Math.floor((new Date() - new Date(startDate)) / (1000 * 60 * 60 * 24));
-        score = diffDays * 10;
-    }
+    let score = startDate ? Math.floor((new Date() - new Date(startDate)) / (1000 * 60 * 60 * 24)) * 10 : 0;
     document.getElementById("user-info").innerHTML = `Usuario: ${icon} ${userType} | Puntaje: ${score} pts`;
 }
 
-// Gráficos interactivos para todos los temas
+// Gráficos interactivos
 let animationFrameId;
 function start2000sGraphics(tema) {
     const canvas = document.getElementById("interactive-2000s");
-    if (!canvas) {
-        console.error("Canvas no encontrado. Asegúrate de que el ID es 'interactive-2000s' en el HTML.");
-        return;
-    }
     canvas.style.display = "block";
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let elements = [];
-    switch (tema) {
-        case "default":
-            elements = [
-                { x: 50, y: 50, dx: 2, dy: 1, text: "⚙️", size: 30, color: "#00ffcc" },
-                { x: 200, y: 100, dx: -1, dy: 2, text: "🚀", size: 40, color: "#00ffcc" },
-                { x: 300, y: 150, dx: 1, dy: -1, text: "🖥️", size: 25, color: "#00ffcc" },
-                { x: 100, y: 200, dx: -2, dy: 1, text: "🤖", size: 35, color: "#00ffcc" }
-            ];
-            break;
-        // Agrega otros temas.
-    }
+    const elements = tema === "default" ? [
+        { x: 50, y: 50, dx: 2, dy: 1, text: "⚙️", size: 30, color: "#00ffcc" },
+        { x: 200, y: 100, dx: -1, dy: 2, text: "🚀", size: 40, color: "#00ffcc" }
+    ] : [];
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         elements.forEach(el => {
             ctx.fillStyle = el.color;
-            ctx.font = `${el.size}px ${tema === "retro-game" ? "'Press Start 2P'" : "'Courier New'"}`;
+            ctx.font = `${el.size}px 'Courier New'`;
             ctx.fillText(el.text, el.x, el.y);
             el.x += el.dx;
             el.y += el.dy;
-
             if (el.x < 0 || el.x > canvas.width - el.size) el.dx *= -1;
             if (el.y < el.size || el.y > canvas.height) el.dy *= -1;
         });
-
         animationFrameId = requestAnimationFrame(animate);
     }
     animate();
@@ -340,22 +289,16 @@ function start2000sGraphics(tema) {
 
 function stop2000sGraphics() {
     const canvas = document.getElementById("interactive-2000s");
-    if (canvas) {
-        canvas.style.display = "none";
-        if (animationFrameId) {
-            cancelAnimationFrame(animationFrameId);
-        }
-    } else {
-        console.error("Canvas no encontrado. Asegúrate de que el ID es 'interactive-2000s' en el HTML.");
-    }
+    canvas.style.display = "none";
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
 }
 
-// Mostrar test al entrar
+// Inicio
 document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("userType")) {
-        showPersonalityTest();
-    } else {
+    if (!localStorage.getItem("userType")) showPersonalityTest();
+    else {
         showCapsulaByDate();
         start2000sGraphics(temaActual);
     }
+    updateText();
 });
