@@ -7,19 +7,18 @@
 }
 
 .fade-in {
-    opacity: 1 !important; /* Forzar visibilidad */
+    opacity: 1 !important;
 }
 
 /* Estilos generales */
 body {
     font-family: 'Space Mono', monospace;
-    background: linear-gradient(135deg, #000000, #1E3A8A); /* Fondo gradiente */
+    background: linear-gradient(135deg, #000000, #1E3A8A);
     color: #fff;
     margin: 0;
     padding: 20px;
     text-align: center;
     min-height: 100vh;
-    overflow-x: hidden;
 }
 
 button {
@@ -53,13 +52,14 @@ a:hover {
 
 /* Estilo para el logo */
 .logo {
-    width: 200px; /* Tamaño más grande */
+    width: 200px;
     height: auto;
     margin: 0 auto 20px;
     display: block;
     cursor: pointer;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    border: 2px solid #00ffcc;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 255, 204, 0.5); /* Efecto de brillo */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -96,7 +96,7 @@ a:hover {
 
 /* Contenedores principales */
 .container, #organizador, #config, #personality-test {
-    opacity: 1; /* Visibilidad inicial asegurada */
+    opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
 
@@ -139,6 +139,12 @@ a:hover {
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px;
+}
+
+#recordatorios .recordatorio.pendiente {
+    background-color: #ff6666;
+    color: white;
+    font-weight: bold;
 }
 
 .back-btn {
@@ -189,4 +195,10 @@ a:hover {
     background-color: #333;
     color: #fff;
     border: none;
+}
+
+/* Barra de progreso en el test */
+#progress-bar {
+    width: 100%;
+    margin-bottom: 10px;
 }
