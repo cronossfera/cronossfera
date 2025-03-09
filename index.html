@@ -9,23 +9,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <canvas id="interactive-2000s" style="position:fixed; top:0; left:0; z-index:-1; display:none;"></canvas>
+    <canvas id="interactive-2000s" style="position: fixed; top: 0; left: 0; z-index: -1; display: none;"></canvas>
     <img src="logo.png" alt="Cronosfera Logo" class="logo" onclick="backToMain()">
-    <div class="container" style="opacity: 1;"> <!-- Forzar visibilidad inicial -->
+    <button id="config-btn" onclick="toggleConfig()">⚙️</button>
+    <div class="container">
         <div id="user-info"></div>
         <div class="capsule">
             <div id="dato"></div>
             <div id="cita"></div>
             <div id="recurso"></div>
         </div>
-        <div style="display: flex; justify-content: center; gap: 10px;">
+        <div class="button-group">
             <button onclick="nuevaCapsula()">Cápsula Aleatoria</button>
             <button onclick="enviar()">Enviar a mi futuro yo</button>
             <a href="#" onclick="showOrganizador()">Organizador Dinámico</a>
-            <button onclick="toggleConfig()">⚙️</button>
         </div>
     </div>
-    <div id="organizador" style="display:none;">
+    <div id="organizador" style="display: none;">
         <h2>Organizador Dinámico</h2>
         <select id="categoria">
             <option value="Personal">Personal</option>
@@ -47,7 +47,7 @@
         </div>
         <button class="back-btn" onclick="backToMain()">Volver a Principal</button>
     </div>
-    <div id="config" style="display:none;">
+    <div id="config" style="display: none;">
         <h2>Configuración</h2>
         <label>Tema:</label>
         <select id="tema">
@@ -75,7 +75,7 @@
         </select>
         <button onclick="applyConfig()">Aplicar</button>
     </div>
-    <div id="personality-test" style="display:none;">
+    <div id="personality-test" style="display: none;">
         <h2>Test de Personalidad</h2>
         <p>Pregunta <span id="current-question"></span> de <span id="total-questions"></span></p>
         <div id="test-content"></div>
