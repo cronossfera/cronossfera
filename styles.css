@@ -1,129 +1,127 @@
 /* styles.css */
 
-/* Definición de animaciones de transición */
+/* Animaciones de transición */
 .fade {
- opacity: 0;
- transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .fade-in {
- opacity: 1;
-}
-
-.slide {
- transform: translateX(-100%);
- transition: transform 0.5s ease-in-out;
-}
-
-.slide-in {
- transform: translateX(0);
-}
-
-.zoom {
- transform: scale(0);
- transition: transform 0.5s ease-in-out;
-}
-
-.zoom-in {
- transform: scale(1);
-}
-
-/* Estilos para los contenedores principales con transición */
-.container, #organizador, #config, #personality-test {
- opacity: 0;
- transition: opacity 0.5s ease-in-out;
-}
-
-/* Estilo para el logo */
-.logo {
- width: 150px; /* Ajusta según el tamaño de tu logo */
- height: auto;
- margin: 0 auto;
- display: block;
- cursor: pointer; /* Indica que es clicable */
-}
-
-/* Diseño de cápsula para los datos, cita y recurso */
-.capsule {
- background-color: #1E3A8A; /* Color azul oscuro (ajustable) */
- border-radius: 15px; /* Bordes redondeados */
- padding: 20px;
- margin: 10px 0;
- color: white;
- box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para efecto 3D */
- max-width: 600px;
- margin-left: auto;
- margin-right: auto;
+    opacity: 1;
 }
 
 /* Estilos generales */
 body {
- font-family: 'Space Mono', monospace;
- background-color: #000;
- color: #fff;
- margin: 0;
- padding: 20px;
- text-align: center;
+    font-family: 'Space Mono', monospace;
+    background: linear-gradient(135deg, #000000, #1E3A8A);
+    color: #fff;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    min-height: 100vh;
 }
 
 button {
- background-color: #00ffcc;
- border: none;
- padding: 10px 20px;
- margin: 5px;
- cursor: pointer;
- border-radius: 5px;
- font-family: 'Orbitron', sans-serif;
+    background-color: #00ffcc;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
 }
 
 button:hover {
- background-color: #00b3a0;
+    background-color: #00b3a0;
 }
 
 a {
- color: #00ffcc;
- text-decoration: none;
- margin: 10px;
- display: block;
+    color: #00ffcc;
+    text-decoration: none;
+    margin: 10px;
+    display: inline-block;
 }
 
 a:hover {
- color: #00b3a0;
+    color: #00b3a0;
+}
+
+/* Estilo para el logo */
+.logo {
+    width: 150px;
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+    cursor: pointer;
+}
+
+/* Botón de configuración (tuerca) */
+#config-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #00ffcc;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#config-btn:hover {
+    background-color: #00b3a0;
+}
+
+/* Contenedores principales */
+.container, #organizador, #config, #personality-test {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Diseño de la cápsula */
+.capsule {
+    background-color: #1E3A8A;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+}
+
+/* Grupo de botones */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
 /* Estilos para el organizador */
-#organizador, #config {
- display: none;
- margin-top: 20px;
+#organizador, #config, #personality-test {
+    margin-top: 20px;
 }
 
 #lista .item {
- display: flex;
- justify-content: space-between;
- padding: 10px;
- background-color: #333;
- margin: 5px 0;
- border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #333;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 
 #recordatorios .recordatorio {
- background-color: #444;
- padding: 10px;
- margin: 5px 0;
- border-radius: 5px;
+    background-color: #444;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 
-/* Ajuste para el botón de configuración */
-#config button {
- background-color: #00ffcc;
- border: none;
- padding: 10px;
- margin: 5px;
- cursor: pointer;
- border-radius: 5px;
- font-size: 16px;
-}
-
-#config button:hover {
- background-color: #00b3a0;
+.back-btn {
+    margin-top: 20px;
 }
