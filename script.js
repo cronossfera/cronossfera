@@ -17,14 +17,16 @@ let idiomaActual = localStorage.getItem("idioma") || "es";
 let temaActual = localStorage.getItem("tema") || "default";
 document.body.className = `tema-${temaActual}`;
 
-// Animación de desvanecimiento
+// Animación de desvanecimiento corregida
 function applyFade(element, callback) {
+    if (!element) return; // Evitar errores si el elemento no existe
     element.classList.remove("fade-in");
     element.classList.add("fade");
     setTimeout(() => {
         callback();
         element.classList.remove("fade");
         element.classList.add("fade-in");
+        element.style.opacity = "1"; // Forzar visibilidad después de la animación
     }, 500);
 }
 
@@ -37,6 +39,8 @@ function showCapsulaByDate() {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
         document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+        container.style.display = "block"; // Asegurar visibilidad
+        container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
     });
@@ -51,6 +55,8 @@ function nuevaCapsula() {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
         document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+        container.style.display = "block";
+        container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
     });
@@ -70,6 +76,7 @@ function showOrganizador() {
         container.style.display = "none";
         organizador.style.display = "block";
         organizador.classList.add("fade-in");
+        organizador.style.opacity = "1";
         stop2000sGraphics();
     });
 }
@@ -77,11 +84,17 @@ function showOrganizador() {
 // Volver a principal
 function backToMain() {
     const organizador = document.getElementById("organizador");
+    const config = document.getElementById("config");
+    const test = document.getElementById("personality-test");
     const container = document.querySelector(".container");
-    applyFade(organizador, () => {
+    const elementToFade = organizador.style.display === "block" ? organizador : config.style.display === "block" ? config : test;
+    applyFade(elementToFade, () => {
         organizador.style.display = "none";
+        config.style.display = "none";
+        test.style.display = "none";
         container.style.display = "block";
         container.classList.add("fade-in");
+        container.style.opacity = "1";
         start2000sGraphics(temaActual);
     });
 }
@@ -131,9 +144,24 @@ function updateAgenda() {
 // Configuración
 function toggleConfig() {
     const config = document.getElementById("config");
+    const container = document.querySelector(".container");
+    const organizador = document.getElementById("organizador");
+    const test = document.getElementById("personality-test");
     applyFade(config, () => {
-        config.style.display = config.style.display === "none" ? "block" : "none";
-        if (config.style.display === "block") config.classList.add("fade-in");
+        if (config.style.display === "none" || config.style.display === "") {
+            container.style.display = "none";
+            organizador.style.display = "none";
+            test.style.display = "none";
+            config.style.display = "block";
+            config.classList.add("fade-in");
+            config.style.opacity = "1";
+        } else {
+            config.style.display = "none";
+            container.style.display = "block";
+            container.classList.add("fade-in");
+            container.style.opacity = "1";
+            start2000sGraphics(temaActual);
+        }
     });
 }
 
@@ -185,6 +213,7 @@ function showPersonalityTest() {
     applyFade(test, () => {
         test.style.display = "block";
         test.classList.add("fade-in");
+        test.style.opacity = "1";
     });
 }
 
@@ -242,7 +271,11 @@ function submitTest() {
         localStorage.setItem("userIcon", icon);
         localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
         updateUserInfo();
-        applyFade(document.getElementById("personality-test"), () => document.getElementById("personality-test").style.display = "none");
+        applyFade(document.getElementById("personality-test"), () => {
+            document.getElementById("personality-test").style.display = "none";
+            document.querySelector(".container").style.display = "block";
+            document.querySelector(".container").style.opacity = "1";
+        });
     } else {
         alert("Selecciona una opción.");
     }
@@ -295,8 +328,11 @@ function stop2000sGraphics() {
 
 // Inicio
 document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("userType")) showPersonalityTest();
-    else {
+    const container = document.querySelector(".container");
+    container.style.opacity = "1"; // Forzar visibilidad inicial
+    if (!localStorage.getItem("userType")) {
+        showPersonalityTest();
+    } else {
         showCapsulaByDate();
         start2000sGraphics(temaActual);
     }
