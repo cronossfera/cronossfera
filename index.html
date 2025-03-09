@@ -4,18 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cronosfera</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&family=Press+Start+2P&family=Space+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
+</head>
+<body>
     <canvas id="interactive-2000s" style="position:fixed; top:0; left:0; z-index:-1; display:none;"></canvas>
-    <div class="config-btn" onclick="toggleConfig()">⚙️</div>
+    <!-- Reemplazar <h1>Cronosfera</h1> por el logo -->
+    <img src="/logo.png" alt="Cronosfera Logo" class="logo">
+    <div class="container">
+        <div id="user-info"></div>
+        <div id="dato"></div>
+        <div id="cita"></div>
+        <div id="recurso"></div>
+        <button onclick="nuevaCapsula()">Cápsula Aleatoria</button>
+        <button onclick="enviar()">Enviar a mi futuro yo</button>
+        <a href="#" onclick="showOrganizador()">Organizador Dinámico</a>
+        <button onclick="toggleConfig()">Configuración</button>
+    </div>
+    <div id="organizador" style="display:none;">
+        <h2>Organizador Dinámico</h2>
+        <select id="categoria">
+            <option value="Personal">Personal</option>
+            <option value="Trabajo">Trabajo</option>
+            <option value="Estudio">Estudio</option>
+        </select>
+        <input type="text" id="entrada" placeholder="Tarea...">
+        <input type="date" id="fecha">
+        <button onclick="addItem()">Agregar</button>
+        <div id="lista"></div>
+        <div id="agenda">
+            <h3>Agenda</h3>
+            <div id="recordatorios"></div>
+        </div>
+        <button class="back-btn" onclick="backToMain()">Volver a Principal</button>
+    </div>
     <div id="config" style="display:none;">
         <h2>Configuración</h2>
         <label>Tema:</label>
         <select id="tema">
-            <option value="default">Predeterminado (Sci-Fi)</option>
+            <option value="default">Default (Sci-Fi)</option>
             <option value="2000s">Años 2000</option>
             <option value="pastel">Pastel</option>
             <option value="vaporwave">Vaporwave</option>
@@ -30,58 +58,22 @@
             <option value="en">English</option>
             <option value="fr">Français</option>
             <option value="de">Deutsch</option>
-            <option value="jp">日本語 (Japanese)</option>
-            <option value="ru">Русский (Russian)</option>
+            <option value="jp">日本語</option>
+            <option value="ru">Русский</option>
             <option value="it">Italiano</option>
-            <option value="zh">中文 (Chinese)</option>
-            <option value="ko">한국어 (Korean)</option>
+            <option value="zh">中文</option>
+            <option value="ko">한국어</option>
             <option value="tr">Türkçe</option>
         </select>
         <button onclick="applyConfig()">Aplicar</button>
     </div>
-    <div class="container">
-        <h1>Cronosfera</h1>
-        <div id="capsula">
-            <p id="dato">Dato: Cargando...</p>
-            <p id="cita">Cita: Cargando...</p>
-            <p id="recurso">Recurso: Cargando...</p>
-            <div id="user-info" style="margin-top: 20px;"></div>
-        </div>
-        <button onclick="nuevaCapsula()">Cápsula Aleatoria</button>
-        <button onclick="enviar()">Enviar a mi futuro yo</button>
-        <a href="#" onclick="showOrganizador()">Organizador Dinámico</a>
-    </div>
-    <div id="organizador" style="display:none;">
-        <h2>Organizador Dinámico</h2>
-        <select id="categoria">
-            <option value="tareas">Tareas</option>
-            <option value="libros">Libros</option>
-            <option value="peliculas">Películas</option>
-            <option value="series">Series</option>
-            <option value="recetas">Recetas</option>
-            <option value="mangas">Mangas</option>
-            <option value="manhwas">Manhwas</option>
-            <option value="manhuas">Manhuas</option>
-        </select>
-        <input id="entrada" placeholder="Añade algo (ej: Leer Berserk)">
-        <input id="fecha" type="date" value="2025-03-02">
-        <button onclick="addItem()">Añadir</button>
-        <div id="lista"></div>
-        <div id="agenda">
-            <h3>Agenda</h3>
-            <div id="recordatorios"></div>
-        </div>
-        <button onclick="backToMain()" class="back-btn">Volver a Principal</button>
-    </div>
-    <div id="personality-test" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#2a2a2a; padding:20px; border:1px solid #00ffcc; z-index:1000; max-width:400px; box-shadow: 0 0 15px #00ffcc;">
-        <h2 style="font-family: 'Orbitron', sans-serif; text-shadow: 0 0 5px #00ffcc; color: #00ffcc;">¿Quién eres?</h2>
+    <div id="personality-test" style="display:none;">
+        <h2>Test de Personalidad</h2>
+        <p>Pregunta <span id="current-question"></span> de <span id="total-questions"></span></p>
         <div id="test-content"></div>
-        <div id="test-progress" style="margin: 10px 0; color: #00ffcc;">Pregunta <span id="current-question">1</span> de <span id="total-questions">7</span></div>
-        <div id="test-buttons" style="margin-top: 15px;">
-            <button id="prev-btn" onclick="prevQuestion()" style="display:none; background:#ff6666;">Anterior</button>
-            <button id="next-btn" onclick="nextQuestion()" style="background:#00ffcc;">Siguiente</button>
-            <button id="submit-btn" onclick="submitTest()" style="display:none; background:#00ffcc;">Enviar</button>
-        </div>
+        <button id="prev-btn" onclick="prevQuestion()">Anterior</button>
+        <button id="next-btn" onclick="nextQuestion()">Siguiente</button>
+        <button id="submit-btn" onclick="submitTest()">Enviar</button>
     </div>
     <script src="script.js"></script>
 </body>
