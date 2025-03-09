@@ -1,259 +1,129 @@
+/* styles.css */
+
+/* Definición de animaciones de transición */
+.fade {
+ opacity: 0;
+ transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in {
+ opacity: 1;
+}
+
+.slide {
+ transform: translateX(-100%);
+ transition: transform 0.5s ease-in-out;
+}
+
+.slide-in {
+ transform: translateX(0);
+}
+
+.zoom {
+ transform: scale(0);
+ transition: transform 0.5s ease-in-out;
+}
+
+.zoom-in {
+ transform: scale(1);
+}
+
+/* Estilos para los contenedores principales con transición */
+.container, #organizador, #config, #personality-test {
+ opacity: 0;
+ transition: opacity 0.5s ease-in-out;
+}
+
+/* Estilo para el logo */
+.logo {
+ width: 150px; /* Ajusta según el tamaño de tu logo */
+ height: auto;
+ margin: 0 auto;
+ display: block;
+ cursor: pointer; /* Indica que es clicable */
+}
+
+/* Diseño de cápsula para los datos, cita y recurso */
+.capsule {
+ background-color: #1E3A8A; /* Color azul oscuro (ajustable) */
+ border-radius: 15px; /* Bordes redondeados */
+ padding: 20px;
+ margin: 10px 0;
+ color: white;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para efecto 3D */
+ max-width: 600px;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+/* Estilos generales */
 body {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
-    font-family: 'Courier New', monospace;
-    margin: 0;
-    padding: 20px;
-    text-align: center;
-    transition: background-color 0.5s, color 0.5s;
-}
-
-.config-btn {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc;
-    z-index: 100;
-    }
-
-#config {
-    position: fixed;
-    top: 50px;
-    right: 10px;
-    background: #2a2a2a;
-    padding: 20px;
-    border: 1px solid #00ffcc;
-    z-index: 100;
-}
-
-.container, #organizador {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 10;
-   }
-
-h1, h2, h3 {
-    color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc;
-    transition: color 0.5s;
-}
-
-#capsula, #lista .item, #agenda {
-    background: #2a2a2a;
-    padding: 20px;
-    border: 1px solid #00ffcc;
-    margin: 20px 0;
-    transition: background 0.5s, border-color 0.5s;
-}
-
-#user-info {
-    color: #00ffcc;
-    font-size: 1.2em;
+ font-family: 'Space Mono', monospace;
+ background-color: #000;
+ color: #fff;
+ margin: 0;
+ padding: 20px;
+ text-align: center;
 }
 
 button {
-    background: #00ffcc;
-    color: #1a1a1a;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    transition: background 0.5s;
+ background-color: #00ffcc;
+ border: none;
+ padding: 10px 20px;
+ margin: 5px;
+ cursor: pointer;
+ border-radius: 5px;
+ font-family: 'Orbitron', sans-serif;
 }
 
 button:hover {
-    background: #00cc99;
-}
-
-.back-btn {
-    background: #ff6666;
-}
-
-.back-btn:hover {
-    background: #cc3333;
+ background-color: #00b3a0;
 }
 
 a {
-    color: #00ffcc;
-    text-decoration: none;
+ color: #00ffcc;
+ text-decoration: none;
+ margin: 10px;
+ display: block;
 }
 
-select, input {
-    width: 45%;
-    padding: 10px;
-    margin: 10px 5px;
-    background: #2a2a2a;
-    color: #e0e0e0;
-    border: 1px solid #00ffcc;
-    font-family: 'Courier New', monospace;
+a:hover {
+ color: #00b3a0;
 }
 
-#entrada {
-    width: 30%;
-}
-
-#fecha {
-    width: 20%;
+/* Estilos para el organizador */
+#organizador, #config {
+ display: none;
+ margin-top: 20px;
 }
 
 #lista .item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    animation: slideIn 0.3s ease;
-}
-
-#lista .item span {
-    color: #00ffcc;
-}
-
-#agenda {
-    border-style: dashed;
+ display: flex;
+ justify-content: space-between;
+ padding: 10px;
+ background-color: #333;
+ margin: 5px 0;
+ border-radius: 5px;
 }
 
 #recordatorios .recordatorio {
-    color: #ff6666;
-    margin: 5px 0;
+ background-color: #444;
+ padding: 10px;
+ margin: 5px 0;
+ border-radius: 5px;
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
+/* Ajuste para el botón de configuración */
+#config button {
+ background-color: #00ffcc;
+ border: none;
+ padding: 10px;
+ margin: 5px;
+ cursor: pointer;
+ border-radius: 5px;
+ font-size: 16px;
 }
 
-#personality-test {
-    max-width: 400px;
-    box-shadow: 0 0 15px #00ffcc;
+#config button:hover {
+ background-color: #00b3a0;
 }
-
-#personality-test h2 {
-    margin-top: 0;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 5px #00ffcc;
-    color: #00ffcc;
-}
-
-#test-content {
-    margin: 10px 0;
-}
-
-#test-content label {
-    display: block;
-    margin: 5px 0;
-}
-
-#test-buttons button {
-    margin: 0 5px;
-}
-
-#test-buttons #prev-btn {
-    background: #ff6666;
-}
-
-#test-buttons #prev-btn:hover {
-    background: #cc3333;
-}
-
-#test-progress {
-    color: #00ffcc;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 3px #00ffcc;
-}
-
-/* Temas con fondos temáticos corregidos */
-body.tema-2000s {
-    background: url('images/90s-wallpaper.png') repeat, #00ffff;
-    color: #000;
-    font-family: 'Comic Sans MS', cursive;
-}
-body.tema-2000s #capsula, body.tema-2000s #lista .item, body.tema-2000s #agenda, body.tema-2000s #config, body.tema-2000s #personality-test {
-    background: rgba(255, 255, 0, 0.8);
-    border-color: #ff00ff;
-    box-shadow: 0 0 10px #ff00ff;
-}
-body.tema-2000s button { background: #ff00ff; }
-body.tema-2000s h1, body.tema-2000s h2, body.tema-2000s h3 { color: #ff00ff; text-shadow: 0 0 5px #ffff00; }
-body.tema-2000s a, body.tema-2000s #lista .item span, body.tema-2000s #user-info, body.tema-2000s #test-progress { color: #ff00ff; }
-
-body.tema-pastel {
-    background: url('images/paper-fibers.png') repeat, #f5e6ff;
-    color: #4a3c5b;
-    font-family: 'Arial', sans-serif;
-}
-body.tema-pastel #capsula, body.tema-pastel #lista .item, body.tema-pastel #agenda, body.tema-pastel #config, body.tema-pastel #personality-test {
-    background: #ffedf5;
-    border-color: #8c6fa3;
-}
-body.tema-pastel button { background: #b8e1ff; }
-body.tema-pastel h1, body.tema-pastel h2, body.tema-pastel h3 { color: #8c6fa3; text-shadow: none; }
-body.tema-pastel a, body.tema-pastel #lista .item span, body.tema-pastel #user-info, body.tema-pastel #test-progress { color: #8c6fa3; }
-
-body.tema-vaporwave {
-    background: linear-gradient(45deg, #ff6ec4, #7873f5), url('images/retro-grid.png') repeat;
-    color: #fff;
-    font-family: 'Arial Black', sans-serif;
-}
-body.tema-vaporwave #capsula, body.tema-vaporwave #lista .item, body.tema-vaporwave #agenda, body.tema-vaporwave #config, body.tema-vaporwave #personality-test {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: #ff00ff;
-}
-body.tema-vaporwave button { background: #ff00ff; }
-
-body.tema-dark-academia {
-    background: url('images/old-wall.png') repeat, #2f1b12;
-    color: #d4a373;
-    font-family: 'Georgia', serif;
-}
-body.tema-dark-academia #capsula, body.tema-dark-academia #lista .item, body.tema-dark-academia #agenda, body.tema-dark-academia #config, body.tema-dark-academia #personality-test {
-    background: #3c2f2f;
-    border-color: #8c5523;
-}
-body.tema-dark-academia button { background: #8c5523; }
-
-body.tema-cyberpunk {
-    background: url('images/carbon-fibre.png') repeat, #0d1b2a;
-    color: #00f7ff;
-    font-family: 'Orbitron', sans-serif;
-}
-body.tema-cyberpunk #capsula, body.tema-cyberpunk #lista .item, body.tema-cyberpunk #agenda, body.tema-cyberpunk #config, body.tema-cyberpunk #personality-test {
-    background: rgba(13, 27, 42, 0.8);
-    border-color: #ff2079;
-    box-shadow: 0 0 15px #ff2079;
-}
-body.tema-cyberpunk button { background: #ff2079; }
-body.tema-cyberpunk h1, body.tema-cyberpunk h2, body.tema-cyberpunk h3 { color: #ff2079; text-shadow: 0 0 10px #ff2079; }
-body.tema-cyberpunk a, body.tema-cyberpunk #lista .item span, body.tema-cyberpunk #user-info, body.tema-cyberpunk #test-progress { color: #ff2079; }
-
-body.tema-retro-game {
-    background: url('images/pixel-pattern.png') repeat, #1a1a1a;
-    color: #00ff00;
-    font-family: 'Press Start 2P', cursive;
-}
-body.tema-retro-game #capsula, body.tema-retro-game #lista .item, body.tema-retro-game #agenda, body.tema-retro-game #config, body.tema-retro-game #personality-test {
-    background: #000;
-    border-color: #00ff00;
-    box-shadow: 0 0 5px #00ff00;
-}
-body.tema-retro-game button { background: #00ff00; color: #000; }
-body.tema-retro-game h1, body.tema-retro-game h2, body.tema-retro-game h3 { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
-body.tema-retro-game a, body.tema-retro-game #lista .item span, body.tema-retro-game #user-info, body.tema-retro-game #test-progress { color: #00ff00; }
-
-body.tema-galaxy {
-    background: url('images/stardust.png') repeat, #0a001f;
-    color: #e6e6ff;
-    font-family: 'Space Mono', monospace;
-}
-body.tema-galaxy #capsula, body.tema-galaxy #lista .item, body.tema-galaxy #agenda, body.tema-galaxy #config, body.tema-galaxy #personality-test {
-    background: rgba(10, 0, 31, 0.7);
-    border-color: #b300ff;
-    box-shadow: 0 0 10px #b300ff;
-  
-}
-body.tema-galaxy button { background: #b300ff; }
-body.tema-galaxy h1, body.tema-galaxy h2, body.tema-galaxy h3 { color: #b300ff; text-shadow: 0 0 10px #b300ff; }
-body.tema-galaxy a, body.tema-galaxy #lista .item span, body.tema-galaxy #user-info, body.tema-galaxy #test-progress { color: #b300ff; }
