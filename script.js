@@ -214,7 +214,7 @@ function updateText() {
     document.querySelector("button[onclick='enviar()']").textContent = texts[idiomaActual].btn2;
     document.querySelector("a").textContent = texts[idiomaActual].link;
     document.querySelector("#config h2").textContent = texts[idiomaActual].config;
-    document.querySelector(".back-btn").textContent = texts[idiomaActual].back;
+    document.querySelectorAll(".back-btn").forEach(btn => btn.textContent = texts[idiomaActual].back);
     updateAgenda();
 }
 
