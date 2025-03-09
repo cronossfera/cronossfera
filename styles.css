@@ -13,56 +13,94 @@
 /* Estilos generales */
 body {
     font-family: 'Space Mono', monospace;
-    background: linear-gradient(135deg, #1E90FF, #00CED1); /* Fondo más claro para mejor contraste */
     color: #fff;
     margin: 0;
     padding: 20px;
     text-align: center;
     min-height: 100vh;
+    position: relative;
 }
 
-/* Estilos para temas */
+/* Estilos para temas con imágenes de fondo */
+body.tema-default::before,
+body.tema-frutiger-metro::before,
+body.tema-pastel::before,
+body.tema-vaporwave::before,
+body.tema-dark-academia::before,
+body.tema-cyberpunk::before,
+body.tema-frutiger-aero::before,
+body.tema-galaxy::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px); /* Desenfoque ligero */
+    z-index: -1;
+}
+
+/* Definición de imágenes de fondo para cada tema */
+body.tema-default::before {
+    background-image: url('images/sci-fi-bg.jpg');
+}
+body.tema-frutiger-metro::before {
+    background-image: url('images/frutiger-metro-bg.jpg');
+}
+body.tema-pastel::before {
+    background-image: url('images/pastel-frutiger-metro-bg.jpg');
+}
+body.tema-vaporwave::before {
+    background-image: url('images/vaporwave-bg.jpg');
+}
+body.tema-dark-academia::before {
+    background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
+}
+body.tema-cyberpunk::before {
+    background-image: url('images/sci-fi-bg.jpg'); /* Puedes usar una imagen específica si prefieres */
+}
+body.tema-frutiger-aero::before {
+    background-image: url('images/frutiger-aero-bg.jpg');
+}
+body.tema-galaxy::before {
+    background-image: url('images/galaxia-bg.jpg');
+}
+
+/* Estilos específicos para cada tema */
 body.tema-default {
-    background: linear-gradient(135deg, #1E90FF, #00CED1);
-    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+    font-family: 'Arial', sans-serif;
 }
-
 body.tema-frutiger-metro {
-    background: linear-gradient(135deg, #F5F5F5, #D3D3D3);
     color: #333;
-    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+    font-family: 'Arial', sans-serif;
 }
-
 body.tema-pastel {
-    background: linear-gradient(135deg, #FFB6C1, #87CEEB); /* Sin Frutiger Metro */
     color: #333;
     font-family: 'Comic Sans MS', cursive;
 }
-
 body.tema-vaporwave {
-    background: linear-gradient(135deg, #FF6EC7, #7859A9);
-    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+    font-family: 'Arial', sans-serif;
 }
-
 body.tema-dark-academia {
-    background: linear-gradient(135deg, #3E2723, #795548); /* Café */
-    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+    font-family: 'Arial', sans-serif;
 }
-
 body.tema-cyberpunk {
-    background: linear-gradient(135deg, #FF00FF, #00FFFF);
-    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+    font-family: 'Arial', sans-serif;
 }
-
 body.tema-frutiger-aero {
-    background: linear-gradient(135deg, #00B7EB, #FFFFFF); /* Sin Frutiger Metro */
     color: #000;
     font-family: 'Verdana', sans-serif;
 }
-
 body.tema-galaxy {
-    background: linear-gradient(135deg, #191970, #483D8B);
-    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo para el texto (para mejor legibilidad) */
+body h1, body h2, body h3, body p, body label, body button, body a {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra para mejorar contraste */
 }
 
 button {
@@ -101,10 +139,9 @@ a:hover {
     margin: 0 auto 20px;
     display: block;
     cursor: pointer;
-    background-color: white; /* Fondo blanco para contraste */
-    padding: 10px;
-    border: 2px solid #00ffcc;
+    border: 2px solid white; /* Solo bordes blancos */
     border-radius: 10px;
+    background: none; /* Sin fondo */
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -144,11 +181,14 @@ a:hover {
 .container, #organizador, #config, #personality-test {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
+    background: rgba(255, 255, 255, 0.2); /* Fondo semitransparente para legibilidad */
+    backdrop-filter: blur(10px); /* Desenfoque adicional */
+    padding: 20px;
+    border-radius: 10px;
 }
 
 /* Diseño de la cápsula */
 .capsule {
-    background-color: #1E3A8A;
     border-radius: 15px;
     padding: 20px;
     margin: 20px auto;
@@ -222,9 +262,6 @@ a:hover {
 
 /* Configuración */
 #config {
-    background-color: rgba(30, 58, 138, 0.9);
-    padding: 20px;
-    border-radius: 10px;
     max-width: 400px;
     margin: 0 auto;
 }
