@@ -17,7 +17,7 @@ body {
     color: #00ffcc;
     text-shadow: 0 0 5px #00ffcc;
     z-index: 100;
-}
+    }
 
 #config {
     position: fixed;
@@ -34,6 +34,30 @@ body {
     margin: 0 auto;
     position: relative;
     z-index: 10;
+    /* styles.css */
+/* Clase para elementos que se desvanecerán */
+.fade {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Clase para mostrar elementos con animación */
+.fade-in {
+    opacity: 1;
+}
+
+/* Asegurar que los contenedores principales tengan la transición */
+.container, #organizador, #config, #personality-test {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Estilo adicional para el logo (lo usaremos más adelante) */
+.logo {
+    width: 150px; /* Ajusta según el tamaño de tu logo */
+    height: auto;
+    margin: 0 auto;
+    display: block;
 }
 
 h1, h2, h3 {
