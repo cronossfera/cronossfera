@@ -17,16 +17,15 @@ let idiomaActual = localStorage.getItem("idioma") || "es";
 let temaActual = localStorage.getItem("tema") || "default";
 document.body.className = `tema-${temaActual}`;
 
-// Animación de desvanecimiento corregida
+// Animación de desvanecimiento
 function applyFade(element, callback) {
-    if (!element) return; // Evitar errores si el elemento no existe
     element.classList.remove("fade-in");
     element.classList.add("fade");
     setTimeout(() => {
         callback();
         element.classList.remove("fade");
         element.classList.add("fade-in");
-        element.style.opacity = "1"; // Forzar visibilidad después de la animación
+        element.style.opacity = "1"; // Forzar visibilidad
     }, 500);
 }
 
@@ -39,8 +38,6 @@ function showCapsulaByDate() {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
         document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
-        container.style.display = "block"; // Asegurar visibilidad
-        container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
     });
@@ -55,8 +52,6 @@ function nuevaCapsula() {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
         document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
-        container.style.display = "block";
-        container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
     });
@@ -76,7 +71,6 @@ function showOrganizador() {
         container.style.display = "none";
         organizador.style.display = "block";
         organizador.classList.add("fade-in");
-        organizador.style.opacity = "1";
         stop2000sGraphics();
     });
 }
@@ -84,17 +78,11 @@ function showOrganizador() {
 // Volver a principal
 function backToMain() {
     const organizador = document.getElementById("organizador");
-    const config = document.getElementById("config");
-    const test = document.getElementById("personality-test");
     const container = document.querySelector(".container");
-    const elementToFade = organizador.style.display === "block" ? organizador : config.style.display === "block" ? config : test;
-    applyFade(elementToFade, () => {
+    applyFade(organizador, () => {
         organizador.style.display = "none";
-        config.style.display = "none";
-        test.style.display = "none";
         container.style.display = "block";
         container.classList.add("fade-in");
-        container.style.opacity = "1";
         start2000sGraphics(temaActual);
     });
 }
@@ -137,31 +125,16 @@ function updateAgenda() {
     const hoyItems = items.filter(item => item.fecha <= today);
     const noRecTexts = { es: "No hay recordatorios para hoy.", en: "No reminders for today." };
     recordatoriosDiv.innerHTML = hoyItems.length > 0 
-        ? hoyItems.map(item => `<div class="recordatorio">[${item.categoria}] ${item.texto} - ¡Hoy!</div>`).join("")
+        ? hoyItems.map(item => `<div class="recordatorio ${item.fecha === today ? 'pendiente' : ''}">[${item.categoria}] ${item.texto} - ${item.fecha === today ? '¡Hoy!' : item.fecha}</div>`).join("")
         : `<p>${noRecTexts[idiomaActual]}</p>`;
 }
 
 // Configuración
 function toggleConfig() {
     const config = document.getElementById("config");
-    const container = document.querySelector(".container");
-    const organizador = document.getElementById("organizador");
-    const test = document.getElementById("personality-test");
     applyFade(config, () => {
-        if (config.style.display === "none" || config.style.display === "") {
-            container.style.display = "none";
-            organizador.style.display = "none";
-            test.style.display = "none";
-            config.style.display = "block";
-            config.classList.add("fade-in");
-            config.style.opacity = "1";
-        } else {
-            config.style.display = "none";
-            container.style.display = "block";
-            container.classList.add("fade-in");
-            container.style.opacity = "1";
-            start2000sGraphics(temaActual);
-        }
+        config.style.display = config.style.display === "none" ? "block" : "none";
+        if (config.style.display === "block") config.classList.add("fade-in");
     });
 }
 
@@ -198,10 +171,12 @@ function updateText() {
 
 // Test de personalidad
 const personalityQuestions = [
-    { question: "¿Qué prefieres leer?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Ninguno"] }
+    { question: "¿Qué prefieres leer?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Manuales técnicos", "Revistas de aventura", "Redes sociales", "Nada"] },
+    { question: "¿Cuál es tu pasatiempo favorito?", options: ["Videojuegos", "Leer", "Dibujar", "Experimentos", "Deporte", "Socializar", "Meditar", "Reparar cosas"] },
+    // Agrega las otras 7 preguntas aquí...
 ];
 
-let personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
+let personalityScore = { friki: 0, culto: 0, artista: 0, cientifico: 0, aventurero: 0, social: 0, relajado: 0, practico: 0, creativo: 0 };
 let currentQuestion = 0;
 let answers = {};
 
@@ -213,7 +188,6 @@ function showPersonalityTest() {
     applyFade(test, () => {
         test.style.display = "block";
         test.classList.add("fade-in");
-        test.style.opacity = "1";
     });
 }
 
@@ -225,7 +199,7 @@ function showQuestion() {
         ${question.options.map(o => `<label><input type="radio" name="q${currentQuestion}" value="${o}"> ${o}</label>`).join("<br>")}
     `;
     document.getElementById("current-question").textContent = currentQuestion + 1;
-    document.getElementById("total-questions").textContent = personalityQuestions.length;
+    document.getElementById("progress-bar").value = currentQuestion + 1;
     document.getElementById("prev-btn").style.display = currentQuestion === 0 ? "none" : "inline-block";
     document.getElementById("next-btn").style.display = currentQuestion < personalityQuestions.length - 1 ? "inline-block" : "none";
     document.getElementById("submit-btn").style.display = currentQuestion === personalityQuestions.length - 1 ? "inline-block" : "none";
@@ -255,27 +229,34 @@ function submitTest() {
     const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
     if (selected) {
         answers[currentQuestion] = selected.value;
-        personalityScore = { friki: 0, nerd: 0, culto: 0, artista: 0, cientifico: 0, casual: 0 };
+        personalityScore = { friki: 0, culto: 0, artista: 0, cientifico: 0, aventurero: 0, social: 0, relajado: 0, practico: 0, creativo: 0 };
         Object.values(answers).forEach(value => {
-            if (value === "Ciencia ficción") personalityScore.friki += 2;
-            if (value === "Fantasía" || value === "Historia") personalityScore.culto += 2;
-            if (value === "Poesía") personalityScore.artista += 2;
-            if (value === "Ninguno") personalityScore.casual += 2;
+            if (value === "Ciencia ficción" || value === "Videojuegos") personalityScore.friki += 2;
+            if (value === "Fantasía" || value === "Historia" || value === "Leer") personalityScore.culto += 2;
+            if (value === "Poesía" || value === "Dibujar") personalityScore.artista += 2;
+            if (value === "Manuales técnicos" || value === "Experimentos") personalityScore.cientifico += 2;
+            if (value === "Revistas de aventura" || value === "Deporte") personalityScore.aventurero += 2;
+            if (value === "Redes sociales" || value === "Socializar") personalityScore.social += 2;
+            if (value === "Meditar") personalityScore.relajado += 2;
+            if (value === "Reparar cosas") personalityScore.practico += 2;
+            if (value === "Nada") personalityScore.creativo += 2; // Ajusta según las opciones
         });
         const maxScore = Math.max(...Object.values(personalityScore));
         let userType = "Casual", icon = "👤";
         if (maxScore === personalityScore.friki) { userType = "Frikki"; icon = "🎮"; }
         else if (maxScore === personalityScore.culto) { userType = "Culta"; icon = "📚"; }
         else if (maxScore === personalityScore.artista) { userType = "Artista"; icon = "🎨"; }
+        else if (maxScore === personalityScore.cientifico) { userType = "Científico"; icon = "🧪"; }
+        else if (maxScore === personalityScore.aventurero) { userType = "Aventurero"; icon = "🧗‍♂️"; }
+        else if (maxScore === personalityScore.social) { userType = "Social"; icon = "🗣️"; }
+        else if (maxScore === personalityScore.relajado) { userType = "Relajado"; icon = "🧘‍♂️"; }
+        else if (maxScore === personalityScore.practico) { userType = "Práctico"; icon = "🔧"; }
+        else if (maxScore === personalityScore.creativo) { userType = "Creativo"; icon = "✍️"; }
         localStorage.setItem("userType", userType);
         localStorage.setItem("userIcon", icon);
         localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
         updateUserInfo();
-        applyFade(document.getElementById("personality-test"), () => {
-            document.getElementById("personality-test").style.display = "none";
-            document.querySelector(".container").style.display = "block";
-            document.querySelector(".container").style.opacity = "1";
-        });
+        applyFade(document.getElementById("personality-test"), () => document.getElementById("personality-test").style.display = "none");
     } else {
         alert("Selecciona una opción.");
     }
@@ -302,6 +283,12 @@ function start2000sGraphics(tema) {
     const elements = tema === "default" ? [
         { x: 50, y: 50, dx: 2, dy: 1, text: "⚙️", size: 30, color: "#00ffcc" },
         { x: 200, y: 100, dx: -1, dy: 2, text: "🚀", size: 40, color: "#00ffcc" }
+    ] : tema === "frutiger-metro" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#333" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#666" }
+    ] : tema === "frutiger-aero" ? [
+        { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
+        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
     ] : [];
 
     function animate() {
@@ -328,11 +315,8 @@ function stop2000sGraphics() {
 
 // Inicio
 document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector(".container");
-    container.style.opacity = "1"; // Forzar visibilidad inicial
-    if (!localStorage.getItem("userType")) {
-        showPersonalityTest();
-    } else {
+    if (!localStorage.getItem("userType")) showPersonalityTest();
+    else {
         showCapsulaByDate();
         start2000sGraphics(temaActual);
     }
