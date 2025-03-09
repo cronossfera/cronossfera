@@ -13,12 +13,56 @@
 /* Estilos generales */
 body {
     font-family: 'Space Mono', monospace;
-    background: linear-gradient(135deg, #000000, #1E3A8A);
+    background: linear-gradient(135deg, #1E90FF, #00CED1); /* Fondo más claro para mejor contraste */
     color: #fff;
     margin: 0;
     padding: 20px;
     text-align: center;
     min-height: 100vh;
+}
+
+/* Estilos para temas */
+body.tema-default {
+    background: linear-gradient(135deg, #1E90FF, #00CED1);
+    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+}
+
+body.tema-frutiger-metro {
+    background: linear-gradient(135deg, #F5F5F5, #D3D3D3);
+    color: #333;
+    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+}
+
+body.tema-pastel {
+    background: linear-gradient(135deg, #FFB6C1, #87CEEB); /* Sin Frutiger Metro */
+    color: #333;
+    font-family: 'Comic Sans MS', cursive;
+}
+
+body.tema-vaporwave {
+    background: linear-gradient(135deg, #FF6EC7, #7859A9);
+    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+}
+
+body.tema-dark-academia {
+    background: linear-gradient(135deg, #3E2723, #795548); /* Café */
+    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+}
+
+body.tema-cyberpunk {
+    background: linear-gradient(135deg, #FF00FF, #00FFFF);
+    font-family: 'Arial', sans-serif; /* Frutiger Metro */
+}
+
+body.tema-frutiger-aero {
+    background: linear-gradient(135deg, #00B7EB, #FFFFFF); /* Sin Frutiger Metro */
+    color: #000;
+    font-family: 'Verdana', sans-serif;
+}
+
+body.tema-galaxy {
+    background: linear-gradient(135deg, #191970, #483D8B);
+    font-family: 'Arial', sans-serif; /* Frutiger Metro */
 }
 
 button {
@@ -57,9 +101,11 @@ a:hover {
     margin: 0 auto 20px;
     display: block;
     cursor: pointer;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    background-color: white; /* Fondo blanco para contraste */
+    padding: 10px;
     border: 2px solid #00ffcc;
     border-radius: 10px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -121,7 +167,7 @@ a:hover {
 }
 
 /* Estilos para el organizador */
-#organizador, #config, #personality-test {
+#organizador, #config {
     margin-top: 20px;
 }
 
@@ -197,8 +243,38 @@ a:hover {
     border: none;
 }
 
-/* Barra de progreso en el test */
+/* Ventana del test de personalidad */
+#personality-test {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    max-width: 500px;
+    width: 90%;
+    z-index: 1000;
+    color: #fff;
+    text-align: center;
+}
+
+#personality-test h2 {
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 20px;
+}
+
 #progress-bar {
     width: 100%;
     margin-bottom: 10px;
+}
+
+#test-content label {
+    display: block;
+    margin: 10px 0;
+}
+
+#test-content input[type="radio"] {
+    margin-right: 5px;
 }
