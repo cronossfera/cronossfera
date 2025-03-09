@@ -8,8 +8,19 @@ const capsulas = {
     ],
     en: [
         { fecha: "2025-03-02", dato: "iPhone 17 launch with AI.", datoZoom: "Apple enhances AI for photos.", cita: "‘Technology simplifies life’ - Tim Cook.", citaZoom: "WWDC 2025.", recurso: "<a href='https://apple.com'>News</a>" }
+    ],
+    pt: [
+        { fecha: "2025-03-02", dato: "Lançamento do iPhone 17 com IA.", datoZoom: "Apple melhora IA para fotos.", cita: "‘A tecnologia simplifica a vida’ - Tim Cook.", citaZoom: "WWDC 2025.", recurso: "<a href='https://apple.com'>Notícia</a>" }
+    ],
+    jp: [
+        { fecha: "2025-03-02", dato: "iPhone 17がAIと共に発売。", datoZoom: "Appleが写真用AIを改良。", cita: "‘技術は生活を簡略化する’ - ティム・クック", citaZoom: "WWDC 2025.", recurso: "<a href='https://apple.com'>ニュース</a>" }
+    ],
+    ko: [
+        { fecha: "2025-03-02", dato: "iPhone 17이 AI와 함께 출시됨.", datoZoom: "Apple이 사진용 AI를 개선함.", cita: "‘기술은 삶을 단순화한다’ - 팀 쿡", citaZoom: "WWDC 2025.", recurso: "<a href='https://apple.com'>뉴스</a>" }
+    ],
+    fr: [
+        { fecha: "2025-03-02", dato: "Lancement de l'iPhone 17 avec IA.", datoZoom: "Apple améliore l'IA pour les photos.", cita: "‘La technologie simplifie la vie’ - Tim Cook.", citaZoom: "WWDC 2025.", recurso: "<a href='https://apple.com'>Nouvelles</a>" }
     ]
-    // Agrega más idiomas y entradas
 };
 
 // Configuración inicial
@@ -19,13 +30,14 @@ document.body.className = `tema-${temaActual}`;
 
 // Animación de desvanecimiento
 function applyFade(element, callback) {
+    if (!element) return;
     element.classList.remove("fade-in");
     element.classList.add("fade");
     setTimeout(() => {
         callback();
         element.classList.remove("fade");
         element.classList.add("fade-in");
-        element.style.opacity = "1"; // Forzar visibilidad
+        element.style.opacity = "1";
     }, 500);
 }
 
@@ -38,6 +50,8 @@ function showCapsulaByDate() {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
         document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+        container.style.display = "block";
+        container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
     });
@@ -52,6 +66,8 @@ function nuevaCapsula() {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="alert('${capsula.datoZoom}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="alert('${capsula.citaZoom}')">[Zoom In]</span>`;
         document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+        container.style.display = "block";
+        container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
     });
@@ -71,6 +87,7 @@ function showOrganizador() {
         container.style.display = "none";
         organizador.style.display = "block";
         organizador.classList.add("fade-in");
+        organizador.style.opacity = "1";
         stop2000sGraphics();
     });
 }
@@ -78,11 +95,17 @@ function showOrganizador() {
 // Volver a principal
 function backToMain() {
     const organizador = document.getElementById("organizador");
+    const config = document.getElementById("config");
+    const test = document.getElementById("personality-test");
     const container = document.querySelector(".container");
-    applyFade(organizador, () => {
+    const elementToFade = organizador.style.display === "block" ? organizador : config.style.display === "block" ? config : test;
+    applyFade(elementToFade, () => {
         organizador.style.display = "none";
+        config.style.display = "none";
+        test.style.display = "none";
         container.style.display = "block";
         container.classList.add("fade-in");
+        container.style.opacity = "1";
         start2000sGraphics(temaActual);
     });
 }
@@ -123,7 +146,14 @@ function deleteItem(index) {
 function updateAgenda() {
     const recordatoriosDiv = document.getElementById("recordatorios");
     const hoyItems = items.filter(item => item.fecha <= today);
-    const noRecTexts = { es: "No hay recordatorios para hoy.", en: "No reminders for today." };
+    const noRecTexts = {
+        es: "No hay recordatorios para hoy.",
+        en: "No reminders for today.",
+        pt: "Nenhum lembrete para hoje.",
+        jp: "今日のリマインダーはありません。",
+        ko: "오늘 리마인더가 없습니다.",
+        fr: "Aucun rappel pour aujourd'hui."
+    };
     recordatoriosDiv.innerHTML = hoyItems.length > 0 
         ? hoyItems.map(item => `<div class="recordatorio ${item.fecha === today ? 'pendiente' : ''}">[${item.categoria}] ${item.texto} - ${item.fecha === today ? '¡Hoy!' : item.fecha}</div>`).join("")
         : `<p>${noRecTexts[idiomaActual]}</p>`;
@@ -132,9 +162,24 @@ function updateAgenda() {
 // Configuración
 function toggleConfig() {
     const config = document.getElementById("config");
+    const container = document.querySelector(".container");
+    const organizador = document.getElementById("organizador");
+    const test = document.getElementById("personality-test");
     applyFade(config, () => {
-        config.style.display = config.style.display === "none" ? "block" : "none";
-        if (config.style.display === "block") config.classList.add("fade-in");
+        if (config.style.display === "none" || config.style.display === "") {
+            container.style.display = "none";
+            organizador.style.display = "none";
+            test.style.display = "none";
+            config.style.display = "block";
+            config.classList.add("fade-in");
+            config.style.opacity = "1";
+        } else {
+            config.style.display = "none";
+            container.style.display = "block";
+            container.classList.add("fade-in");
+            container.style.opacity = "1";
+            start2000sGraphics(temaActual);
+        }
     });
 }
 
@@ -157,7 +202,11 @@ function applyConfig() {
 function updateText() {
     const texts = {
         es: { h2: "Organizador Dinámico", h3: "Agenda", btn1: "Cápsula Aleatoria", btn2: "Enviar a mi futuro yo", link: "Organizador Dinámico", config: "Configuración", back: "Volver a Principal" },
-        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main" }
+        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main" },
+        pt: { h2: "Organizador Dinâmico", h3: "Agenda", btn1: "Cápsula Aleatória", btn2: "Enviar para Meu Futuro Eu", link: "Organizador Dinâmico", config: "Configurações", back: "Voltar ao Principal" },
+        jp: { h2: "ダイナミックオーガナイザー", h3: "アジェンダ", btn1: "ランダムカプセル", btn2: "未来の自分に送信", link: "ダイナミックオーガナイザー", config: "設定", back: "メインに戻る" },
+        ko: { h2: "다이나믹 오거나이저", h3: "아젠다", btn1: "랜덤 캡슐", btn2: "미래의 나에게 보내기", link: "다이나믹 오거나이저", config: "설정", back: "메인으로 돌아가기" },
+        fr: { h2: "Organisateur Dynamique", h3: "Agenda", btn1: "Capsule Aléatoire", btn2: "Envoyer à Mon Futur Moi", link: "Organisateur Dynamique", config: "Paramètres", back: "Retour au Principal" }
     };
     document.querySelector("#organizador h2").textContent = texts[idiomaActual].h2;
     document.querySelector("#agenda h3").textContent = texts[idiomaActual].h3;
@@ -169,11 +218,17 @@ function updateText() {
     updateAgenda();
 }
 
-// Test de personalidad
+// Test de personalidad con 9 preguntas
 const personalityQuestions = [
     { question: "¿Qué prefieres leer?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Manuales técnicos", "Revistas de aventura", "Redes sociales", "Nada"] },
     { question: "¿Cuál es tu pasatiempo favorito?", options: ["Videojuegos", "Leer", "Dibujar", "Experimentos", "Deporte", "Socializar", "Meditar", "Reparar cosas"] },
-    // Agrega las otras 7 preguntas aquí...
+    { question: "¿Qué tipo de películas te gustan?", options: ["Acción", "Drama", "Comedia", "Documentales", "Terror", "Romance", "Animación", "Independientes"] },
+    { question: "¿Cómo te describirías?", options: ["Creativo", "Analítico", "Social", "Aventurero", "Relajado", "Práctico", "Artístico", "Científico"] },
+    { question: "¿Qué te gusta hacer en tu tiempo libre?", options: ["Jugar", "Estudiar", "Crear arte", "Explorar", "Hacer ejercicio", "Socializar", "Relajarme", "Arreglar cosas"] },
+    { question: "¿Qué tipo de música prefieres?", options: ["Electrónica", "Clásica", "Rock", "Pop", "Jazz", "Hip-hop", "Indie", "Ninguna"] },
+    { question: "¿Cuál es tu lugar ideal para vacaciones?", options: ["Playa", "Montaña", "Ciudad", "Bosque", "Desierto", "Espacio", "Casa", "Otro"] },
+    { question: "¿Qué te motiva más?", options: ["Logros", "Conocimiento", "Creatividad", "Aventura", "Relaciones", "Bienestar", "Practicidad", "Arte"] },
+    { question: "¿Cómo prefieres trabajar?", options: ["En equipo", "Solo", "Con un líder", "De manera creativa", "Con un plan", "Espontáneamente", "Con tecnología", "Con las manos"] }
 ];
 
 let personalityScore = { friki: 0, culto: 0, artista: 0, cientifico: 0, aventurero: 0, social: 0, relajado: 0, practico: 0, creativo: 0 };
@@ -185,9 +240,12 @@ function showPersonalityTest() {
     answers = {};
     showQuestion();
     const test = document.getElementById("personality-test");
-    applyFade(test, () => {
+    const container = document.querySelector(".container");
+    applyFade(container, () => {
+        container.style.display = "none";
         test.style.display = "block";
         test.classList.add("fade-in");
+        test.style.opacity = "1";
     });
 }
 
@@ -231,15 +289,59 @@ function submitTest() {
         answers[currentQuestion] = selected.value;
         personalityScore = { friki: 0, culto: 0, artista: 0, cientifico: 0, aventurero: 0, social: 0, relajado: 0, practico: 0, creativo: 0 };
         Object.values(answers).forEach(value => {
+            // Pregunta 1
             if (value === "Ciencia ficción" || value === "Videojuegos") personalityScore.friki += 2;
-            if (value === "Fantasía" || value === "Historia" || value === "Leer") personalityScore.culto += 2;
-            if (value === "Poesía" || value === "Dibujar") personalityScore.artista += 2;
-            if (value === "Manuales técnicos" || value === "Experimentos") personalityScore.cientifico += 2;
-            if (value === "Revistas de aventura" || value === "Deporte") personalityScore.aventurero += 2;
-            if (value === "Redes sociales" || value === "Socializar") personalityScore.social += 2;
-            if (value === "Meditar") personalityScore.relajado += 2;
-            if (value === "Reparar cosas") personalityScore.practico += 2;
-            if (value === "Nada") personalityScore.creativo += 2; // Ajusta según las opciones
+            if (value === "Fantasía" || value === "Historia" || value === "Leer" || value === "Estudiar") personalityScore.culto += 2;
+            if (value === "Poesía" || value === "Dibujar" || value === "Crear arte") personalityScore.artista += 2;
+            if (value === "Manuales técnicos" || value === "Experimentos" || value === "Científico") personalityScore.cientifico += 2;
+            if (value === "Revistas de aventura" || value === "Deporte" || value === "Explorar" || value === "Aventurero") personalityScore.aventurero += 2;
+            if (value === "Redes sociales" || value === "Socializar" || value === "Social") personalityScore.social += 2;
+            if (value === "Meditar" || value === "Relajarme" || value === "Relajado") personalityScore.relajado += 2;
+            if (value === "Reparar cosas" || value === "Arreglar cosas" || value === "Práctico") personalityScore.practico += 2;
+            if (value === "Creativo" || value === "De manera creativa") personalityScore.creativo += 2;
+
+            // Pregunta 2 y 3
+            if (value === "Acción" || value === "Terror") personalityScore.aventurero += 1;
+            if (value === "Drama" || value === "Documentales") personalityScore.culto += 1;
+            if (value === "Comedia" || value === "Romance") personalityScore.social += 1;
+            if (value === "Animación" || value === "Independientes") personalityScore.artista += 1;
+
+            // Pregunta 4
+            if (value === "Analítico") personalityScore.cientifico += 2;
+            if (value === "Artístico") personalityScore.artista += 2;
+
+            // Pregunta 5
+            if (value === "Hacer ejercicio") personalityScore.aventurero += 1;
+            if (value === "Estudiar") personalityScore.culto += 1;
+
+            // Pregunta 6
+            if (value === "Electrónica") personalityScore.friki += 1;
+            if (value === "Clásica" || value === "Jazz") personalityScore.culto += 1;
+            if (value === "Rock" || value === "Indie") personalityScore.artista += 1;
+            if (value === "Pop" || value === "Hip-hop") personalityScore.social += 1;
+
+            // Pregunta 7
+            if (value === "Playa" || value === "Casa") personalityScore.relajado += 1;
+            if (value === "Montaña" || value === "Bosque" || value === "Desierto") personalityScore.aventurero += 1;
+            if (value === "Ciudad") personalityScore.social += 1;
+            if (value === "Espacio") personalityScore.friki += 1;
+
+            // Pregunta 8
+            if (value === "Logros") personalityScore.practico += 1;
+            if (value === "Conocimiento") personalityScore.culto += 1;
+            if (value === "Creatividad" || value === "Arte") personalityScore.creativo += 1;
+            if (value === "Aventura") personalityScore.aventurero += 1;
+            if (value === "Relaciones") personalityScore.social += 1;
+            if (value === "Bienestar") personalityScore.relajado += 1;
+            if (value === "Practicidad") personalityScore.practico += 1;
+
+            // Pregunta 9
+            if (value === "En equipo" || value === "Con un líder") personalityScore.social += 1;
+            if (value === "Solo") personalityScore.relajado += 1;
+            if (value === "Con un plan") personalityScore.practico += 1;
+            if (value === "Espontáneamente") personalityScore.aventurero += 1;
+            if (value === "Con tecnología") personalityScore.friki += 1;
+            if (value === "Con las manos") personalityScore.practico += 1;
         });
         const maxScore = Math.max(...Object.values(personalityScore));
         let userType = "Casual", icon = "👤";
@@ -256,7 +358,15 @@ function submitTest() {
         localStorage.setItem("userIcon", icon);
         localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
         updateUserInfo();
-        applyFade(document.getElementById("personality-test"), () => document.getElementById("personality-test").style.display = "none");
+        const test = document.getElementById("personality-test");
+        const container = document.querySelector(".container");
+        applyFade(test, () => {
+            test.style.display = "none";
+            container.style.display = "block";
+            container.classList.add("fade-in");
+            container.style.opacity = "1";
+            showCapsulaByDate();
+        });
     } else {
         alert("Selecciona una opción.");
     }
@@ -281,21 +391,36 @@ function start2000sGraphics(tema) {
     canvas.height = window.innerHeight;
 
     const elements = tema === "default" ? [
-        { x: 50, y: 50, dx: 2, dy: 1, text: "⚙️", size: 30, color: "#00ffcc" },
-        { x: 200, y: 100, dx: -1, dy: 2, text: "🚀", size: 40, color: "#00ffcc" }
+        { x: 50, y: 50, dx: 2, dy: 1, text: "🔳", size: 30, color: "#00ffcc" },
+        { x: 200, y: 100, dx: -1, dy: 2, text: "🔵", size: 40, color: "#00ffcc" }
     ] : tema === "frutiger-metro" ? [
         { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#333" },
         { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#666" }
+    ] : tema === "pastel" ? [
+        { x: 150, y: 150, dx: 2, dy: 1, text: "🌸", size: 30, color: "#FFB6C1" },
+        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌼", size: 40, color: "#87CEEB" }
+    ] : tema === "vaporwave" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#FF6EC7" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#7859A9" }
+    ] : tema === "dark-academia" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#3E2723" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#795548" }
+    ] : tema === "cyberpunk" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#FF00FF" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#00FFFF" }
     ] : tema === "frutiger-aero" ? [
         { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
         { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
+    ] : tema === "galaxy" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#191970" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#483D8B" }
     ] : [];
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         elements.forEach(el => {
             ctx.fillStyle = el.color;
-            ctx.font = `${el.size}px 'Courier New'`;
+            ctx.font = `${el.size}px 'Arial'`;
             ctx.fillText(el.text, el.x, el.y);
             el.x += el.dx;
             el.y += el.dy;
@@ -315,8 +440,11 @@ function stop2000sGraphics() {
 
 // Inicio
 document.addEventListener("DOMContentLoaded", () => {
-    if (!localStorage.getItem("userType")) showPersonalityTest();
-    else {
+    const container = document.querySelector(".container");
+    container.style.opacity = "1";
+    if (!localStorage.getItem("userType")) {
+        showPersonalityTest();
+    } else {
         showCapsulaByDate();
         start2000sGraphics(temaActual);
     }
