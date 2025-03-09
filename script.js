@@ -4,7 +4,7 @@ const capsulas = {
         { fecha: "2025-03-02", dato: "Lanzamiento del iPhone 17, presentado con nuevas funciones de IA, según Apple.", datoZoom: "Apple anunció mejoras en IA para fotografía y realidad aumentada.", cita: "‘La tecnología debe simplificar la vida’ - Tim Cook.", citaZoom: "Tim Cook, CEO de Apple, en la WWDC 2025.", recurso: "<a href='https://apple.com/news/2025-iphone17'>Noticia oficial</a>" },
         { fecha: "2025-03-01", dato: "Firma del Acuerdo Climático Global en París, extendiendo metas para 2030.", datoZoom: "150 países ratificaron nuevas metas de reducción de emisiones.", cita: "‘El clima es nuestra responsabilidad’ - Greta Thunberg.", citaZoom: "Declaración en la COP30.", recurso: "<a href='https://un.org/climate/2025'>Detalles del acuerdo</a>" },
         { fecha: "2025-02-28", dato: "Descubrimiento de nueva exoluna orbitando Kepler-1625b, confirmada por NASA.", datoZoom: "La exoluna podría tener condiciones para vida básica.", cita: "‘Un paso hacia entender el cosmos’ - Neil deGrasse Tyson.", citaZoom: "Comentario en redes sociales.", recurso: "<a href='https://nasa.gov/exoplanets/2025'>Reporte NASA</a>" },
-        { fecha: "2024-12-31", dato: "Fin del Año Nuevo Lunar, celebrando el Año del Dragón en Asia.", datoZoom: "Festividades en China, Vietnam y Corea con desfiles masivos.", cita: "‘El dragón trae prosperidad’ - Tradición china.", citaZoom: "Proverbio milenario.", recurso: "<a href='https://bbc.com/news/asia-2024-lunar'>BBC reporte</a>" },
+        { fecha: "2024-12-31", dato: "Fin del Año Nuevo Lunar, celebrando el Año del Dragón en Asia.", datoZoom: "Festividades en China, Vietnam y Corea con desfiless masivos.", cita: "‘El dragón trae prosperidad’ - Tradición china.", citaZoom: "Proverbio milenario.", recurso: "<a href='https://bbc.com/news/asia-2024-lunar'>BBC reporte</a>" },
         // Añade 496 más con eventos reales históricos o actuales, distribuidos en fechas desde 1900 a 2025. Usa fuentes como Wikipedia, BBC, NASA, etc.
     ],
     en: [
@@ -39,14 +39,14 @@ const capsulas = {
         { fecha: "2025-03-02", dato: "Запуск iPhone 17 с функциями ИИ, объявленный Apple.", datoZoom: "Apple представила улучшения ИИ для фотографии и дополненной реальности.", cita: "«Технологии должны упрощать жизнь» - Тим Кук.", citaZoom: "Тим Кук, CEO Apple, на WWDC 2025.", recurso: "<a href='https://apple.com/news/2025-iphone17'>Официальная новость</a>" },
         { fecha: "2025-03-01", dato: "Подписание Глобального климатического соглашения в Париже, продление целей на 2030 год.", datoZoom: "150 стран ратифицировали новые цели по сокращению выбросов.", cita: "«Климат — наша ответственность» - Грета Тунберг.", citaZoom: "Заявление на COP30.", recurso: "<a href='https://un.org/climate/2025'>Детали соглашения</a>" },
         { fecha: "2025-02-28", dato: "Открытие новой экзолуны, вращающейся вокруг Kepler-1625b, подтверждено NASA.", datoZoom: "Экзолуна может иметь условия для базовой жизни.", cita: "«Шаг к пониманию космоса» - Нил Деграсс Тайсон.", citaZoom: "Комментарий в социальных сетях.", recurso: "<a href='https://nasa.gov/exoplanets/2025'>Отчет NASA</a>" },
-        { fecha: "2024-12-31", dato: "Окончание Лунного Нового года, празднование Года Дракона в Азии.", datoZoom: "Празднования в Китае, Вьетнаме и Корее с массовыми парадами.", cita: "«Дракон приносит процветание» - Китайская традиция.", citaZoom: "Древняя поговорка.", recurso: "<a href='https://bbc.com/news/asia-2024-lunar'>Отчет BBC</a>" },
+        { fecha: "2024-12-31", dato: "Окончание Лунного Нового года, празднование Года Дракона в Азии.", datoZoom: "Празднования в Китае, Вьетнаме и Корее с массовыми парадами.", cita: "«Дракон приносит процветание» - Китайская традиция.", citaZoom: "Древняя поговорka.", recurso: "<a href='https://bbc.com/news/asia-2024-lunar'>Отчет BBC</a>" },
         // Repite para 496 más en ruso.
     ],
     it: [
         { fecha: "2025-03-02", dato: "Lancio dell'iPhone 17 con funzioni di IA, annunciato da Apple.", datoZoom: "Apple ha svelato miglioramenti di IA per fotografia e AR.", cita: "«La tecnologia dovrebbe semplificare la vita» - Tim Cook.", citaZoom: "Tim Cook, CEO di Apple, al WWDC 2025.", recurso: "<a href='https://apple.com/news/2025-iphone17'>Notizia ufficiale</a>" },
         { fecha: "2025-03-01", dato: "Firma dell'Accordo Climatico Globale a Parigi, estendendo gli obiettivi per il 2030.", datoZoom: "150 paesi hanno ratificato nuovi target di riduzione delle emissioni.", cita: "«Il clima è la nostra responsabilità» - Greta Thunberg.", citaZoom: "Dichiarazione alla COP30.", recurso: "<a href='https://un.org/climate/2025'>Dettagli dell'accordo</a>" },
         { fecha: "2025-02-28", dato: "Scoperta di una nuova esoluna che orbita attorno a Kepler-1625b, confermata dalla NASA.", datoZoom: "L'esoluna potrebbe avere condizioni per una vita di base.", cita: "«Un passo verso la comprensione del cosmo» - Neil deGrasse Tyson.", citaZoom: "Commento sui social media.", recurso: "<a href='https://nasa.gov/exoplanets/2025'>Rapporto NASA</a>" },
-        { fecha: "2024-12-31", dato: "Fine del Capodanno Lunare, celebrando l'Anno del Drago in Asia.", datoZoom: "Festività in Cina, Vietnam e Corea con parate massive.", cita: "«Il drago porta prosperità» - Tradizione cinese.", citaZoom: "Proverbio antico.", recurso: "<a href='https://bbc.com/news/asia-2024-lunar'>Rapporto BBC</a>" },
+        { fecha: "2024-12-31", dato: "Fine del Capodanno Lunare, celebrando l'Anno del Drago in Asia.", datoZoom: "Festività in Cina, Vietnam e Corea con parate massive.", cita: "«Il drago porta prosperità» - Tradizione cinese.", citaZoom: "Proverbio antico.", recurso: "<a href='https://bbc.com/news/asia-2024-lunar'>Rapport BBC</a>" },
         // Repite para 496 más en italiano.
     ],
     zh: [
@@ -194,7 +194,7 @@ function applyConfig() {
     localStorage.setItem("tema", tema);
     localStorage.setItem("idioma", idioma);
     nuevaCapsula();
-    updateText(); // Añadí la función updateText aquí
+    updateText();
     start2000sGraphics(tema); // Asegurar que las gráficas se muestren al cambiar tema
 }
 
@@ -328,6 +328,119 @@ function updateUserInfo() {
         score = diffDays * 10; // 10 puntos por día
     }
     document.getElementById("user-info").innerHTML = `Usuario: ${icon} ${userType} | Puntaje: ${score} pts`;
+}
+
+// Gráficos interactivos para todos los temas
+let animationFrameId;
+function start2000sGraphics(tema) {
+    const canvas = document.getElementById("interactive-2000s");
+    if (!canvas) {
+        console.error("Canvas no encontrado. Asegúrate de que el ID es 'interactive-2000s' en el HTML.");
+        return;
+    }
+    canvas.style.display = "block";
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let elements = [];
+    switch (tema) {
+        case "default": // Sci-Fi
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "⚙️", size: 30, color: "#00ffcc" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🚀", size: 40, color: "#00ffcc" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🖥️", size: 25, color: "#00ffcc" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "🤖", size: 35, color: "#00ffcc" }
+            ];
+            break;
+        case "2000s": // Años 2000
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "☺", size: 30, color: "#ff00ff" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "★", size: 40, color: "#ff00ff" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "♪", size: 25, color: "#ff00ff" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "♥", size: 35, color: "#ff00ff" },
+                { x: 150, y: 250, dx: 1.5, dy: -1.5, text: "✿", size: 30, color: "#ffff00" }
+            ];
+            break;
+        case "pastel": // Pastel
+            elements = [
+                { x: 50, y: 50, dx: 1, dy: 1, text: "🌸", size: 30, color: "#ff9999" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🦋", size: 35, color: "#b8e1ff" },
+                { x: 300, y: 150, dx: 2, dy: -1, text: "☁️", size: 25, color: "#ffd6e8" },
+                { x: 100, y: 200, dx: -1.5, dy: 1.5, text: "🌈", size: 40, color: "#8c6fa3" }
+            ];
+            break;
+        case "vaporwave": // Vaporwave
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "📼", size: 30, color: "#ff00ff" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🌴", size: 40, color: "#ff6ec4" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🖥️", size: 25, color: "#7873f5" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "☀️", size: 35, color: "#ff00ff" }
+            ];
+            break;
+        case "dark-academia": // Dark Academia
+            elements = [
+                { x: 50, y: 50, dx: 1, dy: 1, text: "📚", size: 30, color: "#d4a373" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🕯️", size: 35, color: "#8c5523" },
+                { x: 300, y: 150, dx: 2, dy: -1, text: "✒️", size: 25, color: "#d4a373" },
+                { x: 100, y: 200, dx: -1.5, dy: 1.5, text: "🦇", size: 30, color: "#8c5523" }
+            ];
+            break;
+        case "cyberpunk": // Cyberpunk
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "💾", size: 30, color: "#ff2079" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🌃", size: 40, color: "#00f7ff" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🤖", size: 25, color: "#ff2079" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "⚡", size: 35, color: "#00f7ff" }
+            ];
+            break;
+        case "retro-game": // Retro Game
+            elements = [
+                { x: 50, y: 50, dx: 2, dy: 1, text: "🎮", size: 30, color: "#00ff00" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "👾", size: 40, color: "#00ff00" },
+                { x: 300, y: 150, dx: 1, dy: -1, text: "🕹️", size: 25, color: "#00ff00" },
+                { x: 100, y: 200, dx: -2, dy: 1, text: "💰", size: 35, color: "#00ff00" }
+            ];
+            break;
+        case "galaxy": // Galaxia
+            elements = [
+                { x: 50, y: 50, dx: 1, dy: 1, text: "⭐", size: 30, color: "#b300ff" },
+                { x: 200, y: 100, dx: -1, dy: 2, text: "🌌", size: 40, color: "#e6e6ff" },
+                { x: 300, y: 150, dx: 2, dy: -1, text: "🪐", size: 25, color: "#b300ff" },
+                { x: 100, y: 200, dx: -1.5, dy: 1.5, text: "✨", size: 35, color: "#e6e6ff" },
+                { x: 150, y: 250, dx: 1.5, dy: -1.5, text: "☄️", size: 30, color: "#b300ff" }
+            ];
+            break;
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        elements.forEach(el => {
+            ctx.fillStyle = el.color;
+            ctx.font = `${el.size}px ${tema === "retro-game" ? "'Press Start 2P'" : "'Courier New'"}`;
+            ctx.fillText(el.text, el.x, el.y);
+            el.x += el.dx;
+            el.y += el.dy;
+
+            if (el.x < 0 || el.x > canvas.width - el.size) el.dx *= -1;
+            if (el.y < el.size || el.y > canvas.height) el.dy *= -1;
+        });
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+function stop2000sGraphics() {
+    const canvas = document.getElementById("interactive-2000s");
+    if (canvas) {
+        canvas.style.display = "none";
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    } else {
+        console.error("Canvas no encontrado. Asegúrate de que el ID es 'interactive-2000s' en el HTML.");
+    }
 }
 
 // Mostrar test al entrar
