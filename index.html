@@ -52,32 +52,29 @@
         <label>Tema:</label>
         <select id="tema">
             <option value="default">Default (Sci-Fi)</option>
-            <option value="2000s">Años 2000</option>
+            <option value="frutiger-metro">Frutiger Metro</option>
             <option value="pastel">Pastel</option>
             <option value="vaporwave">Vaporwave</option>
             <option value="dark-academia">Dark Academia</option>
             <option value="cyberpunk">Cyberpunk</option>
-            <option value="retro-game">Retro Game</option>
+            <option value="frutiger-aero">Frutiger Aero</option>
             <option value="galaxy">Galaxia</option>
         </select>
         <label>Idioma:</label>
         <select id="idioma">
             <option value="es">Español</option>
             <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
+            <option value="pt">Português</option>
             <option value="jp">日本語</option>
-            <option value="ru">Русский</option>
-            <option value="it">Italiano</option>
-            <option value="zh">中文</option>
             <option value="ko">한국어</option>
-            <option value="tr">Türkçe</option>
+            <option value="fr">Français</option>
         </select>
         <button onclick="applyConfig()">Aplicar</button>
     </div>
     <div id="personality-test" style="display: none;">
-        <h2>Test de Personalidad</h2>
-        <p>Pregunta <span id="current-question"></span> de <span id="total-questions"></span></p>
+        <h2>¿Quién Eres?</h2>
+        <progress id="progress-bar" value="0" max="9"></progress>
+        <p>Pregunta <span id="current-question"></span> de 9</p>
         <div id="test-content"></div>
         <button id="prev-btn" onclick="prevQuestion()">Anterior</button>
         <button id="next-btn" onclick="nextQuestion()">Siguiente</button>
