@@ -257,28 +257,3 @@ body.tema-galaxy #capsula, body.tema-galaxy #lista .item, body.tema-galaxy #agen
 body.tema-galaxy button { background: #b300ff; }
 body.tema-galaxy h1, body.tema-galaxy h2, body.tema-galaxy h3 { color: #b300ff; text-shadow: 0 0 10px #b300ff; }
 body.tema-galaxy a, body.tema-galaxy #lista .item span, body.tema-galaxy #user-info, body.tema-galaxy #test-progress { color: #b300ff; }
-
- /* styles.css */
-/* Clase para elementos que se desvanecerán */
-.fade {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-/* Clase para mostrar elementos con animación */
-.fade-in {
-    opacity: 1;
-}
-
-/* Asegurar que los contenedores principales tengan la transición */
-.container, #organizador, #config, #personality-test {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-/* Estilo adicional para el logo (lo usaremos más adelante) */
-.logo {
-    width: 150px; /* Ajusta según el tamaño de tu logo */
-    height: auto;
-    margin: 0 auto;
-    display: block;
