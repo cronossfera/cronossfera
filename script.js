@@ -88,6 +88,7 @@ function showOrganizador() {
         organizador.classList.add("fade-in");
         organizador.style.opacity = "1";
         stop2000sGraphics();
+        checkPendingNotifications(); // Verificar notificaciones al entrar al organizador
     });
 }
 
@@ -106,12 +107,16 @@ function backToMain() {
         container.classList.add("fade-in");
         container.style.opacity = "1";
         start2000sGraphics(temaActual);
+        checkPendingNotifications(); // Verificar notificaciones al volver
     });
 }
 
 // Organizador dinámico
 let items = JSON.parse(localStorage.getItem("items")) || [];
 const today = new Date().toISOString().split("T")[0];
+
+// Lista de notificaciones enviadas para evitar duplicados
+let sentNotifications = JSON.parse(localStorage.getItem("sentNotifications")) || [];
 
 function addItem() {
     const categoria = document.getElementById("categoria").value;
@@ -122,6 +127,7 @@ function addItem() {
         updateLista();
         document.getElementById("entrada").value = "";
         localStorage.setItem("items", JSON.stringify(items));
+        checkPendingNotifications();
     }
 }
 
@@ -140,11 +146,16 @@ function deleteItem(index) {
     items.splice(index, 1);
     updateLista();
     localStorage.setItem("items", JSON.stringify(items));
+    checkPendingNotifications();
 }
 
 function requestNotificationPermission() {
     if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-        Notification.requestPermission();
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                checkPendingNotifications();
+            }
+        });
     }
 }
 
@@ -162,15 +173,23 @@ function updateAgenda() {
     recordatoriosDiv.innerHTML = hoyItems.length > 0 
         ? hoyItems.map(item => `<div class="recordatorio ${item.fecha === today ? 'pendiente' : ''}">[${item.categoria}] ${item.texto} - ${item.fecha === today ? '¡Hoy!' : item.fecha}</div>`).join("")
         : `<p>${noRecTexts[idiomaActual]}</p>`;
-    
-    hoyItems.forEach(item => {
-        if (item.fecha === today && Notification.permission === "granted") {
-            new Notification("Cronosfera: Recordatorio", {
-                body: `[${item.categoria}] ${item.texto}`,
-                icon: "favicon.ico"
-            });
-        }
-    });
+}
+
+function checkPendingNotifications() {
+    const hoyItems = items.filter(item => item.fecha === today);
+    if (Notification.permission === "granted") {
+        hoyItems.forEach(item => {
+            const notificationId = `${item.categoria}-${item.texto}-${item.fecha}`;
+            if (!sentNotifications.includes(notificationId)) {
+                new Notification("Cronosfera: Recordatorio", {
+                    body: `[${item.categoria}] ${item.texto}`,
+                    icon: "favicon.ico"
+                });
+                sentNotifications.push(notificationId);
+                localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
+            }
+        });
+    }
 }
 
 // Configuración
@@ -453,6 +472,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         showCapsulaByDate();
         start2000sGraphics(temaActual);
+        checkPendingNotifications(); // Verificar al cargar la página
     }
     updateText();
+    // Chequeo periódico cada 60 segundos
+    setInterval(checkPendingNotifications, 60000);
 });
