@@ -11,6 +11,7 @@
 <body>
     <canvas id="interactive-2000s" style="position: fixed; top: 0; left: 0; z-index: -1; display: none;"></canvas>
     <img src="logo.png" alt="Cronosfera Logo" class="logo" onclick="backToMain()">
+    <div id="visit-counter" style="font-family: 'Orbitron', sans-serif; color: #fff; margin-bottom: 10px;"></div>
     <button id="config-btn" onclick="toggleConfig()">⚙️</button>
     <div class="container">
         <div id="user-info"></div>
@@ -39,6 +40,7 @@
         </select>
         <input type="text" id="entrada" placeholder="Tarea...">
         <input type="date" id="fecha">
+        <input type="time" id="hora">
         <button onclick="addItem()">Agregar</button>
         <div id="lista"></div>
         <div id="agenda">
@@ -56,7 +58,7 @@
             <option value="pastel">Pastel</option>
             <option value="vaporwave">Vaporwave</option>
             <option value="dark-academia">Dark Academia</option>
-            <option value="frutiger-metro-2">Frutiger Metro II</option>
+            <option value="cyberpunk">Cyberpunk</option>
             <option value="frutiger-aero">Frutiger Aero</option>
             <option value="galaxy">Galaxia</option>
         </select>
@@ -70,6 +72,7 @@
             <option value="fr">Français</option>
         </select>
         <button onclick="applyConfig()">Aplicar</button>
+        <button class="back-btn" onclick="backToMain()">Atrás</button>
     </div>
     <div id="personality-test" style="display: none;">
         <h2>¿Quién Eres?</h2>
