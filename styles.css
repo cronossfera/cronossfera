@@ -36,13 +36,13 @@ body {
     background-color: #1a1a1a; /* Fondo de respaldo por si fallan las imágenes */
 }
 
-/* Estilos para temas con gradientes de fondo */
+/* Estilos para temas con imágenes de fondo */
 body.tema-default::before,
 body.tema-frutiger-metro::before,
 body.tema-pastel::before,
 body.tema-vaporwave::before,
 body.tema-dark-academia::before,
-body.tema-frutiger-metro-2::before,
+body.tema-cyberpunk::before,
 body.tema-frutiger-aero::before,
 body.tema-galaxy::before {
     content: "";
@@ -58,30 +58,30 @@ body.tema-galaxy::before {
     z-index: -1;
 }
 
-/* Definición de gradientes de fondo para cada tema */
+/* Definición de imágenes de fondo para cada tema */
 body.tema-default::before {
-    background: linear-gradient(135deg, #1a1a1a, #00ffcc);
+    background-image: url('images/sci-fi-bg.jpg');
 }
 body.tema-frutiger-metro::before {
-    background: linear-gradient(135deg, #333, #666);
+    background-image: url('images/frutiger-metro-bg.jpg');
 }
 body.tema-pastel::before {
-    background: linear-gradient(135deg, #FFB6C1, #87CEEB);
+    background-image: url('images/pastel-frutiger-metro-bg.jpg');
 }
 body.tema-vaporwave::before {
-    background: linear-gradient(135deg, #FF6EC7, #7859A9);
+    background-image: url('images/vaporwave-bg.jpg');
 }
 body.tema-dark-academia::before {
-    background: linear-gradient(135deg, #3E2723, #795548);
+    background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
 }
-body.tema-frutiger-metro-2::before {
-    background: linear-gradient(135deg, #FF00FF, #00FFFF);
+body.tema-cyberpunk::before {
+    background-image: url('images/frutiger-aero-bg.jpg'); /* Ahora es Frutiger Aero II */
 }
 body.tema-frutiger-aero::before {
-    background: linear-gradient(135deg, #00aaff, #00ccff);
+    background-image: url('images/frutiger-aero-bg.jpg');
 }
 body.tema-galaxy::before {
-    background: linear-gradient(135deg, #191970, #483D8B);
+    background-image: url('images/galaxia-bg.jpg');
 }
 
 /* Estilos específicos para cada tema */
@@ -102,7 +102,7 @@ body.tema-vaporwave {
 body.tema-dark-academia {
     font-family: 'Arial', sans-serif;
 }
-body.tema-frutiger-metro-2 {
+body.tema-cyberpunk {
     font-family: 'Arial', sans-serif;
 }
 body.tema-frutiger-aero {
@@ -164,6 +164,24 @@ a:hover {
 .logo:hover {
     transform: scale(1.1);
     box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
+}
+
+/* Contador de visitas */
+#visit-counter {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    color: #00ffcc; /* Color visible para todos los temas */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Sombra para mejorar contraste */
+    margin-bottom: 10px;
+    z-index: 10; /* Asegura que esté por encima del fondo */
+}
+
+/* Ajuste de color para temas con texto oscuro */
+body.tema-frutiger-metro #visit-counter,
+body.tema-pastel #visit-counter,
+body.tema-dark-academia #visit-counter,
+body.tema-frutiger-aero #visit-counter {
+    color: #fff; /* Color blanco para temas con fondo oscuro */
 }
 
 /* Botón de configuración (tuerca) */
