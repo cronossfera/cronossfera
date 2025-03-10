@@ -1,13 +1,116 @@
+// Configuración de Firebase (reemplaza con tus claves)
+const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    authDomain: "TU_AUTH_DOMAIN",
+    projectId: "TU_PROJECT_ID",
+    storageBucket: "TU_STORAGE_BUCKET",
+    messagingSenderId: "TU_MESSAGING_SENDER_ID",
+    appId: "TU_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
 // Configuración inicial
 let idiomaActual = localStorage.getItem("idioma") || "es";
 let temaActual = localStorage.getItem("tema") || "default";
-document.body.className = `tema-${temaActual}`;
+let fontActual = localStorage.getItem("font") || "Orbitron";
+let isHighContrast = localStorage.getItem("highContrast") === "true";
+let isAutoTheme = localStorage.getItem("autoTheme") === "true";
+document.body.className = `tema-${temaActual} custom-font-${fontActual}${isHighContrast ? " high-contrast" : ""}`;
+if (isAutoTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.body.classList.add("tema-dark-academia");
+}
 
 // Contador de visitas
 let visitCount = localStorage.getItem("visitCount") || 0;
 visitCount++;
 localStorage.setItem("visitCount", visitCount);
 document.getElementById("visit-counter").textContent = `Visitas: ${visitCount}`;
+
+// Sistema de logros
+let achievements = JSON.parse(localStorage.getItem("achievements")) || {
+    visits10: false,
+    tasks5: false,
+    capsules3: false
+};
+let tasksCompleted = localStorage.getItem("tasksCompleted") || 0;
+let capsulesSent = localStorage.getItem("capsulesSent") || 0;
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+function checkAchievements() {
+    if (visitCount >= 10 && !achievements.visits10) {
+        achievements.visits10 = true;
+        localStorage.setItem("achievements", JSON.stringify(achievements));
+        updateAchievementsDisplay();
+    }
+    if (tasksCompleted >= 5 && !achievements.tasks5) {
+        achievements.tasks5 = true;
+        localStorage.setItem("achievements", JSON.stringify(achievements));
+        updateAchievementsDisplay();
+    }
+    if (capsulesSent >= 3 && !achievements.capsules3) {
+        achievements.capsules3 = true;
+        localStorage.setItem("achievements", JSON.stringify(achievements));
+        updateAchievementsDisplay();
+    }
+}
+
+function updateAchievementsDisplay() {
+    const achievementsDiv = document.getElementById("achievements");
+    const achievementTexts = {
+        es: { visits10: "🏅 Primeras 10 Visitas", tasks5: "🏆 5 Tareas Completadas", capsules3: "⭐ 3 Cápsulas Enviadas" },
+        en: { visits10: "🏅 First 10 Visits", tasks5: "🏆 5 Tasks Completed", capsules3: "⭐ 3 Capsules Sent" },
+        pt: { visits10: "🏅 Primeiras 10 Visitas", tasks5: "🏆 5 Tarefas Completadas", capsules3: "⭐ 3 Cápsulas Enviadas" },
+        jp: { visits10: "🏅 最初の10訪問", tasks5: "🏆 5タスク完了", capsules3: "⭐ 3カプセル送信" },
+        ko: { visits10: "🏅 첫 10 방문", tasks5: "🏆 5개 작업 완료", capsules3: "⭐ 3개 캡슐 전송" },
+        fr: { visits10: "🏅 Premières 10 Visites", tasks5: "🏆 5 Tâches Complétées", capsules3: "⭐ 3 Capsules Envoyées" }
+    };
+    achievementsDiv.innerHTML = Object.keys(achievements)
+        .filter(key => achievements[key])
+        .map(key => `<span class="achievement unlocked">${achievementTexts[idiomaActual][key]}</span>`)
+        .join("");
+}
+
+// Tutorial
+let tutorialStep = 0;
+const tutorialSteps = [
+    { text: "Bienvenido a Cronosfera. Haz clic en 'Cápsula Aleatoria' para comenzar.", target: ".button-group button:first-child" },
+    { text: "Usa el Organizador Dinámico para gestionar tus tareas.", target: "a" },
+    { text: "Personaliza tu experiencia en la configuración.", target: "#config-btn" },
+    { text: "¡Listo! Explora y disfruta.", target: ".capsule" }
+];
+
+function showTutorial() {
+    const tutorial = document.getElementById("tutorial");
+    tutorial.style.display = "block";
+    updateTutorialStep();
+}
+
+function updateTutorialStep() {
+    const tutorial = document.getElementById("tutorial");
+    const stepsDiv = document.getElementById("tutorial-steps");
+    if (tutorialStep < tutorialSteps.length) {
+        stepsDiv.innerHTML = `<div class="step">${tutorialSteps[tutorialStep].text}<span class="arrow">➡️</span></div>`;
+        const target = document.querySelector(tutorialSteps[tutorialStep].target);
+        if (target) target.focus();
+        document.getElementById("next-tutorial").style.display = tutorialStep < tutorialSteps.length - 1 ? "inline-block" : "none";
+        document.getElementById("skip-tutorial").style.display = "inline-block";
+    } else {
+        tutorial.style.display = "none";
+        localStorage.setItem("showTutorial", "false");
+    }
+}
+
+function nextTutorial() {
+    tutorialStep++;
+    updateTutorialStep();
+}
+
+function skipTutorial() {
+    tutorialStep = tutorialSteps.length;
+    updateTutorialStep();
+}
 
 // Animación de desvanecimiento
 function applyFade(element, callback) {
@@ -32,7 +135,7 @@ function showModal(text) {
         modal.innerHTML = `
             <div class="modal-content">
                 <p id="modal-text"></p>
-                <button onclick="closeModal()">Cerrar</button>
+                <button onclick="closeModal()" aria-label="Cerrar modal">Cerrar</button>
             </div>
         `;
         document.body.appendChild(modal);
@@ -59,6 +162,7 @@ function showCapsulaByDate() {
         container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
+        document.getElementById("favorite-btn").className = favorites.some(f => f.dato === capsula.dato) ? "favorited" : "";
     });
 }
 
@@ -75,6 +179,7 @@ function nuevaCapsula() {
         container.style.opacity = "1";
         updateUserInfo();
         start2000sGraphics(temaActual);
+        document.getElementById("favorite-btn").className = favorites.some(f => f.dato === capsula.dato) ? "favorited" : "";
     });
 }
 
@@ -82,6 +187,75 @@ function nuevaCapsula() {
 function enviar() {
     const capsulaText = `${document.getElementById("dato").textContent}\n${document.getElementById("cita").textContent}\n${document.getElementById("recurso").textContent}`;
     window.location.href = `mailto:?subject=Cronosfera&body=${encodeURIComponent(capsulaText)}`;
+    capsulesSent++;
+    localStorage.setItem("capsulesSent", capsulesSent);
+    checkAchievements();
+}
+
+// Favoritos
+function toggleFavorite() {
+    const capsula = {
+        dato: document.getElementById("dato").textContent.split(" [")[0].replace("Dato: ", ""),
+        cita: document.getElementById("cita").textContent.split(" [")[0].replace("Cita: ", ""),
+        recurso: document.getElementById("recurso").textContent.replace("Recurso: ", "")
+    };
+    const index = favorites.findIndex(f => f.dato === capsula.dato);
+    if (index === -1) {
+        favorites.push(capsula);
+        document.getElementById("favorite-btn").className = "favorited";
+    } else {
+        favorites.splice(index, 1);
+        document.getElementById("favorite-btn").className = "";
+    }
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+}
+
+function showFavorites() {
+    const favoritesDiv = document.getElementById("favorites");
+    applyFade(favoritesDiv, () => {
+        document.querySelector(".container").style.display = "none";
+        favoritesDiv.style.display = "block";
+        favoritesDiv.innerHTML = `<h2>Cápsulas Favoritas</h2><div id="favorites-list">${favorites.map(f => `
+            <div class="capsule">
+                <div>${f.dato}</div>
+                <div>${f.cita}</div>
+                <div>${f.recurso}</div>
+            </div>
+        `).join("")}</div><button class="back-btn" onclick="backToMain()">Volver a Principal</button>`;
+    });
+}
+
+// Cápsulas personalizadas
+function showCustomCapsuleForm() {
+    const form = document.getElementById("custom-capsule-form");
+    applyFade(form, () => {
+        document.querySelector(".container").style.display = "none";
+        form.style.display = "block";
+    });
+}
+
+function hideCustomCapsuleForm() {
+    const form = document.getElementById("custom-capsule-form");
+    applyFade(form, () => {
+        form.style.display = "none";
+        document.querySelector(".container").style.display = "block";
+    });
+}
+
+function saveCustomCapsule() {
+    const dato = document.getElementById("custom-dato").value;
+    const cita = document.getElementById("custom-cita").value;
+    const recurso = document.getElementById("custom-recurso").value;
+    const fecha = document.getElementById("custom-date").value;
+    if (dato && cita && recurso && fecha) {
+        const customCapsule = { dato, cita, recurso, fecha };
+        capsulas[idiomaActual].push(customCapsule);
+        localStorage.setItem("capsulas", JSON.stringify(capsulas));
+        hideCustomCapsuleForm();
+        showCapsulaByDate();
+    } else {
+        alert("Completa todos los campos.");
+    }
 }
 
 // Mostrar organizador
@@ -94,6 +268,7 @@ function showOrganizador() {
         organizador.classList.add("fade-in");
         organizador.style.opacity = "1";
         stop2000sGraphics();
+        initializeCalendar();
         checkPendingNotifications();
     });
 }
@@ -103,15 +278,20 @@ function backToMain() {
     const organizador = document.getElementById("organizador");
     const config = document.getElementById("config");
     const test = document.getElementById("personality-test");
-    const container = document.querySelector(".container");
-    const elementToFade = organizador.style.display === "block" ? organizador : config.style.display === "block" ? config : test;
+    const customForm = document.getElementById("custom-capsule-form");
+    const favorites = document.getElementById("favorites");
+    const stats = document.getElementById("stats");
+    const elementToFade = organizador.style.display === "block" ? organizador : config.style.display === "block" ? config : test || customForm || favorites || stats;
     applyFade(elementToFade, () => {
         organizador.style.display = "none";
         config.style.display = "none";
         test.style.display = "none";
-        container.style.display = "block";
-        container.classList.add("fade-in");
-        container.style.opacity = "1";
+        customForm.style.display = "none";
+        favorites.style.display = "none";
+        stats.style.display = "none";
+        document.querySelector(".container").style.display = "block";
+        document.querySelector(".container").classList.add("fade-in");
+        document.querySelector(".container").style.opacity = "1";
         start2000sGraphics(temaActual);
         checkPendingNotifications();
     });
@@ -127,11 +307,14 @@ function addItem() {
     const texto = document.getElementById("entrada").value;
     const fecha = document.getElementById("fecha").value;
     const hora = document.getElementById("hora").value || "00:00";
+    const priority = document.getElementById("priority").value;
+    const tags = document.getElementById("tags").value.split(",").map(t => t.trim());
     if (texto && fecha) {
-        items.push({ categoria, texto, fecha, hora });
+        items.push({ categoria, texto, fecha, hora, priority, tags, completed: false });
         updateLista();
         document.getElementById("entrada").value = "";
         document.getElementById("hora").value = "";
+        document.getElementById("tags").value = "";
         localStorage.setItem("items", JSON.stringify(items));
         checkPendingNotifications();
     }
@@ -140,60 +323,56 @@ function addItem() {
 function updateLista() {
     const listaDiv = document.getElementById("lista");
     listaDiv.innerHTML = items.map((item, index) => `
-        <div class="item">
-            <span>[${item.categoria}]</span> ${item.texto} - ${item.fecha} ${item.hora ? `a las ${item.hora}` : ''}
-            <button onclick="deleteItem(${index})" style="background:#ff6666;">X</button>
+        <div class="item ${item.priority.toLowerCase()}">
+            <span>[${item.categoria}]</span> ${item.texto} - ${item.fecha} ${item.hora ? `a las ${item.hora}` : ''} 
+            <span>${item.tags.map(t => `#${t}`).join(" ")}</span>
+            <button onclick="toggleComplete(${index})" aria-label="Marcar como completada">${item.completed ? "✓" : "○"}</button>
+            <button onclick="deleteItem(${index})" style="background:#ff6666;" aria-label="Eliminar tarea">X</button>
         </div>
     `).join("");
     updateAgenda();
 }
 
-function deleteItem(index) {
-    items.splice(index, 1);
-    updateLista();
+function toggleComplete(index) {
+    items[index].completed = !items[index].completed;
+    if (items[index].completed) tasksCompleted++;
     localStorage.setItem("items", JSON.stringify(items));
+    localStorage.setItem("tasksCompleted", tasksCompleted);
+    updateLista();
+    checkAchievements();
+}
+
+function deleteItem(index) {
+    if (items[index].completed) tasksCompleted--;
+    items.splice(index, 1);
+    localStorage.setItem("items", JSON.stringify(items));
+    localStorage.setItem("tasksCompleted", tasksCompleted);
+    updateLista();
     checkPendingNotifications();
+    checkAchievements();
 }
 
-function registerServiceWorker() {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
-            console.log('Service Worker registrado con éxito:', registration);
-            return navigator.serviceWorker.ready;
-        }).then(() => {
-            console.log('Service Worker está listo.');
-            requestNotificationPermission();
-        }).catch(err => {
-            console.error('Error al registrar el Service Worker:', err);
-        });
-    } else {
-        console.error('Service Workers no son compatibles con este navegador.');
-        requestNotificationPermission(); // Fallback a notificaciones normales
-    }
-}
-
-function requestNotificationPermission() {
-    if ("Notification" in window) {
-        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-            Notification.requestPermission().then(permission => {
-                console.log("Permiso de notificación:", permission);
-                if (permission === "granted") {
-                    checkPendingNotifications();
-                }
-            }).catch(err => {
-                console.error("Error al solicitar permiso de notificación:", err);
-            });
-        } else if (Notification.permission === "granted") {
-            checkPendingNotifications();
+function initializeCalendar() {
+    const calendarEl = document.getElementById("calendar-container");
+    calendarEl.innerHTML = '<div id="calendar"></div>';
+    const calendar = new FullCalendar.Calendar(calendarEl.querySelector("#calendar"), {
+        initialView: 'dayGridMonth',
+        events: items.map(item => ({
+            title: `[${item.categoria}] ${item.texto}`,
+            start: `${item.fecha}T${item.hora || "00:00"}`,
+            color: item.priority === "Alta" ? "#ff6666" : item.priority === "Media" ? "#ffcc00" : "#66cc66"
+        })),
+        dateClick: function(info) {
+            document.getElementById("fecha").value = info.dateStr.split("T")[0];
+            document.getElementById("hora").focus();
         }
-    } else {
-        console.error("Las notificaciones no son compatibles con este navegador.");
-    }
+    });
+    calendar.render();
 }
 
 function updateAgenda() {
     const recordatoriosDiv = document.getElementById("recordatorios");
-    const hoyItems = items.filter(item => item.fecha <= today);
+    const hoyItems = items.filter(item => item.fecha <= today && !item.completed);
     const noRecTexts = {
         es: "No hay recordatorios para hoy.",
         en: "No reminders for today.",
@@ -211,58 +390,125 @@ function updateAgenda() {
         : `<p>${noRecTexts[idiomaActual]}</p>`;
 }
 
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('Service Worker registrado con éxito:', registration);
+            return navigator.serviceWorker.ready;
+        }).then(registration => {
+            console.log('Service Worker está listo.');
+            requestNotificationPermission(registration);
+            setupPushNotifications(registration);
+        }).catch(err => {
+            console.error('Error al registrar el Service Worker:', err);
+        });
+    } else {
+        console.error('Service Workers no son compatibles con este navegador.');
+        requestNotificationPermission();
+    }
+}
+
+function requestNotificationPermission(registration) {
+    if ("Notification" in window) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                console.log("Permiso de notificación:", permission);
+                if (permission === "granted" && registration) {
+                    setupPushNotifications(registration);
+                }
+            }).catch(err => {
+                console.error("Error al solicitar permiso de notificación:", err);
+            });
+        } else if (Notification.permission === "granted" && registration) {
+            setupPushNotifications(registration);
+        }
+    } else {
+        console.error("Las notificaciones no son compatibles con este navegador.");
+    }
+}
+
+function setupPushNotifications(registration) {
+    if ('PushManager' in window) {
+        registration.pushManager.getSubscription().then(subscription => {
+            if (!subscription) {
+                const vapidPublicKey = "TU_VAPID_PUBLIC_KEY"; // Reemplaza con tu clave VAPID
+                registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+                }).then(subscription => {
+                    console.log('Suscripción a push exitosa:', subscription);
+                    saveSubscriptionToServer(subscription);
+                });
+            }
+        });
+    }
+}
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+function saveSubscriptionToServer(subscription) {
+    // Aquí deberías enviar la suscripción a tu servidor backend
+    console.log('Suscripción guardada:', subscription);
+}
+
+function scheduleNotification(item, registration) {
+    const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
+    if (!sentNotifications.includes(notificationId)) {
+        const notificationTime = new Date(`${item.fecha} ${item.hora}`).getTime();
+        if (notificationTime > Date.now()) {
+            setTimeout(() => {
+                registration.showNotification("Cronosfera: Recordatorio", {
+                    body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
+                    data: { url: "/" }
+                }).catch(err => console.error("Error al programar notificación:", err));
+                sentNotifications.push(notificationId);
+                localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
+            }, notificationTime - Date.now());
+        }
+    }
+}
+
 function checkPendingNotifications() {
     console.log("Verificando notificaciones pendientes...");
-    const hoyItems = items.filter(item => item.fecha === today);
+    const hoyItems = items.filter(item => item.fecha === today && !item.completed);
     console.log("Tareas de hoy:", hoyItems);
     console.log("Permiso de notificación:", Notification.permission);
 
-    if (Notification.permission === "granted") {
-        if ('serviceWorker' in navigator && 'PushManager' in window) {
-            navigator.serviceWorker.ready.then(registration => {
-                hoyItems.forEach(item => {
-                    const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
-                    if (!sentNotifications.includes(notificationId)) {
-                        console.log("Enviando notificación push para:", item);
-                        registration.showNotification("Cronosfera: Recordatorio", {
-                            body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`
-                            // icon: "favicon.ico" // Comentado para evitar problemas
-                        }).catch(err => {
-                            console.error("Error al mostrar notificación push:", err);
-                        });
-                        sentNotifications.push(notificationId);
-                        localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
-                    } else {
-                        console.log("Notificación ya enviada para:", notificationId);
-                    }
-                });
-            });
-        } else {
-            // Fallback a notificaciones normales si no hay Service Worker
+    if (Notification.permission === "granted" && 'serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(registration => {
             hoyItems.forEach(item => {
-                const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
-                if (!sentNotifications.includes(notificationId)) {
-                    console.log("Enviando notificación normal para:", item);
-                    try {
-                        const notification = new Notification("Cronosfera: Recordatorio", {
-                            body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`
-                            // icon: "favicon.ico" // Comentado para evitar problemas
-                        });
-                        notification.onerror = (err) => {
-                            console.error("Error al mostrar notificación:", err);
-                        };
-                        sentNotifications.push(notificationId);
-                        localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
-                    } catch (err) {
-                        console.error("Error al crear notificación:", err);
-                    }
-                } else {
-                    console.log("Notificación ya enviada para:", notificationId);
-                }
+                scheduleNotification(item, registration);
             });
-        }
+        });
     } else {
-        console.warn("Permiso de notificación no concedido.");
+        hoyItems.forEach(item => {
+            const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
+            if (!sentNotifications.includes(notificationId)) {
+                try {
+                    const notification = new Notification("Cronosfera: Recordatorio", {
+                        body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
+                        data: { url: "/" }
+                    });
+                    notification.onclick = (event) => {
+                        event.notification.close();
+                        window.focus();
+                    };
+                    sentNotifications.push(notificationId);
+                    localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
+                } catch (err) {
+                    console.error("Error al crear notificación:", err);
+                }
+            }
+        });
     }
 }
 
@@ -270,13 +516,9 @@ function checkPendingNotifications() {
 function toggleConfig() {
     const config = document.getElementById("config");
     const container = document.querySelector(".container");
-    const organizador = document.getElementById("organizador");
-    const test = document.getElementById("personality-test");
     applyFade(config, () => {
         if (config.style.display === "none" || config.style.display === "") {
             container.style.display = "none";
-            organizador.style.display = "none";
-            test.style.display = "none";
             config.style.display = "block";
             config.classList.add("fade-in");
             config.style.opacity = "1";
@@ -289,12 +531,25 @@ function toggleConfig() {
 function applyConfig() {
     const tema = document.getElementById("tema").value;
     const idioma = document.getElementById("idioma").value;
+    const font = document.getElementById("font").value;
+    const autoTheme = document.getElementById("autoTheme").checked;
+    const highContrast = document.getElementById("highContrast").checked;
     const container = document.querySelector(".container");
     applyFade(container, () => {
-        document.body.className = `tema-${tema}`;
+        document.body.className = `tema-${tema} custom-font-${font}${highContrast ? " high-contrast" : ""}`;
         idiomaActual = idioma;
+        temaActual = tema;
+        fontActual = font;
+        isHighContrast = highContrast;
+        isAutoTheme = autoTheme;
         localStorage.setItem("tema", tema);
         localStorage.setItem("idioma", idioma);
+        localStorage.setItem("font", font);
+        localStorage.setItem("highContrast", highContrast);
+        localStorage.setItem("autoTheme", autoTheme);
+        if (autoTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.className += " tema-dark-academia";
+        }
         nuevaCapsula();
         updateText();
         start2000sGraphics(tema);
@@ -304,12 +559,12 @@ function applyConfig() {
 // Actualizar textos según idioma
 function updateText() {
     const texts = {
-        es: { h2: "Organizador Dinámico", h3: "Agenda", btn1: "Cápsula Aleatoria", btn2: "Enviar a mi futuro yo", link: "Organizador Dinámico", config: "Configuración", back: "Volver a Principal", backConfig: "Atrás" },
-        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main", backConfig: "Back" },
-        pt: { h2: "Organizador Dinâmico", h3: "Agenda", btn1: "Cápsula Aleatória", btn2: "Enviar para Meu Futuro Eu", link: "Organizador Dinâmico", config: "Configurações", back: "Voltar ao Principal", backConfig: "Voltar" },
-        jp: { h2: "ダイナミックオーガナイザー", h3: "アジェンダ", btn1: "ランダムカプセル", btn2: "未来の自分に送信", link: "ダイナミックオーガナイザー", config: "設定", back: "メインに戻る", backConfig: "戻る" },
-        ko: { h2: "다이나믹 오거나이저", h3: "아젠다", btn1: "랜덤 캡슐", btn2: "미래의 나에게 보내기", link: "다이나믹 오거나이저", config: "설정", back: "메인으로 돌아가기", backConfig: "뒤로" },
-        fr: { h2: "Organisateur Dynamique", h3: "Agenda", btn1: "Capsule Aléatoire", btn2: "Envoyer à Mon Futur Moi", link: "Organisateur Dynamique", config: "Paramètres", back: "Retour au Principal", backConfig: "Retour" }
+        es: { h2: "Organizador Dinámico", h3: "Agenda", btn1: "Cápsula Aleatoria", btn2: "Enviar a mi futuro yo", link: "Organizador Dinámico", config: "Configuración", back: "Volver a Principal", backConfig: "Atrás", tutorial: "Tutorial" },
+        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main", backConfig: "Back", tutorial: "Tutorial" },
+        pt: { h2: "Organizador Dinâmico", h3: "Agenda", btn1: "Cápsula Aleatória", btn2: "Enviar para Meu Futuro Eu", link: "Organizador Dinâmico", config: "Configurações", back: "Voltar ao Principal", backConfig: "Voltar", tutorial: "Tutorial" },
+        jp: { h2: "ダイナミックオーガナイザー", h3: "アジェンダ", btn1: "ランダムカプセル", btn2: "未来の自分に送信", link: "ダイナミックオーガナイザー", config: "設定", back: "メインに戻る", backConfig: "戻る", tutorial: "チュートリアル" },
+        ko: { h2: "다이나믹 오거나이저", h3: "아젠다", btn1: "랜덤 캡슐", btn2: "미래의 나에게 보내기", link: "다이나믹 오거나이저", config: "설정", back: "메인으로 돌아가기", backConfig: "뒤로", tutorial: "튜토리얼" },
+        fr: { h2: "Organisateur Dynamique", h3: "Agenda", btn1: "Capsule Aléatoire", btn2: "Envoyer à Mon Futur Moi", link: "Organisateur Dynamique", config: "Paramètres", back: "Retour au Principal", backConfig: "Retour", tutorial: "Tutoriel" }
     };
     document.querySelector("#organizador h2").textContent = texts[idiomaActual].h2;
     document.querySelector("#agenda h3").textContent = texts[idiomaActual].h3;
@@ -327,7 +582,7 @@ function updateText() {
     updateAgenda();
 }
 
-// Test de personalidad con 9 preguntas
+// Test de personalidad
 const personalityQuestions = [
     { question: "¿Qué prefieres leer?", options: ["Ciencia ficción", "Fantasía", "Historia", "Poesía", "Manuales técnicos", "Revistas de aventura", "Redes sociales", "Nada"] },
     { question: "¿Cuál es tu pasatiempo favorito?", options: ["Videojuegos", "Leer", "Dibujar", "Experimentos", "Deporte", "Socializar", "Meditar", "Reparar cosas"] },
@@ -376,6 +631,17 @@ function prevQuestion() {
     if (currentQuestion > 0) {
         currentQuestion--;
         showQuestion();
+    }
+}
+
+function nextQuestion() {
+    const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
+    if (selected) {
+        answers[currentQuestion] = selected.value;
+        currentQuestion++;
+        showQuestion();
+    } else {
+        alert("Selecciona una opción.");
     }
 }
 
@@ -433,4 +699,276 @@ function submitTest() {
         else if (maxScore === personalityScore.aventurero) { userType = "Aventurero"; icon = "🧗‍♂️"; }
         else if (maxScore === personalityScore.social) { userType = "Social"; icon = "🗣️"; }
         else if (maxScore === personalityScore.relajado) { userType = "Relajado"; icon = "🧘‍♂️"; }
-        else if (maxScore === personalityScore.practico) { userType = "Práctico"; icon = "
+        else if (maxScore === personalityScore.practico) { userType = "Práctico"; icon = "🔧"; }
+        else if (maxScore === personalityScore.creativo) { userType = "Creativo"; icon = "✍️"; }
+        localStorage.setItem("userType", userType);
+        localStorage.setItem("userIcon", icon);
+        localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
+        updateUserInfo();
+        const test = document.getElementById("personality-test");
+        const container = document.querySelector(".container");
+        applyFade(test, () => {
+            test.style.display = "none";
+            container.style.display = "block";
+            container.classList.add("fade-in");
+            container.style.opacity = "1";
+            showCapsulaByDate();
+        });
+    } else {
+        alert("Selecciona una opción.");
+    }
+}
+
+// Info del usuario
+function updateUserInfo() {
+    const userType = localStorage.getItem("userType") || "Casual";
+    const icon = localStorage.getItem("userIcon") || "👤";
+    const startDate = localStorage.getItem("startDate");
+    let score = startDate ? Math.floor((new Date() - new Date(startDate)) / (1000 * 60 * 60 * 24)) * 10 : 0;
+    document.getElementById("user-stats").innerHTML = `Usuario: ${icon} ${userType} | Puntaje: ${score} pts`;
+    updateAchievementsDisplay();
+    checkAchievements();
+}
+
+// Estadísticas
+function showStats() {
+    const statsDiv = document.getElementById("stats");
+    applyFade(statsDiv, () => {
+        document.querySelector(".container").style.display = "none";
+        statsDiv.style.display = "block";
+        const ctx = document.getElementById("stats-chart").getContext("2d");
+        const stats = {
+            tasksByCategory: items.reduce((acc, item) => {
+                acc[item.categoria] = (acc[item.categoria] || 0) + 1;
+                return acc;
+            }, {}),
+            productiveDays: [...new Set(items.map(item => item.fecha))].length
+        };
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(stats.tasksByCategory),
+                datasets: [{
+                    label: 'Tareas por Categoría',
+                    data: Object.values(stats.tasksByCategory),
+                    backgroundColor: '#00ffcc'
+                }]
+            },
+            options: { scales: { y: { beginAtZero: true } } }
+        });
+        document.getElementById("stats-details").innerHTML = `
+            <p>Días productivos: ${stats.productiveDays}</p>
+            <p>Tareas completadas: ${tasksCompleted}</p>
+        `;
+    });
+}
+
+// Gráficos interactivos
+let animationFrameId;
+function start2000sGraphics(tema) {
+    const canvas = document.getElementById("interactive-2000s");
+    if (canvas.style.display === "none") return;
+    canvas.style.display = "block";
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    const elements = tema === "default" ? [
+        { x: 50, y: 50, dx: 2, dy: 1, text: "🔳", size: 30, color: "#00ffcc" },
+        { x: 200, y: 100, dx: -1, dy: 2, text: "🔵", size: 40, color: "#00ffcc" }
+    ] : tema === "frutiger-metro" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#333" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#666" }
+    ] : tema === "pastel" ? [
+        { x: 150, y: 150, dx: 2, dy: 1, text: "🌸", size: 30, color: "#FFB6C1" },
+        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌼", size: 40, color: "#87CEEB" }
+    ] : tema === "vaporwave" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#FF6EC7" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#7859A9" }
+    ] : tema === "dark-academia" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#3E2723" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#795548" }
+    ] : tema === "cyberpunk" ? [
+        { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
+        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
+    ] : tema === "frutiger-aero" ? [
+        { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
+        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
+    ] : tema === "galaxy" ? [
+        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#191970" },
+        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#483D8B" }
+    ] : tema === "custom" ? [
+        { x: 150, y: 150, dx: 2, dy: 1, text: "★", size: 30, color: "#ff00ff" },
+        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "☆", size: 40, color: "#00ffff" }
+    ] : [];
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        elements.forEach(el => {
+            ctx.fillStyle = el.color;
+            ctx.font = `${el.size}px 'Arial'`;
+            ctx.fillText(el.text, el.x, el.y);
+            el.x += el.dx;
+            el.y += el.dy;
+            if (el.x
+                
+                // Continuación de script.js
+
+    < 0 || el.x > canvas.width - el.size) el.dx *= -1;
+            if (el.y < el.size || el.y > canvas.height) el.dy *= -1;
+        });
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+function stop2000sGraphics() {
+    const canvas = document.getElementById("interactive-2000s");
+    canvas.style.display = "none";
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+}
+
+// Integración con IA (Simulada)
+async function generateAICapsule(userType) {
+    const prompts = {
+        Aventurero: "Dato curioso sobre una aventura histórica y una cita inspiradora sobre explorar.",
+        Artista: "Dato sobre un artista famoso y una cita sobre creatividad.",
+        Científico: "Dato científico interesante y una cita sobre innovación.",
+        // Agrega más según los tipos de usuario
+    };
+    const response = await fetch('https://api.quotable.io/random'); // Ejemplo de API real para citas
+    const quoteData = await response.json();
+    return {
+        dato: `Dato generado por IA para ${userType}: [Simulado]`,
+        cita: quoteData.content,
+        recurso: "Generado por IA",
+        fecha: new Date().toISOString().split("T")[0]
+    };
+}
+
+// Reconocimiento de Voz
+function setupVoiceRecognition() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = idiomaActual;
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("entrada").value = transcript;
+        addItem();
+    };
+    recognition.onerror = (event) => console.error("Error en reconocimiento de voz:", event.error);
+    document.getElementById("entrada").addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        recognition.start();
+    });
+}
+
+// Exportar/Importar Datos
+function exportData() {
+    const data = {
+        items,
+        favorites,
+        capsulas,
+        achievements,
+        tasksCompleted,
+        capsulesSent
+    };
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "cronosfera-data.json";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = JSON.parse(e.target.result);
+        items = data.items || [];
+        favorites = data.favorites || [];
+        capsulas = data.capsulas || capsulas;
+        achievements = data.achievements || achievements;
+        tasksCompleted = data.tasksCompleted || 0;
+        capsulesSent = data.capsulesSent || 0;
+        localStorage.setItem("items", JSON.stringify(items));
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+        localStorage.setItem("capsulas", JSON.stringify(capsulas));
+        localStorage.setItem("achievements", JSON.stringify(achievements));
+        localStorage.setItem("tasksCompleted", tasksCompleted);
+        localStorage.setItem("capsulesSent", capsulesSent);
+        updateLista();
+        updateAchievementsDisplay();
+        showCapsulaByDate();
+    };
+    reader.readAsText(file);
+}
+
+// Integración con Google Calendar
+function exportToGoogleCalendar(item) {
+    const startDateTime = `${item.fecha}T${item.hora || "00:00"}:00`;
+    const endDateTime = new Date(new Date(startDateTime).getTime() + 60 * 60 * 1000).toISOString().replace(/[:-]/g, "").split(".")[0];
+    const start = startDateTime.replace(/[:-]/g, "").split(".")[0];
+    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`[${item.categoria}] ${item.texto}`)}&dates=${start}/${endDateTime}`;
+    window.open(url, "_blank");
+}
+
+// Atajos de Teclado
+function setupKeyboardShortcuts() {
+    document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "n") {
+            e.preventDefault();
+            nuevaCapsula();
+        }
+        if (e.ctrlKey && e.key === "o") {
+            e.preventDefault();
+            showOrganizador();
+        }
+        if (e.key === "Escape") {
+            backToMain();
+        }
+    });
+}
+
+// Inicio
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(".container");
+    container.style.opacity = "1";
+    registerServiceWorker();
+    setupVoiceRecognition();
+    setupKeyboardShortcuts();
+    if (!localStorage.getItem("userType")) {
+        showPersonalityTest();
+    } else {
+        showCapsulaByDate();
+        start2000sGraphics(temaActual);
+        checkPendingNotifications();
+        if (localStorage.getItem("showTutorial") !== "false") {
+            showTutorial();
+        }
+    }
+    updateText();
+    setInterval(checkPendingNotifications, 60000);
+
+    // Añadir eventos al tutorial
+    document.getElementById("next-tutorial").addEventListener("click", nextTutorial);
+    document.getElementById("skip-tutorial").addEventListener("click", skipTutorial);
+
+    // Añadir export/import
+    const exportBtn = document.createElement("button");
+    exportBtn.textContent = "Exportar Datos";
+    exportBtn.onclick = exportData;
+    document.getElementById("config").appendChild(exportBtn);
+
+    const importInput = document.createElement("input");
+    importInput.type = "file";
+    importInput.accept = ".json";
+    importInput.onchange = importData;
+    document.getElementById("config").appendChild(importInput);
+});
