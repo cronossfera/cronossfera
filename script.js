@@ -3,6 +3,12 @@ let idiomaActual = localStorage.getItem("idioma") || "es";
 let temaActual = localStorage.getItem("tema") || "default";
 document.body.className = `tema-${temaActual}`;
 
+// Contador de visitas
+let visitCount = localStorage.getItem("visitCount") || 0;
+visitCount++;
+localStorage.setItem("visitCount", visitCount);
+document.getElementById("visit-counter").textContent = `Visitas: ${visitCount}`;
+
 // Animación de desvanecimiento
 function applyFade(element, callback) {
     if (!element) return;
@@ -88,7 +94,7 @@ function showOrganizador() {
         organizador.classList.add("fade-in");
         organizador.style.opacity = "1";
         stop2000sGraphics();
-        checkPendingNotifications(); // Verificar notificaciones al entrar al organizador
+        checkPendingNotifications();
     });
 }
 
@@ -107,25 +113,25 @@ function backToMain() {
         container.classList.add("fade-in");
         container.style.opacity = "1";
         start2000sGraphics(temaActual);
-        checkPendingNotifications(); // Verificar notificaciones al volver
+        checkPendingNotifications();
     });
 }
 
 // Organizador dinámico
 let items = JSON.parse(localStorage.getItem("items")) || [];
 const today = new Date().toISOString().split("T")[0];
-
-// Lista de notificaciones enviadas para evitar duplicados
 let sentNotifications = JSON.parse(localStorage.getItem("sentNotifications")) || [];
 
 function addItem() {
     const categoria = document.getElementById("categoria").value;
     const texto = document.getElementById("entrada").value;
     const fecha = document.getElementById("fecha").value;
+    const hora = document.getElementById("hora").value || "00:00"; // Por defecto si no se selecciona hora
     if (texto && fecha) {
-        items.push({ categoria, texto, fecha });
+        items.push({ categoria, texto, fecha, hora });
         updateLista();
         document.getElementById("entrada").value = "";
+        document.getElementById("hora").value = "";
         localStorage.setItem("items", JSON.stringify(items));
         checkPendingNotifications();
     }
@@ -135,7 +141,7 @@ function updateLista() {
     const listaDiv = document.getElementById("lista");
     listaDiv.innerHTML = items.map((item, index) => `
         <div class="item">
-            <span>[${item.categoria}]</span> ${item.texto} - ${item.fecha}
+            <span>[${item.categoria}]</span> ${item.texto} - ${item.fecha} ${item.hora ? `a las ${item.hora}` : ''}
             <button onclick="deleteItem(${index})" style="background:#ff6666;">X</button>
         </div>
     `).join("");
@@ -171,7 +177,11 @@ function updateAgenda() {
         fr: "Aucun rappel pour aujourd'hui."
     };
     recordatoriosDiv.innerHTML = hoyItems.length > 0 
-        ? hoyItems.map(item => `<div class="recordatorio ${item.fecha === today ? 'pendiente' : ''}">[${item.categoria}] ${item.texto} - ${item.fecha === today ? '¡Hoy!' : item.fecha}</div>`).join("")
+        ? hoyItems.map(item => `
+            <div class="recordatorio ${item.fecha === today ? 'pendiente' : ''}">
+                [${item.categoria}] ${item.texto} - ${item.fecha} ${item.hora ? `a las ${item.hora}` : ''} ${item.fecha === today ? '¡Hoy!' : ''}
+            </div>
+        `).join("")
         : `<p>${noRecTexts[idiomaActual]}</p>`;
 }
 
@@ -179,10 +189,10 @@ function checkPendingNotifications() {
     const hoyItems = items.filter(item => item.fecha === today);
     if (Notification.permission === "granted") {
         hoyItems.forEach(item => {
-            const notificationId = `${item.categoria}-${item.texto}-${item.fecha}`;
+            const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
             if (!sentNotifications.includes(notificationId)) {
                 new Notification("Cronosfera: Recordatorio", {
-                    body: `[${item.categoria}] ${item.texto}`,
+                    body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
                     icon: "favicon.ico"
                 });
                 sentNotifications.push(notificationId);
@@ -207,11 +217,7 @@ function toggleConfig() {
             config.classList.add("fade-in");
             config.style.opacity = "1";
         } else {
-            config.style.display = "none";
-            container.style.display = "block";
-            container.classList.add("fade-in");
-            container.style.opacity = "1";
-            start2000sGraphics(temaActual);
+            backToMain(); // Usamos backToMain para cerrar
         }
     });
 }
@@ -234,12 +240,12 @@ function applyConfig() {
 // Actualizar textos según idioma
 function updateText() {
     const texts = {
-        es: { h2: "Organizador Dinámico", h3: "Agenda", btn1: "Cápsula Aleatoria", btn2: "Enviar a mi futuro yo", link: "Organizador Dinámico", config: "Configuración", back: "Volver a Principal" },
-        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main" },
-        pt: { h2: "Organizador Dinâmico", h3: "Agenda", btn1: "Cápsula Aleatória", btn2: "Enviar para Meu Futuro Eu", link: "Organizador Dinâmico", config: "Configurações", back: "Voltar ao Principal" },
-        jp: { h2: "ダイナミックオーガナイザー", h3: "アジェンダ", btn1: "ランダムカプセル", btn2: "未来の自分に送信", link: "ダイナミックオーガナイザー", config: "設定", back: "メインに戻る" },
-        ko: { h2: "다이나믹 오거나이저", h3: "아젠다", btn1: "랜덤 캡슐", btn2: "미래의 나에게 보내기", link: "다이나믹 오거나이저", config: "설정", back: "메인으로 돌아가기" },
-        fr: { h2: "Organisateur Dynamique", h3: "Agenda", btn1: "Capsule Aléatoire", btn2: "Envoyer à Mon Futur Moi", link: "Organisateur Dynamique", config: "Paramètres", back: "Retour au Principal" }
+        es: { h2: "Organizador Dinámico", h3: "Agenda", btn1: "Cápsula Aleatoria", btn2: "Enviar a mi futuro yo", link: "Organizador Dinámico", config: "Configuración", back: "Volver a Principal", backConfig: "Atrás" },
+        en: { h2: "Dynamic Organizer", h3: "Agenda", btn1: "Random Capsule", btn2: "Send to My Future Self", link: "Dynamic Organizer", config: "Settings", back: "Back to Main", backConfig: "Back" },
+        pt: { h2: "Organizador Dinâmico", h3: "Agenda", btn1: "Cápsula Aleatória", btn2: "Enviar para Meu Futuro Eu", link: "Organizador Dinâmico", config: "Configurações", back: "Voltar ao Principal", backConfig: "Voltar" },
+        jp: { h2: "ダイナミックオーガナイザー", h3: "アジェンダ", btn1: "ランダムカプセル", btn2: "未来の自分に送信", link: "ダイナミックオーガナイザー", config: "設定", back: "メインに戻る", backConfig: "戻る" },
+        ko: { h2: "다이나믹 오거나이저", h3: "아젠다", btn1: "랜덤 캡슐", btn2: "미래의 나에게 보내기", link: "다이나믹 오거나이저", config: "설정", back: "메인으로 돌아가기", backConfig: "뒤로" },
+        fr: { h2: "Organisateur Dynamique", h3: "Agenda", btn1: "Capsule Aléatoire", btn2: "Envoyer à Mon Futur Moi", link: "Organisateur Dynamique", config: "Paramètres", back: "Retour au Principal", backConfig: "Retour" }
     };
     document.querySelector("#organizador h2").textContent = texts[idiomaActual].h2;
     document.querySelector("#agenda h3").textContent = texts[idiomaActual].h3;
@@ -247,7 +253,13 @@ function updateText() {
     document.querySelector("button[onclick='enviar()']").textContent = texts[idiomaActual].btn2;
     document.querySelector("a").textContent = texts[idiomaActual].link;
     document.querySelector("#config h2").textContent = texts[idiomaActual].config;
-    document.querySelectorAll(".back-btn").forEach(btn => btn.textContent = texts[idiomaActual].back);
+    document.querySelectorAll(".back-btn").forEach(btn => {
+        if (btn.closest("#config")) {
+            btn.textContent = texts[idiomaActual].backConfig;
+        } else {
+            btn.textContent = texts[idiomaActual].back;
+        }
+    });
     updateAgenda();
 }
 
@@ -472,9 +484,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         showCapsulaByDate();
         start2000sGraphics(temaActual);
-        checkPendingNotifications(); // Verificar al cargar la página
+        checkPendingNotifications();
     }
     updateText();
-    // Chequeo periódico cada 60 segundos
     setInterval(checkPendingNotifications, 60000);
 });
