@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* Animaciones de transición */
 .fade {
     opacity: 0;
@@ -315,4 +313,54 @@ a:hover {
 
 #test-content input[type="radio"] {
     margin-right: 5px;
+}
+
+/* Modal para Zoom In */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    color: #333;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+}
+
+.modal-content button {
+    margin-top: 15px;
+    background-color: #00ffcc;
+}
+
+/* Responsividad */
+@media (max-width: 600px) {
+    .logo {
+        width: 150px;
+    }
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .capsule {
+        max-width: 100%;
+        padding: 15px;
+    }
+    #config-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
 }
