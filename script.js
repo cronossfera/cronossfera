@@ -1,3 +1,9 @@
+// Importaciones de Firebase
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js';
+import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js';
+import { capsulas } from './capsulas.js';
+
 // Configuración de Firebase (reemplaza con tus claves)
 const firebaseConfig = {
     apiKey: "TU_API_KEY",
@@ -7,9 +13,9 @@ const firebaseConfig = {
     messagingSenderId: "TU_MESSAGING_SENDER_ID",
     appId: "TU_APP_ID"
 };
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 // Configuración inicial
 let idiomaActual = localStorage.getItem("idioma") || "es";
@@ -248,7 +254,7 @@ function saveCustomCapsule() {
     const recurso = document.getElementById("custom-recurso").value;
     const fecha = document.getElementById("custom-date").value;
     if (dato && cita && recurso && fecha) {
-        const customCapsule = { dato, cita, recurso, fecha };
+        const customCapsule = { dato, cita, recurso, fecha, datoZoom: dato, citaZoom: cita };
         capsulas[idiomaActual].push(customCapsule);
         localStorage.setItem("capsulas", JSON.stringify(capsulas));
         hideCustomCapsuleForm();
@@ -281,20 +287,22 @@ function backToMain() {
     const customForm = document.getElementById("custom-capsule-form");
     const favorites = document.getElementById("favorites");
     const stats = document.getElementById("stats");
-    const elementToFade = organizador.style.display === "block" ? organizador : config.style.display === "block" ? config : test || customForm || favorites || stats;
-    applyFade(elementToFade, () => {
-        organizador.style.display = "none";
-        config.style.display = "none";
-        test.style.display = "none";
-        customForm.style.display = "none";
-        favorites.style.display = "none";
-        stats.style.display = "none";
-        document.querySelector(".container").style.display = "block";
-        document.querySelector(".container").classList.add("fade-in");
-        document.querySelector(".container").style.opacity = "1";
-        start2000sGraphics(temaActual);
-        checkPendingNotifications();
-    });
+    const elementToFade = organizador.style.display === "block" ? organizador : config.style.display === "block" ? config : test.style.display === "block" ? test : customForm.style.display === "block" ? customForm : favorites.style.display === "block" ? favorites : stats.style.display === "block" ? stats : null;
+    if (elementToFade) {
+        applyFade(elementToFade, () => {
+            organizador.style.display = "none";
+            config.style.display = "none";
+            test.style.display = "none";
+            customForm.style.display = "none";
+            favorites.style.display = "none";
+            stats.style.display = "none";
+            document.querySelector(".container").style.display = "block";
+            document.querySelector(".container").classList.add("fade-in");
+            document.querySelector(".container").style.opacity = "1";
+            start2000sGraphics(temaActual);
+            checkPendingNotifications();
+        });
+    }
 }
 
 // Organizador dinámico
@@ -402,9 +410,6 @@ function registerServiceWorker() {
         }).catch(err => {
             console.error('Error al registrar el Service Worker:', err);
         });
-    } else {
-        console.error('Service Workers no son compatibles con este navegador.');
-        requestNotificationPermission();
     }
 }
 
@@ -412,18 +417,13 @@ function requestNotificationPermission(registration) {
     if ("Notification" in window) {
         if (Notification.permission !== "granted" && Notification.permission !== "denied") {
             Notification.requestPermission().then(permission => {
-                console.log("Permiso de notificación:", permission);
                 if (permission === "granted" && registration) {
                     setupPushNotifications(registration);
                 }
-            }).catch(err => {
-                console.error("Error al solicitar permiso de notificación:", err);
             });
         } else if (Notification.permission === "granted" && registration) {
             setupPushNotifications(registration);
         }
-    } else {
-        console.error("Las notificaciones no son compatibles con este navegador.");
     }
 }
 
@@ -437,7 +437,6 @@ function setupPushNotifications(registration) {
                     applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
                 }).then(subscription => {
                     console.log('Suscripción a push exitosa:', subscription);
-                    saveSubscriptionToServer(subscription);
                 });
             }
         });
@@ -455,11 +454,6 @@ function urlBase64ToUint8Array(base64String) {
     return outputArray;
 }
 
-function saveSubscriptionToServer(subscription) {
-    // Aquí deberías enviar la suscripción a tu servidor backend
-    console.log('Suscripción guardada:', subscription);
-}
-
 function scheduleNotification(item, registration) {
     const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
     if (!sentNotifications.includes(notificationId)) {
@@ -469,7 +463,7 @@ function scheduleNotification(item, registration) {
                 registration.showNotification("Cronosfera: Recordatorio", {
                     body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
                     data: { url: "/" }
-                }).catch(err => console.error("Error al programar notificación:", err));
+                });
                 sentNotifications.push(notificationId);
                 localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
             }, notificationTime - Date.now());
@@ -478,36 +472,10 @@ function scheduleNotification(item, registration) {
 }
 
 function checkPendingNotifications() {
-    console.log("Verificando notificaciones pendientes...");
     const hoyItems = items.filter(item => item.fecha === today && !item.completed);
-    console.log("Tareas de hoy:", hoyItems);
-    console.log("Permiso de notificación:", Notification.permission);
-
     if (Notification.permission === "granted" && 'serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then(registration => {
-            hoyItems.forEach(item => {
-                scheduleNotification(item, registration);
-            });
-        });
-    } else {
-        hoyItems.forEach(item => {
-            const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
-            if (!sentNotifications.includes(notificationId)) {
-                try {
-                    const notification = new Notification("Cronosfera: Recordatorio", {
-                        body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
-                        data: { url: "/" }
-                    });
-                    notification.onclick = (event) => {
-                        event.notification.close();
-                        window.focus();
-                    };
-                    sentNotifications.push(notificationId);
-                    localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
-                } catch (err) {
-                    console.error("Error al crear notificación:", err);
-                }
-            }
+            hoyItems.forEach(item => scheduleNotification(item, registration));
         });
     }
 }
@@ -522,8 +490,6 @@ function toggleConfig() {
             config.style.display = "block";
             config.classList.add("fade-in");
             config.style.opacity = "1";
-        } else {
-            backToMain();
         }
     });
 }
@@ -815,11 +781,7 @@ function start2000sGraphics(tema) {
             ctx.fillText(el.text, el.x, el.y);
             el.x += el.dx;
             el.y += el.dy;
-            if (el.x
-                
-                // Continuación de script.js
-
-    < 0 || el.x > canvas.width - el.size) el.dx *= -1;
+            if (el.x < 0 || el.x > canvas.width - el.size) el.dx *= -1;
             if (el.y < el.size || el.y > canvas.height) el.dy *= -1;
         });
         animationFrameId = requestAnimationFrame(animate);
@@ -838,16 +800,17 @@ async function generateAICapsule(userType) {
     const prompts = {
         Aventurero: "Dato curioso sobre una aventura histórica y una cita inspiradora sobre explorar.",
         Artista: "Dato sobre un artista famoso y una cita sobre creatividad.",
-        Científico: "Dato científico interesante y una cita sobre innovación.",
-        // Agrega más según los tipos de usuario
+        Científico: "Dato científico interesante y una cita sobre innovación."
     };
-    const response = await fetch('https://api.quotable.io/random'); // Ejemplo de API real para citas
+    const response = await fetch('https://api.quotable.io/random');
     const quoteData = await response.json();
     return {
         dato: `Dato generado por IA para ${userType}: [Simulado]`,
         cita: quoteData.content,
         recurso: "Generado por IA",
-        fecha: new Date().toISOString().split("T")[0]
+        fecha: new Date().toISOString().split("T")[0],
+        datoZoom: `Dato generado por IA para ${userType}: [Simulado]`,
+        citaZoom: `Autor: ${quoteData.author}`
     };
 }
 
@@ -915,60 +878,4 @@ function exportToGoogleCalendar(item) {
     const startDateTime = `${item.fecha}T${item.hora || "00:00"}:00`;
     const endDateTime = new Date(new Date(startDateTime).getTime() + 60 * 60 * 1000).toISOString().replace(/[:-]/g, "").split(".")[0];
     const start = startDateTime.replace(/[:-]/g, "").split(".")[0];
-    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`[${item.categoria}] ${item.texto}`)}&dates=${start}/${endDateTime}`;
-    window.open(url, "_blank");
-}
-
-// Atajos de Teclado
-function setupKeyboardShortcuts() {
-    document.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.key === "n") {
-            e.preventDefault();
-            nuevaCapsula();
-        }
-        if (e.ctrlKey && e.key === "o") {
-            e.preventDefault();
-            showOrganizador();
-        }
-        if (e.key === "Escape") {
-            backToMain();
-        }
-    });
-}
-
-// Inicio
-document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector(".container");
-    container.style.opacity = "1";
-    registerServiceWorker();
-    setupVoiceRecognition();
-    setupKeyboardShortcuts();
-    if (!localStorage.getItem("userType")) {
-        showPersonalityTest();
-    } else {
-        showCapsulaByDate();
-        start2000sGraphics(temaActual);
-        checkPendingNotifications();
-        if (localStorage.getItem("showTutorial") !== "false") {
-            showTutorial();
-        }
-    }
-    updateText();
-    setInterval(checkPendingNotifications, 60000);
-
-    // Añadir eventos al tutorial
-    document.getElementById("next-tutorial").addEventListener("click", nextTutorial);
-    document.getElementById("skip-tutorial").addEventListener("click", skipTutorial);
-
-    // Añadir export/import
-    const exportBtn = document.createElement("button");
-    exportBtn.textContent = "Exportar Datos";
-    exportBtn.onclick = exportData;
-    document.getElementById("config").appendChild(exportBtn);
-
-    const importInput = document.createElement("input");
-    importInput.type = "file";
-    importInput.accept = ".json";
-    importInput.onchange = importData;
-    document.getElementById("config").appendChild(importInput);
-});
+    const url
