@@ -1,20 +1,40 @@
-self.addEventListener('push', event => {
-    const data = event.data ? event.data.json() : {};
-    const title = data.title || 'Cronosfera: Recordatorio';
-    const options = {
-        body: data.body || 'Tienes un recordatorio pendiente.',
-        icon: 'favicon.ico',
-        badge: 'favicon.ico'
-    };
-
+self.addEventListener('install', (event) => {
     event.waitUntil(
-        self.registration.showNotification(title, options)
+        caches.open('cronosfera-v1').then(cache => {
+            return cache.addAll([
+                '/',
+                '/index.html',
+                '/styles.css',
+                '/script.js',
+                '/capsulas.js',
+                '/logo.png',
+                '/favicon.ico'
+            ]);
+        })
     );
 });
 
-self.addEventListener('notificationclick', event => {
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request).then(response => {
+            return response || fetch(event.request);
+        })
+    );
+});
+
+self.addEventListener('push', (event) => {
+    const data = event.data.json();
+    event.waitUntil(
+        self.registration.showNotification(data.title, {
+            body: data.body,
+            icon: '/logo.png'
+        })
+    );
+});
+
+self.addEventListener('notificationclick', (event) => {
     event.notification.close();
     event.waitUntil(
-        clients.openWindow('/')
+        clients.openWindow(event.notification.data.url)
     );
 });
