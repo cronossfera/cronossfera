@@ -44,28 +44,28 @@ body.tema-galaxy::before {
 
 /* Definición de imágenes de fondo para cada tema */
 body.tema-default::before {
-    background-image: url('images/sci-fi-bg.jpg');
+    background-image: url('sci-fi-bg.jpg');
 }
 body.tema-frutiger-metro::before {
-    background-image: url('images/frutiger-metro-bg.jpg');
+    background-image: url('frutiger-metro-bg.jpg');
 }
 body.tema-pastel::before {
-    background-image: url('images/pastel-frutiger-metro-bg.jpg');
+    background-image: url('pastel-frutiger-metro-bg.jpg');
 }
 body.tema-vaporwave::before {
-    background-image: url('images/vaporwave-bg.jpg');
+    background-image: url('vaporwave-bg.jpg');
 }
 body.tema-dark-academia::before {
-    background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
+    background-image: url('dark-academia-frutiger-metro-bg.jpg');
 }
 body.tema-cyberpunk::before {
-    background-image: url('images/sci-fi-bg.jpg'); /* Usa sci-fi como respaldo */
+    background-image: url('sci-fi-bg.jpg'); /* Usa sci-fi como respaldo */
 }
 body.tema-frutiger-aero::before {
-    background-image: url('images/frutiger-aero-bg.jpg');
+    background-image: url('frutiger-aero-bg.jpg');
 }
 body.tema-galaxy::before {
-    background-image: url('images/galaxia-bg.jpg');
+    background-image: url('galaxia-bg.jpg');
 }
 
 /* Estilos específicos para cada tema */
