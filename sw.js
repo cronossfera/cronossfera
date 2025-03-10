@@ -7,8 +7,18 @@ self.addEventListener('install', (event) => {
                 '/styles.css',
                 '/script.js',
                 '/capsulas.js',
+                '/sw.js',
+                '/manifest.json',
                 '/logo.png',
-                '/favicon.ico'
+                '/favicon.ico',
+                '/images/sci-fi-bg.jpg',
+                '/images/frutiger-metro-bg.jpg',
+                '/images/pastel-frutiger-metro-bg.jpg',
+                '/images/vaporwave-bg.jpg',
+                '/images/dark-academia-frutiger-metro-bg.jpg',
+                '/images/frutiger-aero-bg.jpg',
+                '/images/galaxia-bg.jpg',
+                '/images/custom-bg.jpg'
             ]);
         })
     );
@@ -27,7 +37,8 @@ self.addEventListener('push', (event) => {
     event.waitUntil(
         self.registration.showNotification(data.title, {
             body: data.body,
-            icon: '/logo.png'
+            icon: '/logo.png',
+            data: { url: data.url || '/' }
         })
     );
 });
