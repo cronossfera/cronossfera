@@ -879,3 +879,60 @@ function exportToGoogleCalendar(item) {
     const endDateTime = new Date(new Date(startDateTime).getTime() + 60 * 60 * 1000).toISOString().replace(/[:-]/g, "").split(".")[0];
     const start = startDateTime.replace(/[:-]/g, "").split(".")[0];
     const url
+        const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`[${item.categoria}] ${item.texto}`)}&dates=${start}/${endDateTime}`;
+    window.open(url, "_blank");
+}
+
+// Atajos de Teclado
+function setupKeyboardShortcuts() {
+    document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "n") {
+            e.preventDefault();
+            nuevaCapsula();
+        }
+        if (e.ctrlKey && e.key === "o") {
+            e.preventDefault();
+            showOrganizador();
+        }
+        if (e.key === "Escape") {
+            backToMain();
+        }
+    });
+}
+
+// Inicio
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(".container");
+    container.style.opacity = "1";
+    registerServiceWorker();
+    setupVoiceRecognition();
+    setupKeyboardShortcuts();
+    if (!localStorage.getItem("userType")) {
+        showPersonalityTest();
+    } else {
+        showCapsulaByDate();
+        start2000sGraphics(temaActual);
+        checkPendingNotifications();
+        if (localStorage.getItem("showTutorial") !== "false") {
+            showTutorial();
+        }
+    }
+    updateText();
+    setInterval(checkPendingNotifications, 60000);
+
+    // Añadir eventos al tutorial
+    document.getElementById("next-tutorial").addEventListener("click", nextTutorial);
+    document.getElementById("skip-tutorial").addEventListener("click", skipTutorial);
+
+    // Añadir export/import
+    const exportBtn = document.createElement("button");
+    exportBtn.textContent = "Exportar Datos";
+    exportBtn.onclick = exportData;
+    document.getElementById("config").appendChild(exportBtn);
+
+    const importInput = document.createElement("input");
+    importInput.type = "file";
+    importInput.accept = ".json";
+    importInput.onchange = importData;
+    document.getElementById("config").appendChild(importInput);
+});
