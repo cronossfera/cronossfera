@@ -126,7 +126,7 @@ function addItem() {
     const categoria = document.getElementById("categoria").value;
     const texto = document.getElementById("entrada").value;
     const fecha = document.getElementById("fecha").value;
-    const hora = document.getElementById("hora").value || "00:00"; // Por defecto si no se selecciona hora
+    const hora = document.getElementById("hora").value || "00:00";
     if (texto && fecha) {
         items.push({ categoria, texto, fecha, hora });
         updateLista();
@@ -156,12 +156,21 @@ function deleteItem(index) {
 }
 
 function requestNotificationPermission() {
-    if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                checkPendingNotifications();
-            }
-        });
+    if ("Notification" in window) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                console.log("Permiso de notificación:", permission);
+                if (permission === "granted") {
+                    checkPendingNotifications();
+                }
+            }).catch(err => {
+                console.error("Error al solicitar permiso de notificación:", err);
+            });
+        } else if (Notification.permission === "granted") {
+            checkPendingNotifications();
+        }
+    } else {
+        console.error("Las notificaciones no son compatibles con este navegador.");
     }
 }
 
@@ -186,19 +195,35 @@ function updateAgenda() {
 }
 
 function checkPendingNotifications() {
+    console.log("Verificando notificaciones pendientes...");
     const hoyItems = items.filter(item => item.fecha === today);
+    console.log("Tareas de hoy:", hoyItems);
+    console.log("Permiso de notificación:", Notification.permission);
+    
     if (Notification.permission === "granted") {
         hoyItems.forEach(item => {
             const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
             if (!sentNotifications.includes(notificationId)) {
-                new Notification("Cronosfera: Recordatorio", {
-                    body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
-                    icon: "favicon.ico"
-                });
-                sentNotifications.push(notificationId);
-                localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
+                console.log("Enviando notificación para:", item);
+                try {
+                    const notification = new Notification("Cronosfera: Recordatorio", {
+                        body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
+                        icon: "favicon.ico"
+                    });
+                    notification.onerror = (err) => {
+                        console.error("Error al mostrar notificación:", err);
+                    };
+                    sentNotifications.push(notificationId);
+                    localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
+                } catch (err) {
+                    console.error("Error al crear notificación:", err);
+                }
+            } else {
+                console.log("Notificación ya enviada para:", notificationId);
             }
         });
+    } else {
+        console.warn("Permiso de notificación no concedido.");
     }
 }
 
@@ -217,7 +242,7 @@ function toggleConfig() {
             config.classList.add("fade-in");
             config.style.opacity = "1";
         } else {
-            backToMain(); // Usamos backToMain para cerrar
+            backToMain();
         }
     });
 }
@@ -312,19 +337,6 @@ function prevQuestion() {
     if (currentQuestion > 0) {
         currentQuestion--;
         showQuestion();
-    }
-}
-
-function nextQuestion() {
-    const selected = document.querySelector(`input[name="q${currentQuestion}"]:checked`);
-    if (selected) {
-        answers[currentQuestion] = selected.value;
-        if (currentQuestion < personalityQuestions.length - 1) {
-            currentQuestion++;
-            showQuestion();
-        }
-    } else {
-        alert("Selecciona una opción.");
     }
 }
 
@@ -442,8 +454,8 @@ function start2000sGraphics(tema) {
         { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#3E2723" },
         { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#795548" }
     ] : tema === "cyberpunk" ? [
-        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#FF00FF" },
-        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#00FFFF" }
+        { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
+        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
     ] : tema === "frutiger-aero" ? [
         { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
         { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
