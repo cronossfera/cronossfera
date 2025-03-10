@@ -8,6 +8,22 @@
     opacity: 1 !important;
 }
 
+/* Animación de desplegue para la ventana de configuración */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#config {
+    animation: slideDown 0.5s ease-out forwards;
+}
+
 /* Estilos generales */
 body {
     font-family: 'Space Mono', monospace;
@@ -20,7 +36,7 @@ body {
     background-color: #1a1a1a; /* Fondo de respaldo por si fallan las imágenes */
 }
 
-/* Estilos para temas con imágenes de fondo */
+/* Estilos para temas con gradientes de fondo */
 body.tema-default::before,
 body.tema-frutiger-metro::before,
 body.tema-pastel::before,
@@ -38,34 +54,34 @@ body.tema-galaxy::before {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(5px); /* Desenfoque ligero */
+    filter: blur(5px);
     z-index: -1;
 }
 
-/* Definición de imágenes de fondo para cada tema */
+/* Definición de gradientes de fondo para cada tema */
 body.tema-default::before {
-    background-image: url('sci-fi-bg.jpg');
+    background: linear-gradient(135deg, #1a1a1a, #00ffcc);
 }
 body.tema-frutiger-metro::before {
-    background-image: url('frutiger-metro-bg.jpg');
+    background: linear-gradient(135deg, #333, #666);
 }
 body.tema-pastel::before {
-    background-image: url('pastel-frutiger-metro-bg.jpg');
+    background: linear-gradient(135deg, #FFB6C1, #87CEEB);
 }
 body.tema-vaporwave::before {
-    background-image: url('vaporwave-bg.jpg');
+    background: linear-gradient(135deg, #FF6EC7, #7859A9);
 }
 body.tema-dark-academia::before {
-    background-image: url('dark-academia-frutiger-metro-bg.jpg');
+    background: linear-gradient(135deg, #3E2723, #795548);
 }
 body.tema-frutiger-metro-2::before {
-    background-image: url('frutiger-metro-2-bg.jpg'); /* Usa sci-fi como respaldo */
+    background: linear-gradient(135deg, #FF00FF, #00FFFF);
 }
 body.tema-frutiger-aero::before {
-    background-image: url('frutiger-aero-bg.jpg');
+    background: linear-gradient(135deg, #00aaff, #00ccff);
 }
 body.tema-galaxy::before {
-    background-image: url('galaxia-bg.jpg');
+    background: linear-gradient(135deg, #191970, #483D8B);
 }
 
 /* Estilos específicos para cada tema */
@@ -97,9 +113,9 @@ body.tema-galaxy {
     font-family: 'Arial', sans-serif;
 }
 
-/* Estilo para el texto (para mejor legibilidad) */
+/* Estilo para el texto */
 body h1, body h2, body h3, body p, body label, body button, body a {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra para mejorar contraste */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 button {
@@ -138,9 +154,9 @@ a:hover {
     margin: 0 auto 20px;
     display: block;
     cursor: pointer;
-    border: 2px solid white; /* Solo bordes blancos */
+    border: 2px solid white;
     border-radius: 10px;
-    background: none; /* Sin fondo */
+    background: none;
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -155,33 +171,33 @@ a:hover {
     position: absolute;
     top: 20px;
     right: 20px;
-    background-color: #00ffcc;
-    border: none;
+    background: linear-gradient(135deg, #00ffcc, #00b3a0);
+    border: 2px solid #fff;
     padding: 10px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 24px;
-    width: 50px;
-    height: 50px;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #config-btn:hover {
-    background-color: #00b3a0;
+    background: linear-gradient(135deg, #00b3a0, #00ffcc);
     transform: rotate(90deg);
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+    box-shadow: 0 0 25px rgba(0, 255, 204, 1);
 }
 
 /* Contenedores principales */
 .container, #organizador, #config, #personality-test {
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
-    background: rgba(255, 255, 255, 0.2); /* Fondo semitransparente para legibilidad */
-    backdrop-filter: blur(10px); /* Desenfoque adicional */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 10px;
 }
@@ -208,6 +224,16 @@ a:hover {
 /* Estilos para el organizador */
 #organizador, #config {
     margin-top: 20px;
+}
+
+#organizador input[type="date"],
+#organizador input[type="time"] {
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    margin: 5px 0;
 }
 
 #lista .item {
@@ -359,8 +385,8 @@ a:hover {
         padding: 15px;
     }
     #config-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
     }
 }
