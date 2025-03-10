@@ -58,7 +58,7 @@ body.tema-vaporwave::before {
 body.tema-dark-academia::before {
     background-image: url('dark-academia-frutiger-metro-bg.jpg');
 }
-body.tema-cyberpunk::before {
+body.tema-frutiger-metro-2::before {
     background-image: url('frutiger-metro-2-bg.jpg'); /* Usa sci-fi como respaldo */
 }
 body.tema-frutiger-aero::before {
