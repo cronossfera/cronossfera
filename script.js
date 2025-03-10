@@ -155,6 +155,23 @@ function deleteItem(index) {
     checkPendingNotifications();
 }
 
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('Service Worker registrado con éxito:', registration);
+            return navigator.serviceWorker.ready;
+        }).then(() => {
+            console.log('Service Worker está listo.');
+            requestNotificationPermission();
+        }).catch(err => {
+            console.error('Error al registrar el Service Worker:', err);
+        });
+    } else {
+        console.error('Service Workers no son compatibles con este navegador.');
+        requestNotificationPermission(); // Fallback a notificaciones normales
+    }
+}
+
 function requestNotificationPermission() {
     if ("Notification" in window) {
         if (Notification.permission !== "granted" && Notification.permission !== "denied") {
@@ -199,29 +216,51 @@ function checkPendingNotifications() {
     const hoyItems = items.filter(item => item.fecha === today);
     console.log("Tareas de hoy:", hoyItems);
     console.log("Permiso de notificación:", Notification.permission);
-    
+
     if (Notification.permission === "granted") {
-        hoyItems.forEach(item => {
-            const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
-            if (!sentNotifications.includes(notificationId)) {
-                console.log("Enviando notificación para:", item);
-                try {
-                    const notification = new Notification("Cronosfera: Recordatorio", {
-                        body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`,
-                        icon: "favicon.ico"
-                    });
-                    notification.onerror = (err) => {
-                        console.error("Error al mostrar notificación:", err);
-                    };
-                    sentNotifications.push(notificationId);
-                    localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
-                } catch (err) {
-                    console.error("Error al crear notificación:", err);
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            navigator.serviceWorker.ready.then(registration => {
+                hoyItems.forEach(item => {
+                    const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
+                    if (!sentNotifications.includes(notificationId)) {
+                        console.log("Enviando notificación push para:", item);
+                        registration.showNotification("Cronosfera: Recordatorio", {
+                            body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`
+                            // icon: "favicon.ico" // Comentado para evitar problemas
+                        }).catch(err => {
+                            console.error("Error al mostrar notificación push:", err);
+                        });
+                        sentNotifications.push(notificationId);
+                        localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
+                    } else {
+                        console.log("Notificación ya enviada para:", notificationId);
+                    }
+                });
+            });
+        } else {
+            // Fallback a notificaciones normales si no hay Service Worker
+            hoyItems.forEach(item => {
+                const notificationId = `${item.categoria}-${item.texto}-${item.fecha}-${item.hora || ''}`;
+                if (!sentNotifications.includes(notificationId)) {
+                    console.log("Enviando notificación normal para:", item);
+                    try {
+                        const notification = new Notification("Cronosfera: Recordatorio", {
+                            body: `[${item.categoria}] ${item.texto} ${item.hora ? `a las ${item.hora}` : ''}`
+                            // icon: "favicon.ico" // Comentado para evitar problemas
+                        });
+                        notification.onerror = (err) => {
+                            console.error("Error al mostrar notificación:", err);
+                        };
+                        sentNotifications.push(notificationId);
+                        localStorage.setItem("sentNotifications", JSON.stringify(sentNotifications));
+                    } catch (err) {
+                        console.error("Error al crear notificación:", err);
+                    }
+                } else {
+                    console.log("Notificación ya enviada para:", notificationId);
                 }
-            } else {
-                console.log("Notificación ya enviada para:", notificationId);
-            }
-        });
+            });
+        }
     } else {
         console.warn("Permiso de notificación no concedido.");
     }
@@ -394,110 +433,4 @@ function submitTest() {
         else if (maxScore === personalityScore.aventurero) { userType = "Aventurero"; icon = "🧗‍♂️"; }
         else if (maxScore === personalityScore.social) { userType = "Social"; icon = "🗣️"; }
         else if (maxScore === personalityScore.relajado) { userType = "Relajado"; icon = "🧘‍♂️"; }
-        else if (maxScore === personalityScore.practico) { userType = "Práctico"; icon = "🔧"; }
-        else if (maxScore === personalityScore.creativo) { userType = "Creativo"; icon = "✍️"; }
-        localStorage.setItem("userType", userType);
-        localStorage.setItem("userIcon", icon);
-        localStorage.setItem("startDate", localStorage.getItem("startDate") || new Date().toISOString().split("T")[0]);
-        updateUserInfo();
-        const test = document.getElementById("personality-test");
-        const container = document.querySelector(".container");
-        applyFade(test, () => {
-            test.style.display = "none";
-            container.style.display = "block";
-            container.classList.add("fade-in");
-            container.style.opacity = "1";
-            showCapsulaByDate();
-        });
-    } else {
-        alert("Selecciona una opción.");
-    }
-}
-
-// Info del usuario
-function updateUserInfo() {
-    const userType = localStorage.getItem("userType") || "Casual";
-    const icon = localStorage.getItem("userIcon") || "👤";
-    const startDate = localStorage.getItem("startDate");
-    let score = startDate ? Math.floor((new Date() - new Date(startDate)) / (1000 * 60 * 60 * 24)) * 10 : 0;
-    document.getElementById("user-info").innerHTML = `Usuario: ${icon} ${userType} | Puntaje: ${score} pts`;
-}
-
-// Gráficos interactivos
-let animationFrameId;
-function start2000sGraphics(tema) {
-    const canvas = document.getElementById("interactive-2000s");
-    if (canvas.style.display === "none") return;
-    canvas.style.display = "block";
-    const ctx = canvas.getContext("2d");
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    const elements = tema === "default" ? [
-        { x: 50, y: 50, dx: 2, dy: 1, text: "🔳", size: 30, color: "#00ffcc" },
-        { x: 200, y: 100, dx: -1, dy: 2, text: "🔵", size: 40, color: "#00ffcc" }
-    ] : tema === "frutiger-metro" ? [
-        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#333" },
-        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#666" }
-    ] : tema === "pastel" ? [
-        { x: 150, y: 150, dx: 2, dy: 1, text: "🌸", size: 30, color: "#FFB6C1" },
-        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌼", size: 40, color: "#87CEEB" }
-    ] : tema === "vaporwave" ? [
-        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#FF6EC7" },
-        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#7859A9" }
-    ] : tema === "dark-academia" ? [
-        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#3E2723" },
-        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#795548" }
-    ] : tema === "cyberpunk" ? [
-        { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
-        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
-    ] : tema === "frutiger-aero" ? [
-        { x: 150, y: 150, dx: 2, dy: 1, text: "💧", size: 30, color: "#00aaff" },
-        { x: 250, y: 250, dx: -1.5, dy: 2.5, text: "🌊", size: 40, color: "#00ccff" }
-    ] : tema === "galaxy" ? [
-        { x: 100, y: 100, dx: 1.5, dy: 1.5, text: "🔳", size: 25, color: "#191970" },
-        { x: 300, y: 200, dx: -1, dy: 2, text: "🔵", size: 35, color: "#483D8B" }
-    ] : [];
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        elements.forEach(el => {
-            ctx.fillStyle = el.color;
-            ctx.font = `${el.size}px 'Arial'`;
-            ctx.fillText(el.text, el.x, el.y);
-            el.x += el.dx;
-            el.y += el.dy;
-            if (el.x < 0 || el.x > canvas.width - el.size) el.dx *= -1;
-            if (el.y < el.size || el.y > canvas.height) el.dy *= -1;
-        });
-        animationFrameId = requestAnimationFrame(animate);
-    }
-    animate();
-}
-
-function stop2000sGraphics() {
-    const canvas = document.getElementById("interactive-2000s");
-    canvas.style.display = "none";
-    if (animationFrameId) cancelAnimationFrame(animationFrameId);
-}
-
-// Inicio
-document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector(".container");
-    container.style.opacity = "1";
-    requestNotificationPermission();
-    if (!localStorage.getItem("userType")) {
-        showPersonalityTest();
-    } else {
-        showCapsulaByDate();
-        start2000sGraphics(temaActual);
-        checkPendingNotifications();
-    }
-    updateText();
-    setInterval(checkPendingNotifications, 60000);
-});
+        else if (maxScore === personalityScore.practico) { userType = "Práctico"; icon = "
