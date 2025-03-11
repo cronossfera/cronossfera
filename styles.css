@@ -62,7 +62,7 @@ body.tema-frutiger-metro::before,
 body.tema-pastel::before,
 body.tema-vaporwave::before,
 body.tema-dark-academia::before,
-body.tema-cyberpunk::before,
+body.tema-frutiger-aero-2::before,
 body.tema-frutiger-aero::before,
 body.tema-galaxy::before,
 body.tema-custom::before {
@@ -94,8 +94,8 @@ body.tema-vaporwave::before {
 body.tema-dark-academia::before {
     background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
 }
-body.tema-cyberpunk::before {
-    background-image: url('images/frutiger-aero-bg.jpg');
+body.tema-frutiger-aero-2::before {
+    background-image: url('images/frutiger-aero-2-bg.jpg');
 }
 body.tema-frutiger-aero::before {
     background-image: url('images/frutiger-aero-bg.jpg');
