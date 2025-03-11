@@ -6,12 +6,13 @@ import { capsulas } from './capsulas.js';
 
 // Configuración de Firebase (reemplaza con tus claves)
 const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_AUTH_DOMAIN",
-    projectId: "TU_PROJECT_ID",
-    storageBucket: "TU_STORAGE_BUCKET",
-    messagingSenderId: "TU_MESSAGING_SENDER_ID",
-    appId: "TU_APP_ID"
+    apiKey: "AIzaSyA0F6ZO87MWqbLNX1_cYu06PzQEkdBNIDc",
+    authDomain: "cronosfera-844ec.firebaseapp.com",
+    projectId: "cronosfera-844ec",
+    storageBucket: "cronosfera-844ec.firebasestorage.app",
+    messagingSenderId: "272938986424",
+    appId: "1:272938986424:web:1e782b25d337347eadbd4d"
+    measurementId: "G-HHNZYM00JZ"
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -431,7 +432,7 @@ function setupPushNotifications(registration) {
     if ('PushManager' in window) {
         registration.pushManager.getSubscription().then(subscription => {
             if (!subscription) {
-                const vapidPublicKey = "TU_VAPID_PUBLIC_KEY"; // Reemplaza con tu clave VAPID
+                const vapidPublicKey = "BJDruDHll_VwFoDXZP5U1I3FiM5BanFBd_z7Z8eHsG6B_4WUqmyKjCYJ4f5ElzyItNKzWYT1qML5bXucZiR3GDM"; // Reemplaza con tu clave VAPID
                 registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
