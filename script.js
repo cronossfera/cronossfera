@@ -1,18 +1,18 @@
 // Importaciones de Firebase
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js';
-import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
 import { capsulas } from './capsulas.js';
 
 // Configuración de Firebase (reemplaza con tus claves)
 const firebaseConfig = {
-    apiKey: "AIzaSyA0F6ZO87MWqbLNX1_cYu06PzQEkdBNIDc",
-    authDomain: "cronosfera-844ec.firebaseapp.com",
-    projectId: "cronosfera-844ec",
-    storageBucket: "cronosfera-844ec.firebasestorage.app",
-    messagingSenderId: "272938986424",
-    appId: "1:272938986424:web:1e782b25d337347eadbd4d"
-    };
+    apiKey: "TU_API_KEY",
+    authDomain: "TU_AUTH_DOMAIN",
+    projectId: "TU_PROJECT_ID",
+    storageBucket: "TU_STORAGE_BUCKET",
+    messagingSenderId: "TU_MESSAGING_SENDER_ID",
+    appId: "TU_APP_ID"
+};
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
@@ -141,7 +141,7 @@ function showModal(text) {
         modal.innerHTML = `
             <div class="modal-content">
                 <p id="modal-text"></p>
-                <button onclick="closeModal()" aria-label="Cerrar modal">Cerrar</button>
+                <button aria-label="Cerrar modal">Cerrar</button>
             </div>
         `;
         document.body.appendChild(modal);
@@ -227,7 +227,7 @@ function showFavorites() {
                 <div>${f.cita}</div>
                 <div>${f.recurso}</div>
             </div>
-        `).join("")}</div><button class="back-btn" onclick="backToMain()">Volver a Principal</button>`;
+        `).join("")}</div><button class="back-btn" aria-label="Volver a la pantalla principal">Volver a Principal</button>`;
     });
 }
 
@@ -431,7 +431,7 @@ function setupPushNotifications(registration) {
     if ('PushManager' in window) {
         registration.pushManager.getSubscription().then(subscription => {
             if (!subscription) {
-                const vapidPublicKey = "BJDruDHll_VwFoDXZP5U1I3FiM5BanFBd_z7Z8eHsG6B_4WUqmyKjCYJ4f5ElzyItNKzWYT1qML5bXucZiR3GDM"; // Reemplaza con tu clave VAPID
+                const vapidPublicKey = "TU_VAPID_PUBLIC_KEY"; // Reemplaza con tu clave VAPID
                 registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
@@ -534,8 +534,8 @@ function updateText() {
     };
     document.querySelector("#organizador h2").textContent = texts[idiomaActual].h2;
     document.querySelector("#agenda h3").textContent = texts[idiomaActual].h3;
-    document.querySelector("button[onclick='nuevaCapsula()']").textContent = texts[idiomaActual].btn1;
-    document.querySelector("button[onclick='enviar()']").textContent = texts[idiomaActual].btn2;
+    document.querySelector("button[aria-label='Generar cápsula aleatoria']").textContent = texts[idiomaActual].btn1;
+    document.querySelector("button[aria-label='Enviar cápsula por email']").textContent = texts[idiomaActual].btn2;
     document.querySelector("a").textContent = texts[idiomaActual].link;
     document.querySelector("#config h2").textContent = texts[idiomaActual].config;
     document.querySelectorAll(".back-btn").forEach(btn => {
@@ -878,8 +878,7 @@ function exportToGoogleCalendar(item) {
     const startDateTime = `${item.fecha}T${item.hora || "00:00"}:00`;
     const endDateTime = new Date(new Date(startDateTime).getTime() + 60 * 60 * 1000).toISOString().replace(/[:-]/g, "").split(".")[0];
     const start = startDateTime.replace(/[:-]/g, "").split(".")[0];
-    const url
-        const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`[${item.categoria}] ${item.texto}`)}&dates=${start}/${endDateTime}`;
+    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`[${item.categoria}] ${item.texto}`)}&dates=${start}/${endDateTime}`;
     window.open(url, "_blank");
 }
 
@@ -902,6 +901,59 @@ function setupKeyboardShortcuts() {
 
 // Inicio
 document.addEventListener("DOMContentLoaded", () => {
+    // Botones de la página principal
+    document.querySelector("button[aria-label='Generar cápsula aleatoria']").addEventListener("click", nuevaCapsula);
+    document.querySelector("button[aria-label='Enviar cápsula por email']").addEventListener("click", enviar);
+    document.querySelector("button[aria-label='Crear cápsula personalizada']").addEventListener("click", showCustomCapsuleForm);
+    document.querySelector("a[aria-label='Abrir organizador dinámico']").addEventListener("click", showOrganizador);
+    document.querySelector("button[aria-label='Ver cápsulas favoritas']").addEventListener("click", showFavorites);
+    document.querySelector("button[aria-label='Ver estadísticas']").addEventListener("click", showStats);
+    document.querySelector("#config-btn").addEventListener("click", toggleConfig);
+    document.querySelector("#favorite-btn").addEventListener("click", toggleFavorite);
+    document.querySelector(".logo").addEventListener("click", backToMain);
+
+    // Botones de configuración
+    document.querySelector("#config button[aria-label='Aplicar configuración']").addEventListener("click", applyConfig);
+    document.querySelector("#config button[aria-label='Volver a la pantalla principal']").addEventListener("click", backToMain);
+
+    // Botones de cápsula personalizada
+    document.querySelector("#custom-capsule-form button[aria-label='Guardar cápsula']").addEventListener("click", saveCustomCapsule);
+    document.querySelector("#custom-capsule-form button[aria-label='Cerrar formulario']").addEventListener("click", hideCustomCapsuleForm);
+
+    // Botones del organizador
+    document.querySelector("#organizador button[aria-label='Agregar tarea']").addEventListener("click", addItem);
+    document.querySelector("#organizador button[aria-label='Volver a la pantalla principal']").addEventListener("click", backToMain);
+
+    // Botones de favoritos y estadísticas
+    document
+        // Botones de favoritos y estadísticas
+    document.querySelector("#favorites button[aria-label='Volver a la pantalla principal']").addEventListener("click", backToMain);
+    document.querySelector("#stats button[aria-label='Volver a la pantalla principal']").addEventListener("click", backToMain);
+
+    // Botones del test de personalidad
+    document.getElementById("prev-btn").addEventListener("click", prevQuestion);
+    document.getElementById("next-btn").addEventListener("click", nextQuestion);
+    document.getElementById("submit-btn").addEventListener("click", submitTest);
+
+    // Botones del tutorial
+    document.getElementById("next-tutorial").addEventListener("click", nextTutorial);
+    document.getElementById("skip-tutorial").addEventListener("click", skipTutorial);
+
+    // Añadir export/import
+    const exportBtn = document.createElement("button");
+    exportBtn.textContent = "Exportar Datos";
+    exportBtn.setAttribute("aria-label", "Exportar datos del usuario");
+    exportBtn.onclick = exportData;
+    document.getElementById("config").appendChild(exportBtn);
+
+    const importInput = document.createElement("input");
+    importInput.type = "file";
+    importInput.accept = ".json";
+    importInput.setAttribute("aria-label", "Importar datos del usuario");
+    importInput.onchange = importData;
+    document.getElementById("config").appendChild(importInput);
+
+    // Inicialización
     const container = document.querySelector(".container");
     container.style.opacity = "1";
     registerServiceWorker();
@@ -920,19 +972,14 @@ document.addEventListener("DOMContentLoaded", () => {
     updateText();
     setInterval(checkPendingNotifications, 60000);
 
-    // Añadir eventos al tutorial
-    document.getElementById("next-tutorial").addEventListener("click", nextTutorial);
-    document.getElementById("skip-tutorial").addEventListener("click", skipTutorial);
+    // Asegurarse de que el evento de cerrar modal funcione
+    document.querySelector("#modal button[aria-label='Cerrar modal']").addEventListener("click", closeModal);
 
-    // Añadir export/import
-    const exportBtn = document.createElement("button");
-    exportBtn.textContent = "Exportar Datos";
-    exportBtn.onclick = exportData;
-    document.getElementById("config").appendChild(exportBtn);
-
-    const importInput = document.createElement("input");
-    importInput.type = "file";
-    importInput.accept = ".json";
-    importInput.onchange = importData;
-    document.getElementById("config").appendChild(importInput);
+    // Evento para cerrar modal al hacer clic fuera
+    document.getElementById("modal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("modal")) {
+            closeModal();
+        }
+    });
 });
+    
