@@ -12,8 +12,7 @@ const firebaseConfig = {
     storageBucket: "cronosfera-844ec.firebasestorage.app",
     messagingSenderId: "272938986424",
     appId: "1:272938986424:web:1e782b25d337347eadbd4d"
-    measurementId: "G-HHNZYM00JZ"
-};
+    };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
