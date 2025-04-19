@@ -75,7 +75,7 @@ body.tema-dark-academia::before {
 }
 
 body.tema-cyberpunk::before {
-    background-image: url('optimized/frutiger-aero-2-bg.webp');
+    background-image: url('frutiger-aero-2-bg.webp');
 }
 @supports not (background-image: url('frutiger-aero-2-bg.webp')) {
     body.tema-cyberpunk::before {
@@ -84,11 +84,11 @@ body.tema-cyberpunk::before {
 }
 
 body.tema-frutiger-aero::before {
-    background-image: url('optimized/frutiger-aero-bg.webp');
+    background-image: url('frutiger-aero-bg.webp');
 }
 @supports not (background-image: url('frutiger-aero-bg.webp')) {
     body.tema-frutiger-aero::before {
-        background-image: url('images/frutiger-aero-bg.jpg');
+        background-image: url('frutiger-aero-bg.jpg');
     }
 }
 
