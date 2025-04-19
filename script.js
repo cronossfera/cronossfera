@@ -2,6 +2,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 import { getAuth } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
 import { capsulas } from './capsulas.js';
 
 // Configuración de Firebase (reemplaza con tus claves)
@@ -16,6 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 // Configuración inicial
 let idiomaActual = localStorage.getItem("idioma") || "es";
@@ -163,7 +165,7 @@ function showCapsulaByDate() {
     applyFade(container, () => {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="showModal('${capsula.datoZoom.replace(/'/g, "\\'")}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="showModal('${capsula.citaZoom.replace(/'/g, "\\'")}')">[Zoom In]</span>`;
-        document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+        document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}` + (capsula.imagenUrl ? `<br><img src="${capsula.imagenUrl}" alt="Imagen de la cápsula" style="max-width: 200px;" loading="lazy">` : "");
         container.style.display = "block";
         container.style.opacity = "1";
         updateUserInfo();
@@ -180,7 +182,7 @@ function nuevaCapsula() {
     applyFade(container, () => {
         document.getElementById("dato").innerHTML = `Dato: ${capsula.dato} <span onclick="showModal('${capsula.datoZoom.replace(/'/g, "\\'")}')">[Zoom In]</span>`;
         document.getElementById("cita").innerHTML = `Cita: ${capsula.cita} <span onclick="showModal('${capsula.citaZoom.replace(/'/g, "\\'")}')">[Zoom In]</span>`;
-        document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}`;
+        document.getElementById("recurso").innerHTML = `Recurso: ${capsula.recurso}` + (capsula.imagenUrl ? `<br><img src="${capsula.imagenUrl}" alt="Imagen de la cápsula" style="max-width: 200px;" loading="lazy">` : "");
         container.style.display = "block";
         container.style.opacity = "1";
         updateUserInfo();
@@ -253,12 +255,66 @@ function saveCustomCapsule() {
     const cita = document.getElementById("custom-cita").value;
     const recurso = document.getElementById("custom-recurso").value;
     const fecha = document.getElementById("custom-date").value;
+    const imagenInput = document.getElementById("custom-imagen");
+
     if (dato && cita && recurso && fecha) {
         const customCapsule = { dato, cita, recurso, fecha, datoZoom: dato, citaZoom: cita };
-        capsulas[idiomaActual].push(customCapsule);
-        localStorage.setItem("capsulas", JSON.stringify(capsulas));
-        hideCustomCapsuleForm();
-        showCapsulaByDate();
+
+        if (imagenInput && imagenInput.files[0]) {
+            // Comprimir y convertir imagen a WebP antes de subirla a Firebase Storage
+            const imageFile = imagenInput.files[0];
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = () => {
+                // Redimensionar imagen a un máximo de 800x800 píxeles
+                const MAX_WIDTH = 800;
+                const MAX_HEIGHT = 800;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Convertir a WebP con calidad reducida
+                canvas.toBlob((blob) => {
+                    const storageRef = ref(storage, `capsulas/${fecha}-${dato}.webp`);
+                    uploadBytes(storageRef, blob, { contentType: 'image/webp' }).then(snapshot => {
+                        getDownloadURL(snapshot.ref).then(url => {
+                            customCapsule.imagenUrl = url;
+                            capsulas[idiomaActual].push(customCapsule);
+                            localStorage.setItem("capsulas", JSON.stringify(capsulas));
+                            hideCustomCapsuleForm();
+                            showCapsulaByDate();
+                        });
+                    }).catch(err => {
+                        console.error("Error al subir imagen a Firebase:", err);
+                        alert("Error al subir la imagen. Intenta de nuevo.");
+                    });
+                }, 'image/webp', 0.8); // Calidad del 80%
+            };
+
+            img.src = URL.createObjectURL(imageFile);
+        } else {
+            capsulas[idiomaActual].push(customCapsule);
+            localStorage.setItem("capsulas", JSON.stringify(capsulas));
+            hideCustomCapsuleForm();
+            showCapsulaByDate();
+        }
     } else {
         alert("Completa todos los campos.");
     }
@@ -431,7 +487,7 @@ function setupPushNotifications(registration) {
     if ('PushManager' in window) {
         registration.pushManager.getSubscription().then(subscription => {
             if (!subscription) {
-                const vapidPublicKey = "BJDruDHll_VwFoDXZP5U1I3FiM5BanFBd_z7Z8eHsG6B_4WUqmyKjCYJ4f5ElzyItNKzWYT1qML5bXucZiR3GDM"; // Reemplaza con tu clave VAPID
+                const vapidPublicKey = "BJDruDHll_VwFoDXZP5U1I3FiM5BanFBd_z7Z8eHsG6B_4WUqmyKjCYJ4f5ElzyItNKzWYT1qML5bXucZiR3GDM";
                 registration.pushManager.subscribe({
                     userVisibleOnly: true,
                     applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
@@ -925,10 +981,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#organizador button[aria-label='Volver a la pantalla principal']").addEventListener("click", backToMain);
 
     // Botones de favoritos y estadísticas
-    document
-        // Botones de favoritos y estadísticas
-    document.querySelector("#favorites button[aria-label='Volver a la pantalla principal']").addEventListener("click", backToMain);
-    document.querySelector("#stats button[aria-label='Volver a la pantalla principal']").addEventListener("click", backToMain);
+    document.querySelector("#favorites").addEventListener("click", (e) => {
+        if (e.target.matches("button[aria-label='Volver a la pantalla principal']")) {
+            backToMain();
+        }
+    });
+    document.querySelector("#stats").addEventListener("click", (e) => {
+        if (e.target.matches("button[aria-label='Volver a la pantalla principal']")) {
+            backToMain();
+        }
+    });
 
     // Botones del test de personalidad
     document.getElementById("prev-btn").addEventListener("click", prevQuestion);
@@ -982,4 +1044,3 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-    
