@@ -68,28 +68,3 @@ export let capsulas = JSON.parse(localStorage.getItem("capsulas")) || {
         }
     ]
 };
-
-// Integración con APIs externas (Ejemplo con Quotable para citas)
-async function fetchExternalCapsule() {
-    try {
-        const quoteResponse = await fetch('https://api.quotable.io/random');
-        const quoteData = await quoteResponse.json();
-        const factResponse = await fetch('https://uselessfacts.jsph.pl/random.json?language=en');
-        const factData = await factResponse.json();
-        const capsule = {
-            fecha: new Date().toISOString().split("T")[0],
-            dato: factData.text,
-            datoZoom: "Dato obtenido de una API externa de hechos curiosos.",
-            cita: quoteData.content,
-            citaZoom: `Autor: ${quoteData.author}`,
-            recurso: "Explora más en Quotable.io y UselessFacts."
-        };
-        capsulas[idiomaActual].push(capsule);
-        localStorage.setItem("capsulas", JSON.stringify(capsulas));
-    } catch (error) {
-        console.error("Error al obtener cápsula externa:", error);
-    }
-}
-
-// Llamar a la API al iniciar
-fetchExternalCapsule();
