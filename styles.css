@@ -29,11 +29,11 @@ body::before {
 }
 
 /* Fondos para cada tema con soporte WebP y fallback a JPG */
-body.tema-default::before {
+body.tema-sci-fi::before {
     background-image: url('sci-fi-bg.webp');
 }
 @supports not (background-image: url('sci-fi-bg.webp')) {
-    body.tema-default::before {
+    body.tema-sci-fi::before {
         background-image: url('sci-fi-bg.jpg');
     }
 }
