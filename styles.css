@@ -1,428 +1,228 @@
-/* Animaciones de transición */
-.fade {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.fade-in {
-    opacity: 1 !important;
-}
-
-/* Animación de desplegue para la ventana de configuración */
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-#config {
-    animation: slideDown 0.5s ease-out forwards;
-}
-
-/* Animación para logros desbloqueados */
-@keyframes achievementPop {
-    0% { transform: scale(0); opacity: 0; }
-    50% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes tutorialArrow {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(10px); }
-    100% { transform: translateX(0); }
-}
-
 /* Estilos generales */
-body {
-    font-family: 'Space Mono', monospace;
-    color: #fff;
+* {
     margin: 0;
-    padding: 20px;
-    text-align: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: #fff;
     min-height: 100vh;
     position: relative;
-    background-color: #1a1a1a;
-    transition: all 0.3s ease;
+    overflow-x: hidden;
+    background: #000;
 }
 
-body.high-contrast {
-    filter: grayscale(100%) contrast(200%);
-    background-color: #000;
-    color: #fff;
-}
-
-/* Estilos para temas con imágenes de fondo */
-body.tema-default::before,
-body.tema-frutiger-metro::before,
-body.tema-pastel::before,
-body.tema-vaporwave::before,
-body.tema-dark-academia::before,
-body.tema-frutiger-aero-2::before,
-body.tema-frutiger-aero::before,
-body.tema-galaxy::before,
-body.tema-custom::before {
-    content: "";
-    position: fixed;
+body::before {
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    filter: blur(5px);
+    background-attachment: fixed;
+    opacity: 0.5;
     z-index: -1;
 }
 
+/* Fondos para cada tema con soporte WebP y fallback a JPG */
 body.tema-default::before {
     background-image: url('sci-fi-bg.webp');
 }
+@supports not (background-image: url('sci-fi-bg.webp')) {
+    body.tema-default::before {
+        background-image: url('sci-fi-bg.jpg');
+    }
+}
+
 body.tema-frutiger-metro::before {
     background-image: url('frutiger-metro-bg.webp');
 }
+@supports not (background-image: url('frutiger-metro-bg.webp')) {
+    body.tema-frutiger-metro::before {
+        background-image: url('frutiger-metro-bg.jpg');
+    }
+}
+
 body.tema-pastel::before {
     background-image: url('pastel-frutiger-metro-bg.webp');
 }
+@supports not (background-image: url('pastel-frutiger-metro-bg.webp')) {
+    body.tema-pastel::before {
+        background-image: url('pastel-frutiger-metro-bg.jpg');
+    }
+}
+
 body.tema-vaporwave::before {
     background-image: url('vaporwave-bg.webp');
 }
+@supports not (background-image: url('vaporwave-bg.webp')) {
+    body.tema-vaporwave::before {
+        background-image: url('vaporwave-bg.jpg');
+    }
+}
+
 body.tema-dark-academia::before {
     background-image: url('dark-academia-frutiger-metro-bg.webp');
 }
-body.tema-frutiger-aero-2::before {
-    background-image: url('frutiger-aero-2-bg.webp');
+@supports not (background-image: url('dark-academia-frutiger-metro-bg.webp')) {
+    body.tema-dark-academia::before {
+        background-image: url('dark-academia-frutiger-metro-bg.jpg');
+    }
 }
+
+body.tema-cyberpunk::before {
+    background-image: url('optimized/frutiger-aero-2-bg.webp');
+}
+@supports not (background-image: url('frutiger-aero-2-bg.webp')) {
+    body.tema-cyberpunk::before {
+        background-image: url('frutiger-aero-2-bg.jpg');
+    }
+}
+
 body.tema-frutiger-aero::before {
-    background-image: url('frutiger-aero-bg.webp');
+    background-image: url('optimized/frutiger-aero-bg.webp');
 }
+@supports not (background-image: url('frutiger-aero-bg.webp')) {
+    body.tema-frutiger-aero::before {
+        background-image: url('images/frutiger-aero-bg.jpg');
+    }
+}
+
 body.tema-galaxy::before {
     background-image: url('galaxia-bg.webp');
 }
+@supports not (background-image: url('galaxia-bg.webp')) {
+    body.tema-galaxy::before {
+        background-image: url('galaxia-bg.jpg');
+    }
+}
+
 body.tema-custom::before {
     background-image: url('custom-bg.webp');
 }
-
-/* Estilos específicos para cada tema */
-body.tema-default {
-    font-family: 'Arial', sans-serif;
-}
-body.tema-frutiger-metro {
-    color: #333;
-    font-family: 'Arial', sans-serif;
-}
-body.tema-pastel {
-    color: #333;
-    font-family: 'Comic Sans MS', cursive;
-}
-body.tema-vaporwave {
-    font-family: 'Arial', sans-serif;
-}
-body.tema-dark-academia {
-    font-family: 'Arial', sans-serif;
-}
-body.tema-cyberpunk {
-    font-family: 'Arial', sans-serif;
-}
-body.tema-frutiger-aero {
-    color: #000;
-    font-family: 'Verdana', sans-serif;
-}
-body.tema-galaxy {
-    font-family: 'Arial', sans-serif;
-}
-body.tema-custom {
-    font-family: 'Verdana', sans-serif;
+@supports not (background-image: url('custom-bg.webp')) {
+    body.tema-custom::before {
+        background-image: url('custom-bg.jpg');
+    }
 }
 
-/* Fuentes personalizadas */
-body.custom-font-Orbitron { font-family: 'Orbitron', sans-serif; }
-body.custom-font-Space-Mono { font-family: 'Space Mono', monospace; }
-body.custom-font-Comic-Sans-MS { font-family: 'Comic Sans MS', cursive; }
-body.custom-font-Verdana { font-family: 'Verdana', sans-serif; }
-
-/* Estilo para el texto */
-body h1, body h2, body h3, body p, body label, body button, body a {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-button {
-    background-color: #00ffcc;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 5px;
+/* Estilos para fuentes personalizadas */
+body.custom-font-orbitron {
     font-family: 'Orbitron', sans-serif;
-    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-button:hover {
-    background-color: #00b3a0;
-    transform: scale(1.05);
+body.custom-font-roboto {
+    font-family: 'Roboto', sans-serif;
 }
 
-a {
-    color: #00ffcc;
-    text-decoration: none;
-    margin: 10px;
-    display: inline-block;
-    font-family: 'Orbitron', sans-serif;
-    transition: color 0.3s ease;
+body.custom-font-monospace {
+    font-family: 'Courier New', Courier, monospace;
 }
 
-a:hover {
-    color: #00b3a0;
-}
-
-/* Estilo para el logo */
-.logo {
-    width: 200px;
-    height: auto;
-    margin: 0 auto 20px;
-    display: block;
-    cursor: pointer;
-    border: 2px solid white;
-    border-radius: 10px;
-    background: none;
-    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.logo:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
-}
-
-/* Contador de visitas */
-#visit-counter {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2em;
-    color: #00ffcc;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    margin-bottom: 10px;
-    z-index: 10;
-}
-
-body.tema-frutiger-metro #visit-counter,
-body.tema-pastel #visit-counter,
-body.tema-dark-academia #visit-counter,
-body.tema-frutiger-aero #visit-counter {
+/* Modo de alto contraste */
+body.high-contrast {
+    background: #000;
     color: #fff;
 }
 
-/* Botón de configuración */
-#config-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #00ffcc, #00b3a0);
+body.high-contrast .container,
+body.high-contrast #organizador,
+body.high-contrast #config,
+body.high-contrast #personality-test,
+body.high-contrast #custom-capsule-form,
+body.high-contrast #favorites,
+body.high-contrast #stats {
+    background: #333;
     border: 2px solid #fff;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 30px;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-#config-btn:hover {
-    background: linear-gradient(135deg, #00b3a0, #00ffcc);
-    transform: rotate(90deg);
-    box-shadow: 0 0 25px rgba(0, 255, 204, 1);
-}
-
-/* Contenedores principales */
-.container, #organizador, #config, #custom-capsule-form, #favorites, #stats, #personality-test {
-    opacity: 1;
-    transition: opacity 0.5s ease-in-out;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+/* Contenedor principal */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
-/* Diseño de la cápsula */
-.capsule {
-    border-radius: 15px;
-    padding: 20px;
-    margin: 20px auto;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    max-width: 600px;
-    border: 1px solid rgba(0, 255, 204, 0.2);
+/* Estilos de desvanecimiento */
+.fade {
+    opacity: 0 !important;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in {
+    opacity: 1 !important;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Logo */
+.logo {
+    width: 200px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+/* Botones */
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+button, a {
+    padding: 10px 20px;
+    background: #00ffcc;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+button:hover, a:hover {
+    background: #00ccaa;
 }
 
 #favorite-btn {
-    background-color: #ff4444;
-    border: none;
-    padding: 5px 10px;
-    margin-top: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    background: transparent;
+    font-size: 24px;
+    padding: 0;
 }
 
-#favorite-btn.favorited {
-    background-color: #ffaa00;
+#favorite-btn.favorited::before {
+    content: "❤️";
 }
 
-#favorite-btn:hover {
-    background-color: #cc0000;
+#favorite-btn:not(.favorited)::before {
+    content: "🤍";
 }
 
-/* Grupo de botones */
-.button-group {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-/* Estilos para el organizador */
-#organizador, #config {
-    margin-top: 20px;
-}
-
-#organizador input[type="date"],
-#organizador input[type="time"],
-#custom-capsule-form input[type="date"] {
-    padding: 8px;
-    border-radius: 5px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    margin: 5px 0;
-}
-
-#organizador #priority,
-#organizador #tags {
-    padding: 8px;
-    border-radius: 5px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    margin: 5px 0;
-}
-
-#lista .item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #333;
-    margin: 5px 0;
-    border-radius: 5px;
-}
-
-#lista .item.high { background-color: #ff6666; }
-#lista .item.medium { background-color: #ffcc00; }
-#lista .item.low { background-color: #66cc66; }
-
-#recordatorios .recordatorio {
-    background-color: #444;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-}
-
-#recordatorios .recordatorio.pendiente {
-    background-color: #ff6666;
-    color: white;
-    font-weight: bold;
-}
-
-.back-btn {
-    margin-top: 20px;
-}
-
-/* Estilo para el texto de usuario */
-#user-info {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.2em;
-    margin-bottom: 20px;
-}
-
-.capsule div {
+/* Contenido de cápsulas */
+#dato, #cita, #recurso {
     margin: 10px 0;
-    font-size: 1.1em;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
 }
 
-.capsule span {
+#dato span, #cita span {
     color: #00ffcc;
     cursor: pointer;
-    margin-left: 5px;
 }
 
-.capsule span:hover {
-    text-decoration: underline;
-}
-
-/* Configuración */
-#config {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-#config label {
-    display: block;
-    margin: 10px 0 5px;
-}
-
-#config select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-}
-
-/* Ventana del test de personalidad */
-#personality-test {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-    max-width: 500px;
-    width: 90%;
-    z-index: 1000;
-    color: #fff;
-    text-align: center;
-}
-
-#personality-test h2 {
-    font-family: 'Orbitron', sans-serif;
-    margin-bottom: 20px;
-}
-
-#progress-bar {
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-#test-content label {
-    display: block;
-    margin: 10px 0;
-}
-
-#test-content input[type="radio"] {
-    margin-right: 5px;
-}
-
-/* Modal para Zoom In */
+/* Modal */
 .modal {
     display: none;
     position: fixed;
@@ -430,91 +230,161 @@ body.tema-frutiger-aero #visit-counter {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 2000;
+    background: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
-    background: rgba(255, 255, 255, 0.9);
+    background: #333;
     padding: 20px;
     border-radius: 10px;
-    max-width: 500px;
-    width: 90%;
+    max-width: 80%;
     text-align: center;
-    color: #333;
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
 }
 
 .modal-content button {
-    margin-top: 15px;
-    background-color: #00ffcc;
+    margin-top: 10px;
+    background: #00ffcc;
+    color: #000;
+}
+
+/* Organizador dinámico */
+#organizador, #config, #personality-test, #custom-capsule-form, #favorites, #stats {
+    display: none;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#organizador input, #organizador select, #config select, #custom-capsule-form input, #custom-capsule-form textarea {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+#lista .item {
+    margin: 5px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#lista .alta { background: rgba(255, 102, 102, 0.3); }
+#lista .media { background: rgba(255, 204, 0, 0.3); }
+#lista .baja { background: rgba(102, 204, 102, 0.3); }
+
+#recordatorios .recordatorio {
+    margin: 5px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+#recordatorios .pendiente {
+    background: rgba(255, 102, 102, 0.3);
+}
+
+/* Configuración */
+#config label {
+    margin-right: 10px;
+}
+
+/* Test de personalidad */
+#personality-test progress {
+    width: 100%;
+    margin: 10px 0;
+}
+
+#test-content label {
+    display: block;
+    margin: 5px 0;
+}
+
+/* Cápsulas personalizadas */
+#custom-capsule-form textarea {
+    width: 100%;
+    height: 80px;
+}
+
+/* Favoritos */
+#favorites-list .capsule {
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+/* Estadísticas */
+#stats-chart {
+    max-width: 100%;
+    margin: 20px 0;
 }
 
 /* Tutorial */
 #tutorial {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#tutorial-steps {
+    background: #333;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-    max-width: 500px;
-    width: 90%;
-    z-index: 1000;
-    color: #fff;
-    text-align: left;
+    text-align: center;
 }
 
-#tutorial-steps .step {
-    margin-bottom: 15px;
-    position: relative;
+.step {
+    margin-bottom: 10px;
 }
 
-#tutorial-steps .arrow {
-    position: absolute;
-    right: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-    animation: tutorialArrow 1.5s infinite;
+.arrow {
+    font-size: 20px;
 }
 
-#next-tutorial, #skip-tutorial {
-    margin: 5px;
+/* Gráficos interactivos */
+#interactive-2000s {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
-/* Favoritos y Estadísticas */
-#favorites-list, #stats-details {
-    margin-top: 20px;
-}
-
-#stats-chart {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-/* Responsividad */
+/* Ajustes para pantallas pequeñas */
 @media (max-width: 600px) {
+    .container, #organizador, #config, #personality-test, #custom-capsule-form, #favorites, #stats {
+        padding: 10px;
+    }
+
     .logo {
         width: 150px;
     }
+
     .button-group {
         flex-direction: column;
-        gap: 10px;
     }
-    .capsule {
-        max-width: 100%;
-        padding: 15px;
-    }
-    #config-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-    }
-    #tutorial, #personality-test {
-        width: 95%;
+
+    button, a {
+        width: 100%;
+        padding: 10px;
     }
 }
