@@ -1,4 +1,4 @@
-/* Estilos generales */
+/* Reset y estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -16,7 +16,7 @@ body {
 
 body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -24,89 +24,91 @@ body::before {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    opacity: 0.5;
-    z-index: -1;
+    opacity: 0.3;
+    z-index: -2;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 /* Fondos para cada tema con soporte WebP y fallback a JPG */
-body.tema-sci-fi::before {
-    background-image: url('sci-fi-bg.webp');
+body.tema-default::before {
+    background-image: url('images/optimized/sci-fi-bg.webp');
 }
-@supports not (background-image: url('sci-fi-bg.webp')) {
-    body.tema-sci-fi::before {
-        background-image: url('sci-fi-bg.jpg');
+@supports not (background-image: url('images/optimized/sci-fi-bg.webp')) {
+    body.tema-default::before {
+        background-image: url('images/sci-fi-bg.jpg');
     }
 }
 
 body.tema-frutiger-metro::before {
-    background-image: url('frutiger-metro-bg.webp');
+    background-image: url('images/optimized/frutiger-metro-bg.webp');
 }
-@supports not (background-image: url('frutiger-metro-bg.webp')) {
+@supports not (background-image: url('images/optimized/frutiger-metro-bg.webp')) {
     body.tema-frutiger-metro::before {
-        background-image: url('frutiger-metro-bg.jpg');
+        background-image: url('images/frutiger-metro-bg.jpg');
     }
 }
 
 body.tema-pastel::before {
-    background-image: url('pastel-frutiger-metro-bg.webp');
+    background-image: url('images/optimized/pastel-frutiger-metro-bg.webp');
 }
-@supports not (background-image: url('pastel-frutiger-metro-bg.webp')) {
+@supports not (background-image: url('images/optimized/pastel-frutiger-metro-bg.webp')) {
     body.tema-pastel::before {
-        background-image: url('pastel-frutiger-metro-bg.jpg');
+        background-image: url('images/pastel-frutiger-metro-bg.jpg');
     }
 }
 
 body.tema-vaporwave::before {
-    background-image: url('vaporwave-bg.webp');
+    background-image: url('images/optimized/vaporwave-bg.webp');
 }
-@supports not (background-image: url('vaporwave-bg.webp')) {
+@supports not (background-image: url('images/optimized/vaporwave-bg.webp')) {
     body.tema-vaporwave::before {
-        background-image: url('vaporwave-bg.jpg');
+        background-image: url('images/vaporwave-bg.jpg');
     }
 }
 
 body.tema-dark-academia::before {
-    background-image: url('dark-academia-frutiger-metro-bg.webp');
+    background-image: url('images/optimized/dark-academia-frutiger-metro-bg.webp');
 }
-@supports not (background-image: url('dark-academia-frutiger-metro-bg.webp')) {
+@supports not (background-image: url('images/optimized/dark-academia-frutiger-metro-bg.webp')) {
     body.tema-dark-academia::before {
-        background-image: url('dark-academia-frutiger-metro-bg.jpg');
+        background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
     }
 }
 
 body.tema-cyberpunk::before {
-    background-image: url('frutiger-aero-2-bg.webp');
+    background-image: url('images/optimized/frutiger-aero-2-bg.webp');
 }
-@supports not (background-image: url('frutiger-aero-2-bg.webp')) {
+@supports not (background-image: url('images/optimized/frutiger-aero-2-bg.webp')) {
     body.tema-cyberpunk::before {
-        background-image: url('frutiger-aero-2-bg.jpg');
+        background-image: url('images/frutiger-aero-2-bg.jpg');
     }
 }
 
 body.tema-frutiger-aero::before {
-    background-image: url('frutiger-aero-bg.webp');
+    background-image: url('images/optimized/frutiger-aero-bg.webp');
 }
-@supports not (background-image: url('frutiger-aero-bg.webp')) {
+@supports not (background-image: url('images/optimized/frutiger-aero-bg.webp')) {
     body.tema-frutiger-aero::before {
-        background-image: url('frutiger-aero-bg.jpg');
+        background-image: url('images/frutiger-aero-bg.jpg');
     }
 }
 
 body.tema-galaxy::before {
-    background-image: url('galaxia-bg.webp');
+    background-image: url('images/optimized/galaxia-bg.webp');
 }
-@supports not (background-image: url('galaxia-bg.webp')) {
+@supports not (background-image: url('images/optimized/galaxia-bg.webp')) {
     body.tema-galaxy::before {
-        background-image: url('galaxia-bg.jpg');
+        background-image: url('images/galaxia-bg.jpg');
     }
 }
 
 body.tema-custom::before {
-    background-image: url('custom-bg.webp');
+    background-image: url('images/optimized/custom-bg.webp');
 }
-@supports not (background-image: url('custom-bg.webp')) {
+@supports not (background-image: url('images/optimized/custom-bg.webp')) {
     body.tema-custom::before {
-        background-image: url('custom-bg.jpg');
+        background-image: url('images/custom-bg.jpg');
     }
 }
 
@@ -140,10 +142,76 @@ body.high-contrast #stats {
     border: 2px solid #fff;
 }
 
+/* Header */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.logo-container {
+    flex: 1;
+    text-align: center;
+}
+
+.logo {
+    width: 180px;
+    max-width: 100%;
+}
+
+.header-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Configuraciones */
+.settings-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.settings-icon {
+    width: 36px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.settings-icon:hover {
+    transform: rotate(90deg);
+}
+
 /* Contenedor principal */
-.container {
+.main-content {
+    padding-top: 100px; /* Espacio para el header fijo */
+    padding-bottom: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container, 
+#organizador, 
+#config, 
+#personality-test, 
+#custom-capsule-form, 
+#favorites, 
+#stats {
     max-width: 800px;
-    margin: 0 auto;
+    width: 90%;
+    margin: 20px auto;
     padding: 20px;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
@@ -164,13 +232,6 @@ body.high-contrast #stats {
     transition: opacity 0.5s ease-in-out;
 }
 
-/* Logo */
-.logo {
-    width: 200px;
-    margin-bottom: 20px;
-    cursor: pointer;
-}
-
 /* Botones */
 .button-group {
     display: flex;
@@ -189,6 +250,7 @@ button, a {
     cursor: pointer;
     text-decoration: none;
     transition: background 0.3s;
+    font-size: 16px;
 }
 
 button:hover, a:hover {
@@ -209,17 +271,32 @@ button:hover, a:hover {
     content: "🤍";
 }
 
+.back-btn {
+    margin-top: 20px;
+    background: #ff5555;
+}
+
+.back-btn:hover {
+    background: #cc4444;
+}
+
 /* Contenido de cápsulas */
 #dato, #cita, #recurso {
-    margin: 10px 0;
-    padding: 10px;
+    margin: 15px 0;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 18px;
 }
 
 #dato span, #cita span {
     color: #00ffcc;
     cursor: pointer;
+    transition: color 0.3s;
+}
+
+#dato span:hover, #cita span:hover {
+    color: #00ccaa;
 }
 
 /* Modal */
@@ -251,85 +328,168 @@ button:hover, a:hover {
 }
 
 /* Organizador dinámico */
-#organizador, #config, #personality-test, #custom-capsule-form, #favorites, #stats {
-    display: none;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+#organizador h2, 
+#config h2, 
+#personality-test h2, 
+#custom-capsule-form h2, 
+#favorites h2, 
+#stats h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #00ffcc;
 }
 
-#organizador input, #organizador select, #config select, #custom-capsule-form input, #custom-capsule-form textarea {
-    margin: 5px;
-    padding: 5px;
+#agenda {
+    margin-bottom: 20px;
+}
+
+#agenda h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+#calendar-container {
+    margin: 20px 0;
+}
+
+.organizador-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.task-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+#organizador input, 
+#organizador select, 
+#config select, 
+#custom-capsule-form input, 
+#custom-capsule-form textarea {
+    padding: 8px;
     border-radius: 5px;
     border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 16px;
+    width: 100%;
 }
 
 #lista .item {
-    margin: 5px 0;
-    padding: 10px;
+    margin: 10px 0;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
+    border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 16px;
 }
 
 #lista .alta { background: rgba(255, 102, 102, 0.3); }
 #lista .media { background: rgba(255, 204, 0, 0.3); }
 #lista .baja { background: rgba(102, 204, 102, 0.3); }
+#lista .completed { background: rgba(102, 204, 102, 0.3); text-decoration: line-through; }
+#lista .discarded { background: rgba(255, 102, 102, 0.3); text-decoration: line-through; }
+#lista .pending { background: rgba(255, 204, 0, 0.3); }
 
 #recordatorios .recordatorio {
-    margin: 5px 0;
-    padding: 10px;
+    margin: 10px 0;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
 #recordatorios .pendiente {
     background: rgba(255, 102, 102, 0.3);
 }
 
+/* Sugerencias para autocompletado */
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 100%;
+    z-index: 1000;
+    display: none;
+    color: #000;
+}
+
+.suggestion-item {
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background: rgba(0, 255, 255, 0.2);
+}
+
 /* Configuración */
-#config label {
+.config-group {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.config-group label {
     margin-right: 10px;
+    font-size: 16px;
 }
 
 /* Test de personalidad */
 #personality-test progress {
     width: 100%;
-    margin: 10px 0;
+    margin: 15px 0;
+    height: 20px;
+}
+
+#personality-test p {
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 #test-content label {
     display: block;
-    margin: 5px 0;
+    margin: 10px 0;
+    font-size: 16px;
 }
 
 /* Cápsulas personalizadas */
 #custom-capsule-form textarea {
     width: 100%;
-    height: 80px;
+    height: 100px;
+    resize: vertical;
 }
 
 /* Favoritos */
 #favorites-list .capsule {
-    margin: 10px 0;
-    padding: 10px;
+    margin: 15px 0;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
 /* Estadísticas */
 #stats-chart {
     max-width: 100%;
     margin: 20px 0;
+}
+
+#stats-details {
+    font-size: 16px;
 }
 
 /* Tutorial */
@@ -351,10 +511,12 @@ button:hover, a:hover {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+    max-width: 80%;
 }
 
 .step {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
 }
 
 .arrow {
@@ -371,7 +533,7 @@ button:hover, a:hover {
 
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 600px) {
-    .container, #organizador, #config, #personality-test, #custom-capsule-form, #favorites, #stats {
+    .main-header {
         padding: 10px;
     }
 
@@ -379,12 +541,50 @@ button:hover, a:hover {
         width: 150px;
     }
 
-    .button-group {
-        flex-direction: column;
+    .settings-icon {
+        width: 30px;
+    }
+
+    .main-content {
+        padding-top: 80px;
+    }
+
+    .container, 
+    #organizador, 
+    #config, 
+    #personality-test, 
+    #custom-capsule-form, 
+    #favorites, 
+    #stats {
+        width: 95%;
+        padding: 15px;
     }
 
     button, a {
-        width: 100%;
-        padding: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    #dato, #cita, #recurso {
+        font-size: 16px;
+    }
+
+    #organizador h2, 
+    #config h2, 
+    #personality-test h2, 
+    #custom-capsule-form h2, 
+    #favorites h2, 
+    #stats h2 {
+        font-size: 20px;
+    }
+
+    #lista .item, 
+    #recordatorios .recordatorio, 
+    #favorites-list .capsule {
+        font-size: 14px;
+    }
+
+    .organizador-form {
+        grid-template-columns: 1fr;
     }
 }
