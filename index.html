@@ -7,7 +7,7 @@
     <!-- Estilos -->
     <link rel="stylesheet" href="styles.css">
     <!-- Favicon -->
-    <link rel="icon" type="image/webp" href="images/optimized/favicon.webp">
+    <link rel="icon" type="image/ico" href="favicon.ico">
     <!-- FullCalendar para el organizador dinámico -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
@@ -28,26 +28,26 @@
 
     <!-- Contenedor principal -->
     <main class="main-content">
-        <section class="container fade-in">
+        <div class="container fade-in">
             <div id="dato"></div>
             <div id="cita"></div>
             <div id="recurso"></div>
             <div class="button-group">
-                <button aria-label="Generar cápsula aleatoria">Cápsula Aleatoria</button>
-                <button aria-label="Enviar cápsula por email">Enviar a mi futuro yo</button>
+                <button id="random-capsule-btn" aria-label="Generar cápsula aleatoria">Cápsula Aleatoria</button>
+                <button id="email-capsule-btn" aria-label="Enviar cápsula por email">Enviar a mi futuro yo</button>
                 <button id="favorite-btn" aria-label="Marcar como favorita"></button>
-                <button aria-label="Crear cápsula personalizada">Crear Cápsula</button>
-                <button aria-label="Ver cápsulas favoritas">Favoritos</button>
-                <button aria-label="Ver estadísticas">Estadísticas</button>
-                <a href="#" id="organizador-btn" aria-label="Abrir organizador dinámico">Organizador Dinámico</a>
+                <button id="create-capsule-btn" aria-label="Crear cápsula personalizada">Crear Cápsula</button>
+                <button id="favorites-btn" aria-label="Ver cápsulas favoritas">Favoritos</button>
+                <button id="stats-btn" aria-label="Ver estadísticas">Estadísticas</button>
             </div>
+            <a href="#" id="organizador-btn" aria-label="Abrir organizador dinámico">Organizador Dinámico</a>
             <div id="user-stats"></div>
             <div id="visit-counter">Visitas: 0</div>
             <div id="achievements"></div>
-        </section>
+        </div>
 
         <!-- Organizador dinámico -->
-        <section id="organizador" class="fade">
+        <div id="organizador" class="fade">
             <h2>Organizador Dinámico</h2>
             <div id="agenda">
                 <h3>Agenda</h3>
@@ -61,25 +61,25 @@
                     <option value="Estudio">Estudio</option>
                 </select>
                 <div class="task-input-wrapper">
-                    <input type="text" id="task-input" placeholder="Nueva tarea..." autocomplete="off">
+                    <input type="text" id="entrada" placeholder="Nueva tarea..." autocomplete="off">
                     <div id="suggestions" class="suggestions"></div>
                 </div>
                 <input type="date" id="fecha">
                 <input type="time" id="hora">
-                <select id="priority-select">
-                    <option value="alta">Alta</option>
-                    <option value="media">Media</option>
-                    <option value="baja">Baja</option>
+                <select id="priority">
+                    <option value="Alta">Alta</option>
+                    <option value="Media">Media</option>
+                    <option value="Baja">Baja</option>
                 </select>
                 <input type="text" id="tags" placeholder="Tags (separados por comas)">
-                <button onclick="addTask()" aria-label="Agregar tarea">Añadir</button>
+                <button id="add-task-btn" aria-label="Agregar tarea">Añadir</button>
             </div>
             <div id="lista"></div>
-            <button class="back-btn" aria-label="Volver a la pantalla principal">Volver a Principal</button>
-        </section>
+            <button class="back-btn" id="back-to-main-from-organizador" aria-label="Volver a la pantalla principal">Volver a Principal</button>
+        </div>
 
         <!-- Configuración -->
-        <section id="config" class="fade">
+        <div id="config" class="fade">
             <h2>Configuración</h2>
             <div class="config-group">
                 <label for="tema">Tema:</label>
@@ -118,12 +118,12 @@
                 <label><input type="checkbox" id="autoTheme"> Tema automático</label>
                 <label><input type="checkbox" id="highContrast"> Alto contraste</label>
             </div>
-            <button aria-label="Aplicar configuración">Aplicar</button>
-            <button class="back-btn" aria-label="Volver a la pantalla principal">Atrás</button>
-        </section>
+            <button id="apply-config-btn" aria-label="Aplicar configuración">Aplicar</button>
+            <button class="back-btn" id="back-to-main-from-config" aria-label="Volver a la pantalla principal">Atrás</button>
+        </div>
 
         <!-- Test de personalidad -->
-        <section id="personality-test" class="fade">
+        <div id="personality-test" class="fade">
             <h2>Test de Personalidad</h2>
             <progress id="progress-bar" max="9" value="1"></progress>
             <p>Pregunta <span id="current-question">1</span>/9</p>
@@ -132,12 +132,12 @@
                 <button id="prev-btn" style="display: none;">Anterior</button>
                 <button id="next-btn">Siguiente</button>
                 <button id="submit-btn" style="display: none;">Finalizar</button>
-                <button class="back-btn" aria-label="Volver a la pantalla principal">Volver</button>
+                <button class="back-btn" id="back-to-main-from-test" aria-label="Volver a la pantalla principal">Volver</button>
             </div>
-        </section>
+        </div>
 
         <!-- Cápsulas personalizadas -->
-        <section id="custom-capsule-form" class="fade">
+        <div id="custom-capsule-form" class="fade">
             <h2>Crear Cápsula Personalizada</h2>
             <input type="text" id="custom-dato" placeholder="Dato">
             <textarea id="custom-cita" placeholder="Cita"></textarea>
@@ -145,46 +145,46 @@
             <input type="date" id="custom-date">
             <input type="file" id="custom-imagen" accept="image/*">
             <div class="button-group">
-                <button aria-label="Guardar cápsula">Guardar</button>
-                <button aria-label="Cerrar formulario">Cerrar</button>
+                <button id="save-capsule-btn" aria-label="Guardar cápsula">Guardar</button>
+                <button id="close-capsule-form-btn" aria-label="Cerrar formulario">Cerrar</button>
             </div>
-        </section>
+        </div>
 
         <!-- Favoritos -->
-        <section id="favorites" class="fade">
+        <div id="favorites" class="fade">
             <h2>Cápsulas Favoritas</h2>
             <div id="favorites-list"></div>
-            <button class="back-btn" aria-label="Volver a la pantalla principal">Volver a Principal</button>
-        </section>
+            <button class="back-btn" id="back-to-main-from-favorites" aria-label="Volver a la pantalla principal">Volver a Principal</button>
+        </div>
 
         <!-- Estadísticas -->
-        <section id="stats" class="fade">
+        <div id="stats" class="fade">
             <h2>Estadísticas</h2>
             <canvas id="stats-chart"></canvas>
             <div id="stats-details"></div>
-            <button class="back-btn" aria-label="Volver a la pantalla principal">Volver a Principal</button>
-        </section>
+            <button class="back-btn" id="back-to-main-from-stats" aria-label="Volver a la pantalla principal">Volver a Principal</button>
+        </div>
+
+        <!-- Tutorial -->
+        <div id="tutorial">
+            <div id="tutorial-steps"></div>
+            <div class="button-group">
+                <button id="next-tutorial">Siguiente</button>
+                <button id="skip-tutorial">Saltar</button>
+            </div>
+        </div>
+
+        <!-- Modal para Zoom In -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <p id="modal-text"></p>
+                <button id="close-modal-btn" aria-label="Cerrar modal">Cerrar</button>
+            </div>
+        </div>
+
+        <!-- Canvas para gráficos interactivos -->
+        <canvas id="interactive-2000s"></canvas>
     </main>
-
-    <!-- Tutorial -->
-    <div id="tutorial">
-        <div id="tutorial-steps"></div>
-        <div class="button-group">
-            <button id="next-tutorial">Siguiente</button>
-            <button id="skip-tutorial">Saltar</button>
-        </div>
-    </div>
-
-    <!-- Modal para Zoom In -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <p id="modal-text"></p>
-            <button aria-label="Cerrar modal">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- Canvas para gráficos interactivos -->
-    <canvas id="interactive-2000s"></canvas>
 
     <!-- Scripts -->
     <!-- Firebase -->
