@@ -62,31 +62,31 @@ body.tema-custom::before {
     filter: blur(5px);
     z-index: -1;
 }body.tema-default::before {
-    background-image: url('images/sci-fi-bg.jpg');
+    background-image: url('sci-fi-bg.jpg');
 }
 body.tema-frutiger-metro::before {
-    background-image: url('images/frutiger-metro-bg.jpg');
+    background-image: url('frutiger-metro-bg.jpg');
 }
 body.tema-pastel::before {
-    background-image: url('images/pastel-frutiger-metro-bg.jpg');
+    background-image: url('pastel-frutiger-metro-bg.jpg');
 }
 body.tema-vaporwave::before {
-    background-image: url('images/vaporwave-bg.jpg');
+    background-image: url('vaporwave-bg.jpg');
 }
 body.tema-dark-academia::before {
-    background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
+    background-image: url('dark-academia-frutiger-metro-bg.jpg');
 }
 body.tema-frutiger-aero-2::before {
-    background-image: url('images/frutiger-aero-2-bg.jpg');
+    background-image: url('frutiger-aero-2-bg.jpg');
 }
 body.tema-frutiger-aero::before {
-    background-image: url('images/frutiger-aero-bg.jpg');
+    background-image: url('frutiger-aero-bg.jpg');
 }
 body.tema-galaxy::before {
-    background-image: url('images/galaxia-bg.jpg');
+    background-image: url('galaxia-bg.jpg');
 }
 body.tema-custom::before {
-    background-image: url('images/custom-bg.jpg');
+    background-image: url('custom-bg.jpg');
 }/* Estilos específicos para cada tema */
 body.tema-default {
     font-family: 'Arial', sans-serif;
@@ -402,4 +402,3 @@ body.tema-frutiger-aero #visit-counter {
         width: 95%;
     }
 }
-
