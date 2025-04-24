@@ -40,7 +40,7 @@ self.addEventListener('install', (event) => {
                 'capsulas.js',
                 'sw.js',
                 'manifest.json',
-                'logo.png',
+                'images/logo.png',
                 'favicon.ico',
                 'images/sci-fi-bg.jpg',
                 'images/frutiger-metro-bg.jpg',
