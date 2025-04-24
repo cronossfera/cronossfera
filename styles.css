@@ -1,21 +1,56 @@
-/* Reset y estilos generales */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Animaciones de transición */
+.fade {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}.fade-in {
+    opacity: 1 !important;
+}/* Animación de desplegue para la ventana de configuración */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}#config {
+    animation: slideDown 0.5s ease-out forwards;
+}/* Animación para logros desbloqueados */
+@keyframes achievementPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}@keyframes tutorialArrow {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Space Mono', monospace;
     color: #fff;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
     min-height: 100vh;
     position: relative;
-    overflow-x: hidden;
-    background: #000;
-}
-
-body::before {
-    content: '';
+    background-color: #1a1a1a;
+    transition: all 0.3s ease;
+}body.high-contrast {
+    filter: grayscale(100%) contrast(200%);
+    background-color: #000;
+    color: #fff;
+}/* Estilos para temas con imágenes de fondo */
+body.tema-default::before,
+body.tema-frutiger-metro::before,
+body.tema-pastel::before,
+body.tema-vaporwave::before,
+body.tema-dark-academia::before,
+body.tema-frutiger-aero-2::before,
+body.tema-frutiger-aero::before,
+body.tema-galaxy::before,
+body.tema-custom::before {
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
@@ -23,283 +58,273 @@ body::before {
     height: 100%;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-    opacity: 0.3;
-    z-index: -2;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background-repeat: no-repeat;
+    filter: blur(5px);
+    z-index: -1;
+}body.tema-default::before {
+    background-image: url('images/sci-fi-bg.jpg');
 }
-
-/* Fondos para cada tema con soporte WebP y fallback a JPG */
-body.tema-default::before {
-    background-image: url('images/optimized/sci-fi-bg.webp');
-}
-@supports not (background-image: url('images/optimized/sci-fi-bg.webp')) {
-    body.tema-default::before {
-        background-image: url('images/sci-fi-bg.jpg');
-    }
-}
-
 body.tema-frutiger-metro::before {
-    background-image: url('images/optimized/frutiger-metro-bg.webp');
+    background-image: url('images/frutiger-metro-bg.jpg');
 }
-@supports not (background-image: url('images/optimized/frutiger-metro-bg.webp')) {
-    body.tema-frutiger-metro::before {
-        background-image: url('images/frutiger-metro-bg.jpg');
-    }
-}
-
 body.tema-pastel::before {
-    background-image: url('images/optimized/pastel-frutiger-metro-bg.webp');
+    background-image: url('images/pastel-frutiger-metro-bg.jpg');
 }
-@supports not (background-image: url('images/optimized/pastel-frutiger-metro-bg.webp')) {
-    body.tema-pastel::before {
-        background-image: url('images/pastel-frutiger-metro-bg.jpg');
-    }
-}
-
 body.tema-vaporwave::before {
-    background-image: url('images/optimized/vaporwave-bg.webp');
+    background-image: url('images/vaporwave-bg.jpg');
 }
-@supports not (background-image: url('images/optimized/vaporwave-bg.webp')) {
-    body.tema-vaporwave::before {
-        background-image: url('images/vaporwave-bg.jpg');
-    }
-}
-
 body.tema-dark-academia::before {
-    background-image: url('images/optimized/dark-academia-frutiger-metro-bg.webp');
+    background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
 }
-@supports not (background-image: url('images/optimized/dark-academia-frutiger-metro-bg.webp')) {
-    body.tema-dark-academia::before {
-        background-image: url('images/dark-academia-frutiger-metro-bg.jpg');
-    }
+body.tema-frutiger-aero-2::before {
+    background-image: url('images/frutiger-aero-2-bg.jpg');
 }
-
-body.tema-cyberpunk::before {
-    background-image: url('images/optimized/frutiger-aero-2-bg.webp');
-}
-@supports not (background-image: url('images/optimized/frutiger-aero-2-bg.webp')) {
-    body.tema-cyberpunk::before {
-        background-image: url('images/frutiger-aero-2-bg.jpg');
-    }
-}
-
 body.tema-frutiger-aero::before {
-    background-image: url('images/optimized/frutiger-aero-bg.webp');
+    background-image: url('images/frutiger-aero-bg.jpg');
 }
-@supports not (background-image: url('images/optimized/frutiger-aero-bg.webp')) {
-    body.tema-frutiger-aero::before {
-        background-image: url('images/frutiger-aero-bg.jpg');
-    }
-}
-
 body.tema-galaxy::before {
-    background-image: url('images/optimized/galaxia-bg.webp');
+    background-image: url('images/galaxia-bg.jpg');
 }
-@supports not (background-image: url('images/optimized/galaxia-bg.webp')) {
-    body.tema-galaxy::before {
-        background-image: url('images/galaxia-bg.jpg');
-    }
-}
-
 body.tema-custom::before {
-    background-image: url('images/optimized/custom-bg.webp');
+    background-image: url('images/custom-bg.jpg');
+}/* Estilos específicos para cada tema */
+body.tema-default {
+    font-family: 'Arial', sans-serif;
 }
-@supports not (background-image: url('images/optimized/custom-bg.webp')) {
-    body.tema-custom::before {
-        background-image: url('images/custom-bg.jpg');
-    }
+body.tema-frutiger-metro {
+    color: #333;
+    font-family: 'Arial', sans-serif;
 }
-
-/* Estilos para fuentes personalizadas */
-body.custom-font-orbitron {
-    font-family: 'Orbitron', sans-serif;
+body.tema-pastel {
+    color: #333;
+    font-family: 'Comic Sans MS', cursive;
 }
-
-body.custom-font-roboto {
-    font-family: 'Roboto', sans-serif;
+body.tema-vaporwave {
+    font-family: 'Arial', sans-serif;
 }
-
-body.custom-font-monospace {
-    font-family: 'Courier New', Courier, monospace;
+body.tema-dark-academia {
+    font-family: 'Arial', sans-serif;
 }
-
-/* Modo de alto contraste */
-body.high-contrast {
-    background: #000;
-    color: #fff;
+body.tema-cyberpunk {
+    font-family: 'Arial', sans-serif;
 }
-
-body.high-contrast .container,
-body.high-contrast #organizador,
-body.high-contrast #config,
-body.high-contrast #personality-test,
-body.high-contrast #custom-capsule-form,
-body.high-contrast #favorites,
-body.high-contrast #stats {
-    background: #333;
-    border: 2px solid #fff;
+body.tema-frutiger-aero {
+    color: #000;
+    font-family: 'Verdana', sans-serif;
 }
-
-/* Header */
-.main-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+body.tema-galaxy {
+    font-family: 'Arial', sans-serif;
+}
+body.tema-custom {
+    font-family: 'Verdana', sans-serif;
+}/* Fuentes personalizadas */
+body.custom-font-Orbitron { font-family: 'Orbitron', sans-serif; }
+body.custom-font-Space-Mono { font-family: 'Space Mono', monospace; }
+body.custom-font-Comic-Sans-MS { font-family: 'Comic Sans MS', cursive; }
+body.custom-font-Verdana { font-family: 'Verdana', sans-serif; }/* Estilo para el texto */
+body h1, body h2, body h3, body p, body label, body button, body a {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}button {
+    background-color: #00ffcc;
+    border: none;
     padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.logo-container {
-    flex: 1;
-    text-align: center;
-}
-
-.logo {
-    width: 180px;
-    max-width: 100%;
-}
-
-.header-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.3);
-}
-
-/* Configuraciones */
-.settings-container {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-}
-
-.settings-icon {
-    width: 36px;
+    margin: 5px;
     cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.settings-icon:hover {
-    transform: rotate(90deg);
-}
-
-/* Contenedor principal */
-.main-content {
-    padding-top: 100px;
-    padding-bottom: 20px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.container, 
-#organizador, 
-#config, 
-#personality-test, 
-#custom-capsule-form, 
-#favorites, 
-#stats {
-    max-width: 800px;
-    width: 90%;
-    margin: 20px auto;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}button:hover {
+    background-color: #00b3a0;
+    transform: scale(1.05);
+}a {
+    color: #00ffcc;
+    text-decoration: none;
+    margin: 10px;
+    display: inline-block;
+    font-family: 'Orbitron', sans-serif;
+    transition: color 0.3s ease;
+}a:hover {
+    color: #00b3a0;
+}/* Estilo para el logo */
+.logo {
+    width: 200px;
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+    cursor: pointer;
+    border: 2px solid white;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    text-align: center;
-    opacity: 0;
+    background: none;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}.logo:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px rgba(0, 255, 204, 0.8);
+}/* Contador de visitas */
+#visit-counter {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    color: #00ffcc;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 10px;
+    z-index: 10;
+}body.tema-frutiger-metro #visit-counter,
+body.tema-pastel #visit-counter,
+body.tema-dark-academia #visit-counter,
+body.tema-frutiger-aero #visit-counter {
+    color: #fff;
+}/* Botón de configuración */
+#config-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #00ffcc, #00b3a0);
+    border: 2px solid #fff;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.7);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}#config-btn:hover {
+    background: linear-gradient(135deg, #00b3a0, #00ffcc);
+    transform: rotate(90deg);
+    box-shadow: 0 0 25px rgba(0, 255, 204, 1);
+}/* Contenedores principales */
+.container, #organizador, #config, #custom-capsule-form, #favorites, #stats, #personality-test {
+    opacity: 1;
     transition: opacity 0.5s ease-in-out;
-}
-
-/* Estilos de desvanecimiento */
-.fade {
-    opacity: 0 !important;
-    transition: opacity 0.5s ease-in-out;
-}
-
-.fade-in {
-    opacity: 1 !important;
-    transition: opacity 0.5s ease-in-out;
-}
-
-/* Botones */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px;
+}/* Diseño de la cápsula */
+.capsule {
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    border: 1px solid rgba(0, 255, 204, 0.2);
+}#favorite-btn {
+    background-color: #ff4444;
+    border: none;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}#favorite-btn.favorited {
+    background-color: #ffaa00;
+}#favorite-btn:hover {
+    background-color: #cc0000;
+}/* Grupo de botones */
 .button-group {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
-    margin: 20px 0;
-}
-
-button, a {
-    padding: 10px 20px;
-    background: #00ffcc;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.3s;
-    font-size: 16px;
-}
-
-button:hover, a:hover {
-    background: #00ccaa;
-}
-
-#favorite-btn {
-    background: transparent;
-    font-size: 24px;
-    padding: 0;
-}
-
-#favorite-btn.favorited::before {
-    content: "❤️";
-}
-
-#favorite-btn:not(.favorited)::before {
-    content: "🤍";
-}
-
-.back-btn {
+    gap: 15px;
+    flex-wrap: wrap;
+}/* Estilos para el organizador */
+#organizador, #config {
     margin-top: 20px;
-    background: #ff5555;
-}
-
-.back-btn:hover {
-    background: #cc4444;
-}
-
-/* Contenido de cápsulas */
-#dato, #cita, #recurso {
-    margin: 15px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    font-size: 18px;
-}
-
-#dato span, #cita span {
+}#organizador input[type="date"],
+#organizador input[type="time"],
+#custom-capsule-form input[type="date"] {
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    margin: 5px 0;
+}#organizador #priority,
+#organizador #tags {
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    margin: 5px 0;
+}#lista .item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #333;
+    margin: 5px 0;
+    border-radius: 5px;
+}#lista .item.high { background-color: #ff6666; }
+#lista .item.medium { background-color: #ffcc00; }
+#lista .item.low { background-color: #66cc66; }#recordatorios .recordatorio {
+    background-color: #444;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}#recordatorios .recordatorio.pendiente {
+    background-color: #ff6666;
+    color: white;
+    font-weight: bold;
+}.back-btn {
+    margin-top: 20px;
+}/* Estilo para el texto de usuario */
+#user-info {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}.capsule div {
+    margin: 10px 0;
+    font-size: 1.1em;
+}.capsule span {
     color: #00ffcc;
     cursor: pointer;
-    transition: color 0.3s;
-}
-
-#dato span:hover, #cita span:hover {
-    color: #00ccaa;
-}
-
-/* Modal */
+    margin-left: 5px;
+}.capsule span:hover {
+    text-decoration: underline;
+}/* Configuración */
+#config {
+    max-width: 400px;
+    margin: 0 auto;
+}#config label {
+    display: block;
+    margin: 10px 0 5px;
+}#config select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+}/* Ventana del test de personalidad */
+#personality-test {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    max-width: 500px;
+    width: 90%;
+    z-index: 1000;
+    color: #fff;
+    text-align: center;
+}#personality-test h2 {
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 20px;
+}#progress-bar {
+    width: 100%;
+    margin-bottom: 10px;
+}#test-content label {
+    display: block;
+    margin: 10px 0;
+}#test-content input[type="radio"] {
+    margin-right: 5px;
+}/* Modal para Zoom In */
 .modal {
     display: none;
     position: fixed;
@@ -307,284 +332,74 @@ button:hover, a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background: #333;
+}.modal-content {
+    background: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
-    max-width: 80%;
+    max-width: 500px;
+    width: 90%;
     text-align: center;
-}
-
-.modal-content button {
-    margin-top: 10px;
-    background: #00ffcc;
-    color: #000;
-}
-
-/* Organizador dinámico */
-#organizador h2, 
-#config h2, 
-#personality-test h2, 
-#custom-capsule-form h2, 
-#favorites h2, 
-#stats h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #00ffcc;
-}
-
-#agenda {
-    margin-bottom: 20px;
-}
-
-#agenda h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-#calendar-container {
-    margin: 20px 0;
-}
-
-.organizador-form {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.task-input-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-#organizador input, 
-#organizador select, 
-#config select, 
-#custom-capsule-form input, 
-#custom-capsule-form textarea {
-    padding: 8px;
-    border-radius: 5px;
-    border: none;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    font-size: 16px;
-    width: 100%;
-}
-
-#lista .item {
-    margin: 10px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-}
-
-#lista .alta { background: rgba(255, 102, 102, 0.3); }
-#lista .media { background: rgba(255, 204, 0, 0.3); }
-#lista .baja { background: rgba(102, 204, 102, 0.3); }
-#lista .completed { background: rgba(102, 204, 102, 0.3); text-decoration: line-through; }
-#lista .discarded { background: rgba(255, 102, 102, 0.3); text-decoration: line-through; }
-#lista .pending { background: rgba(255, 204, 0, 0.3); }
-
-#recordatorios .recordatorio {
-    margin: 10px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-#recordatorios .pendiente {
-    background: rgba(255, 102, 102, 0.3);
-}
-
-/* Sugerencias para autocompletado */
-.suggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 5px;
-    max-height: 150px;
-    overflow-y: auto;
-    width: 100%;
-    z-index: 1000;
-    display: none;
-    color: #000;
-}
-
-.suggestion-item {
-    padding: 8px 10px;
-    cursor: pointer;
-}
-
-.suggestion-item:hover {
-    background: rgba(0, 255, 255, 0.2);
-}
-
-/* Configuración */
-.config-group {
-    margin: 15px 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-}
-
-.config-group label {
-    margin-right: 10px;
-    font-size: 16px;
-}
-
-/* Test de personalidad */
-#personality-test progress {
-    width: 100%;
-    margin: 15px 0;
-    height: 20px;
-}
-
-#personality-test p {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-#test-content label {
-    display: block;
-    margin: 10px 0;
-    font-size: 16px;
-}
-
-/* Cápsulas personalizadas */
-#custom-capsule-form textarea {
-    width: 100%;
-    height: 100px;
-    resize: vertical;
-}
-
-/* Favoritos */
-#favorites-list .capsule {
-    margin: 15px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-/* Estadísticas */
-#stats-chart {
-    max-width: 100%;
-    margin: 20px 0;
-}
-
-#stats-details {
-    font-size: 16px;
-}
-
-/* Tutorial */
+    color: #333;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+}.modal-content button {
+    margin-top: 15px;
+    background-color: #00ffcc;
+}/* Tutorial */
 #tutorial {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-#tutorial-steps {
-    background: #333;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 10px;
-    text-align: center;
-    max-width: 80%;
-}
-
-.step {
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    max-width: 500px;
+    width: 90%;
+    z-index: 1000;
+    color: #fff;
+    text-align: left;
+}#tutorial-steps .step {
     margin-bottom: 15px;
-    font-size: 16px;
-}
-
-.arrow {
-    font-size: 20px;
-}
-
-/* Gráficos interactivos */
-#interactive-2000s {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -1;
-}
-
-/* Ajustes para pantallas pequeñas */
+    position: relative;
+}#tutorial-steps .arrow {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: tutorialArrow 1.5s infinite;
+}#next-tutorial, #skip-tutorial {
+    margin: 5px;
+}/* Favoritos y Estadísticas */
+#favorites-list, #stats-details {
+    margin-top: 20px;
+}#stats-chart {
+    max-width: 400px;
+    margin: 0 auto;
+}/* Responsividad */
 @media (max-width: 600px) {
-    .main-header {
-        padding: 10px;
-    }
-
     .logo {
         width: 150px;
     }
-
-    .settings-icon {
-        width: 30px;
+    .button-group {
+        flex-direction: column;
+        gap: 10px;
     }
-
-    .main-content {
-        padding-top: 80px;
-    }
-
-    .container, 
-    #organizador, 
-    #config, 
-    #personality-test, 
-    #custom-capsule-form, 
-    #favorites, 
-    #stats {
-        width: 95%;
+    .capsule {
+        max-width: 100%;
         padding: 15px;
     }
-
-    button, a {
-        padding: 8px 15px;
-        font-size: 14px;
+    #config-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
     }
-
-    #dato, #cita, #recurso {
-        font-size: 16px;
-    }
-
-    #organizador h2, 
-    #config h2, 
-    #personality-test h2, 
-    #custom-capsule-form h2, 
-    #favorites h2, 
-    #stats h2 {
-        font-size: 20px;
-    }
-
-    #lista .item, 
-    #recordatorios .recordatorio, 
-    #favorites-list .capsule {
-        font-size: 14px;
-    }
-
-    .organizador-form {
-        grid-template-columns: 1fr;
+    #tutorial, #personality-test {
+        width: 95%;
     }
 }
+
