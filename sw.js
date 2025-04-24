@@ -12,8 +12,8 @@ self.addEventListener('push', (event) => {
     const data = event.data.json();
     const options = {
         body: data.body,
-        icon: 'images/logo.png',
-        badge: 'images/favicon.png',
+        icon: '/logo.png',
+        badge: '/favicon.png',
         data: { url: data.url || '/' }
     };
     event.waitUntil(
@@ -40,16 +40,16 @@ self.addEventListener('install', (event) => {
                 'capsulas.js',
                 'sw.js',
                 'manifest.json',
-                'images/logo.png',
+                '/logo.png',
                 'favicon.ico',
-                'images/sci-fi-bg.jpg',
-                'images/frutiger-metro-bg.jpg',
-                'images/pastel-frutiger-metro-bg.jpg',
-                'images/vaporwave-bg.jpg',
-                'images/dark-academia-frutiger-metro-bg.jpg',
-                'images/frutiger-aero-bg.jpg',
-                'images/galaxia-bg.jpg',
-                'images/custom-bg.jpg'
+                '/sci-fi-bg.jpg',
+                '/frutiger-metro-bg.jpg',
+                '/pastel-frutiger-metro-bg.jpg',
+                '/vaporwave-bg.jpg',
+                '/dark-academia-frutiger-metro-bg.jpg',
+                '/frutiger-aero-bg.jpg',
+                '/galaxia-bg.jpg',
+                '/custom-bg.jpg'
             ]);
         })
     );
